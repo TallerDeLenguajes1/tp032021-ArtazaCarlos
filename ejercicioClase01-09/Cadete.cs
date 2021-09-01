@@ -12,13 +12,13 @@ namespace ejercicioClase01_09
         string nombre;
         string direccion;
         int telefono;
-        List<Pedido> pedidos;
+        private List<Pedido> pedidos;
 
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Direccion { get => direccion; set => direccion = value; }
         public int Telefono { get => telefono; set => telefono = value; }
-        internal List<Pedido> Pedidos { get => pedidos; set => pedidos = value; }
+        
 
         public Cadete(int dni, string nom, string dir, int tel)
         {
@@ -27,6 +27,11 @@ namespace ejercicioClase01_09
             Direccion = dir;
             Telefono = tel;
 
+        }
+
+        public void agregarPedido(Pedido ped)
+        {
+            pedidos.Add(ped);
         }
     }
 }

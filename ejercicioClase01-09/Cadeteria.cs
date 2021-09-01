@@ -9,10 +9,10 @@ namespace ejercicioClase01_09
     class Cadeteria
     {
         string nombre;
-        List<Cadete> cadetes;
+        private List<Cadete> cadetes;
 
         public string Nombre { get => nombre; set => nombre = value; }
-        internal List<Cadete> Cadetes { get => cadetes; set => cadetes = value; }
+        
 
         public Cadeteria(string Nom)
         {

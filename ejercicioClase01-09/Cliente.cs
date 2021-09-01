@@ -17,5 +17,13 @@ namespace ejercicioClase01_09
         public string Nombre { get => nombre; set => nombre = value; }
         public string Direcccion { get => direcccion; set => direcccion = value; }
         public int Telefono { get => telefono; set => telefono = value; }
+
+        public Cliente(int dni, string nom, string dir, int tel)
+        {
+            Id = dni;
+            Nombre = nom;
+            Direcccion = dir;
+            Telefono = tel;
+        }
     }
 }
