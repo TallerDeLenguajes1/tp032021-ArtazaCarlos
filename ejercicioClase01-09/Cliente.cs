@@ -8,10 +8,10 @@ namespace ejercicioClase01_09
 {
     class Cliente
     {
-        int id;
-        string nombre;
-        string direcccion;
-        int telefono;
+        private int id;
+        private string nombre;
+        private string direcccion;
+        private int telefono;
 
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
@@ -24,6 +24,10 @@ namespace ejercicioClase01_09
             Nombre = nom;
             Direcccion = dir;
             Telefono = tel;
+        }
+
+        public Cliente()
+        {
         }
     }
 }

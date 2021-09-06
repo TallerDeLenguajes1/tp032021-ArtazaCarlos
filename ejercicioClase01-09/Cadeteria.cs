@@ -8,7 +8,7 @@ namespace ejercicioClase01_09
 {
     class Cadeteria
     {
-        string nombre;
+        private string nombre;
         private List<Cadete> cadetes;
 
         public string Nombre { get => nombre; set => nombre = value; }
@@ -18,9 +18,18 @@ namespace ejercicioClase01_09
         {
             Nombre = Nom;
         }
-        public void agregarCadete(Cadete cad)
+
+        public Cadeteria()
+        {
+        }
+
+        public void addCadete(Cadete cad)
         {
             cadetes.Add(cad);
+        }
+        public void removeCadete(Cadete cad)
+        {
+            cadetes.Remove(cad);
         }
     }
 }

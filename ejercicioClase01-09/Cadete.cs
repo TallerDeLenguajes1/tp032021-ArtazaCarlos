@@ -8,10 +8,10 @@ namespace ejercicioClase01_09
 {
     class Cadete
     {
-        int id;
-        string nombre;
-        string direccion;
-        int telefono;
+        private int id;
+        private string nombre;
+        private string direccion;
+        private int telefono;
         private List<Pedido> pedidos;
 
         public int Id { get => id; set => id = value; }
@@ -29,9 +29,17 @@ namespace ejercicioClase01_09
 
         }
 
-        public void agregarPedido(Pedido ped)
+        public Cadete()
+        {
+        }
+
+        public void addOrder(Pedido ped)
         {
             pedidos.Add(ped);
+        }
+        public void removeOrder(Pedido ped)
+        {
+            pedidos.Remove(ped);
         }
     }
 }

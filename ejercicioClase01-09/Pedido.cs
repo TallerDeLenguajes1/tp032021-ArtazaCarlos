@@ -8,10 +8,10 @@ namespace ejercicioClase01_09
 {
     class Pedido
     {
-        int nro;
-        string obs;
-        Cliente cliente;
-        string estado;
+        private int nro;
+        private string obs;
+        private Cliente cliente;
+        private string estado;
 
         public int Nro { get => nro; set => nro = value; }
         public string Obs { get => obs; set => obs = value; }
@@ -25,6 +25,10 @@ namespace ejercicioClase01_09
             Obs = obs_;
             Estado = est;
 
+        }
+
+        public Pedido()
+        {
         }
     }
 }
