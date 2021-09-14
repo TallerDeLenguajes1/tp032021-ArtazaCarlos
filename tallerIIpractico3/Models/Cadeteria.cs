@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace tallerIIpractico3.entities
 {
-    class Cadeteria
+    public class Cadeteria
     {
         private string nombre;
         private List<Cadete> cadetes;

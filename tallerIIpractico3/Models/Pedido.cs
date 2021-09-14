@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace tallerIIpractico3.entities
 {
-    class Pedido
+    public class Pedido
     {
         private int nro;
         private string obs;
@@ -17,7 +17,7 @@ namespace tallerIIpractico3.entities
         public Cliente Cliente { get => cliente; set => cliente = value; }
         public string Estado { get => estado; set => estado = value; }
 
-        public Pedido(int num, string obs_, string est, int dni, string nom, string dir, int tel)
+        public Pedido(int num, string obs_, string est, int dni, string nom, string dir, string tel)
         {
             Cliente = new Cliente(dni, nom, dir, tel);
             Nro = num;
