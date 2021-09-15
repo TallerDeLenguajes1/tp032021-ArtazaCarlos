@@ -5,22 +5,23 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
+using tallerIIpractico3.Models;
 
 namespace tallerIIpractico3.Controllers
 {
     public class CadeteriaController : Controller
     {
         private readonly ILogger<CadeteriaController> _logger;
-        private readonly List<Cadete> cadetes;
+        private readonly DBTemporal dB;
 
-        public CadeteriaController(ILogger<CadeteriaController> logger, List<Cadete> cadetes)
+        public CadeteriaController(ILogger<CadeteriaController> logger, DBTemporal DB)
         {
-            _logger = logger;
-            this.cadetes = cadetes;
+            _logger = logger;          
+            dB = DB;
         }
         public IActionResult Index()
         {
-            return View(cadetes);
+            return View(dB.Cadeteria.Cadetes);
         }
     }
 }

@@ -3,16 +3,17 @@
 }
 
 <div class="text-center">
-    <form asp-controller="Pedido" asp-action="addPedido" method="post">
+    <form  class="form-group"
+           asp-controller="Pedido" asp-action="addPedido" method="post">
         <fieldset>
             <legend class="">Tomar pedido</legend>
-            <div class="input-group-sm">Observaciones<input type="text" name="obs" required></div>
-            <div class="input-group-sm">Estado<input type="text" name="est" value="En preparacion"></div>
-            <div class="input-group-sm">DNI<input type="number" name="dni" required></div>
-            <div class="input-group-sm">Nombre<input type="text" name="nom" required></div>
-            <div class="input-group-sm">Dirección<input type="text" name="dir" required></div>
-            <div class="input-group-sm">Teléfono<input type="text" name="tel" required></div>
-            <div class="input-group-sm"><input type="submit" name="btnSubmit" value="Enviar"><input type="reset" name="btnReset" value="Borrar"></div>
+            <div class="input-group-sm">Observaciones<input  class="form-control"  type="text" name="obs" required></div>
+            <div class="input-group-sm">Estado<input  class="form-control"  type="text" name="est" value="En preparacion"></div>
+            <div class="input-group-sm">DNI<input  class="form-control"  type="number" name="dni" required></div>
+            <div class="input-group-sm">Nombre<input  class="form-control"  type="text" name="nom" required></div>
+            <div class="input-group-sm">Dirección<input  class="form-control"  type="text" name="dir" required></div>
+            <div class="input-group-sm">Teléfono<input  class="form-control"  type="text" name="tel" required></div>
+            <div class="input-group-sm"><input  class="form-control"  type="submit" name="btnSubmit" value="Enviar"><input type="reset" name="btnReset" value="Borrar"></div>
 
         </fieldset>
     </form>

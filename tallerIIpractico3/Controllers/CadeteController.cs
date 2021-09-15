@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
-
+using tallerIIpractico3.Models;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -13,17 +13,17 @@ namespace tallerIIpractico3.Controllers
     {
         static int id = 0;
         private readonly ILogger<CadeteController> _logger;
-        private readonly List<Cadete> cadetes;
+        private readonly DBTemporal _DB;
 
-        public CadeteController(ILogger<CadeteController> logger, List<Cadete> cadetes)
+        public CadeteController(ILogger<CadeteController> logger, DBTemporal DB)
         {
             _logger = logger;
-            this.cadetes = cadetes;
+            _DB = DB;
         }
 
         public IActionResult Index()
         {
-            return View(cadetes);
+            return View(_DB.Cadeteria.Cadetes);
         }
 
         public IActionResult CreateCadete()
@@ -35,7 +35,7 @@ namespace tallerIIpractico3.Controllers
         {
             Cadete cadete_ = new Cadete(id, nom, dir, tel);
             id++;
-            cadetes.Add(cadete_);
+            _DB.Cadeteria.Cadetes.Add(cadete_);
             return Redirect("Index");
         }
     }

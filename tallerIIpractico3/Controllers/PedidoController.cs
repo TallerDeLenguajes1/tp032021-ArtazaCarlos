@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
+using tallerIIpractico3.Models;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -12,12 +13,12 @@ namespace tallerIIpractico3.Controllers
     {
         static int nro = 0;
         private readonly ILogger<PedidoController> _logger;
-        private readonly List<Cadete> cadetes;
-        private readonly List<Pedido> pedidos;
+        private readonly DBTemporal dB;
 
-        public PedidoController(ILogger<PedidoController> logger, List<Cadete> cadetes, List<Pedido> pedidos)
+        public PedidoController(ILogger<PedidoController> logger, DBTemporal DB )
         {
             _logger = logger;
+            dB = DB;
         }
 
         public IActionResult Index()
@@ -25,22 +26,22 @@ namespace tallerIIpractico3.Controllers
             return View();
         }
 
-        public void addPedido(string obs, string est, int dni, string nom, string dir, string tel)
+        public IActionResult addPedido(string obs, string est, int dni, string nom, string dir, string tel)
         {
             Pedido pedido_ = new Pedido(nro, obs, est, dni, nom, dir, tel);
-            int cant_Cadetes = cadetes.Count(); //cantidad de cadetes en la lista
+            int cant_Cadetes = dB.Cadeteria.Cadetes.Count(); //cantidad de cadetes en la lista
 
             Random r = new Random();
             int id_cadete = r.Next(0, cant_Cadetes + 1); //elijo al aleatoriamente un cadete
 
-            Cadete resultado = cadetes.Find(x => x.Id == id_cadete);
-            resultado.Pedidos.Add(pedido_);
-            Response.Redirect("https://localhost:44374/");
+            Cadete cadeteSeleccionado = dB.Cadeteria.Cadetes.Find(x => x.Id == id_cadete);
+            if(cadeteSeleccionado  != null) cadeteSeleccionado.Pedidos.Add(pedido_);
+            return Redirect("Index");
         }
 
         public IActionResult ListaPedidos()
         {
-            return View(pedidos);
+            return View(dB.Cadeteria.Pedidos);
         }
     }
 }
