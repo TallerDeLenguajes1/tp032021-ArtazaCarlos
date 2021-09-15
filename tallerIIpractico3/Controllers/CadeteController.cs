@@ -24,5 +24,11 @@ namespace tallerIIpractico3.Controllers
         {
             return View();
         }
+        public void addCadete(string nom, string dir, string tel)
+        {
+            Cadete cadete_ = new Cadete(id, nom, dir, tel);
+            id++;
+            cadetes.Add(cadete_);
+        }
     }
 }

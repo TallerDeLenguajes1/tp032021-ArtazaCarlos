@@ -17,7 +17,7 @@ namespace tallerIIpractico3.entities
         public string Nombre { get => nombre; set => nombre = value; }
         public string Direccion { get => direccion; set => direccion = value; }
         public string Telefono { get => telefono; set => telefono = value; }
-
+        public List<Pedido> Pedidos { get => pedidos; set => pedidos = value; }
 
         public Cadete(int dni, string nom, string dir, string tel)
         {
@@ -34,11 +34,11 @@ namespace tallerIIpractico3.entities
 
         public void addOrder(Pedido ped)
         {
-            pedidos.Add(ped);
+            Pedidos.Add(ped);
         }
         public void removeOrder(Pedido ped)
         {
-            pedidos.Remove(ped);
+            Pedidos.Remove(ped);
         }
     }
 }

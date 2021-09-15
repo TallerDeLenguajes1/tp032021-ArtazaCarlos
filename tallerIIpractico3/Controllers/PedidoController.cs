@@ -21,9 +21,20 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult Index()
         {
-            nro++;
-            Pedido pedido1 = new Pedido(nro, "sandwich de milanesa", "cocinando", 33443322, "carlos", "rondeau 1961", "+54878278782");
-            return View(pedido1);
+            return View();
+        }
+
+        void addPedido(string obs, string est, int dni, string nom, string dir, string tel)
+        {
+            Pedido pedido_ = new Pedido(nro, obs, est, dni, nom, dir, tel);
+            int cant_Cadetes = cadetes.Count(); //cantidad de cadetes en la lista
+
+            Random r = new Random();
+            int id_cadete = r.Next(0, cant_Cadetes + 1); //elijo al aleatoriamente un cadete
+
+            Cadete resultado = cadetes.Find(x => x.Id == id_cadete);
+            resultado.Pedidos.Add(pedido_);
+
         }
     }
 }
