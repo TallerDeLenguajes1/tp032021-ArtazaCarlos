@@ -8,12 +8,12 @@ using tallerIIpractico3.entities;
 
 namespace tallerIIpractico3.Controllers
 {
-    public class HomeCadeteria : Controller
+    public class CadeteriaController : Controller
     {
-        private readonly ILogger<HomeCadeteria> _logger;
+        private readonly ILogger<CadeteriaController> _logger;
         private readonly List<Cadete> cadetes;
 
-        public HomeCadeteria(ILogger<HomeCadeteria> logger, List<Cadete> cadetes)
+        public CadeteriaController(ILogger<CadeteriaController> logger, List<Cadete> cadetes)
         {
             _logger = logger;
             this.cadetes = cadetes;
