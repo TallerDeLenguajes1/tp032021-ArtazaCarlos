@@ -25,11 +25,12 @@ namespace tallerIIpractico3.entities
             Nombre = nom;
             Direccion = dir;
             Telefono = tel;
-
+            Pedidos = new List<Pedido>();
         }
 
         public Cadete()
         {
+            Pedidos = new List<Pedido>();
         }
 
         public void addOrder(Pedido ped)

@@ -20,17 +20,23 @@ namespace tallerIIpractico3.Controllers
             _logger = logger;
             this.cadetes = cadetes;
         }
+
         public IActionResult Index()
         {
+            return View(cadetes);
+        }
+
+        public IActionResult CreateCadete()
+        {            
             return View();
         }
-        public void addCadete(string nom, string dir, string tel)
+
+        public IActionResult addCadete(string nom, string dir, string tel)
         {
             Cadete cadete_ = new Cadete(id, nom, dir, tel);
             id++;
             cadetes.Add(cadete_);
-            Response.Redirect("https://localhost:44374/");
-
+            return Redirect("Index");
         }
     }
 }

@@ -1,17 +1,50 @@
 ﻿@{
     ViewData["Title"] = "Cadetes Page";
 }
+@model List<tallerIIpractico3.entities.Cadete>
+
+
 
 <div class="text-center">
+    <h1 class="display-4">Lista de cadetes</h1>
     
-    <form asp-controller="Cadete" asp-action="addCadete" method="post">
-        <fieldset>
-            <legend class="">Registrar un cadete</legend>
-            <div class="input-group-sm">Nombre<input type="text" name="nom" required></div>
-            <div class="input-group-sm">Dirección<input type="text" name="dir" required></div>
-            <div class="input-group-sm">Teléfono<input type="text" name="tel" required></div>
-            <div class="input-group-sm"><input type="submit" name="btnSubmit" value="Enviar"><input type="reset" name="btnReset" value="Borrar"></div>
+    <div class="row">
+        <div class="col">
+            <a class=" text-right btn-info btn-success btn-lg" asp-action="CreateCadete"> Crear Cadete</a>
+        </div>
+    </div>
+    @*@foreach (var item in Model)
+    {
+        <h3>Id = @item.Id</h3>
+        <h3>Nombre = @item.Nombre</h3>
+        <h3>Direccion = @item.Direccion</h3>
+        <h3>Pedidos = @item.Pedidos.Count()</h3>
+        <br />
+        <br />
+    }*@
 
-        </fieldset>
-    </form>
+    <table class="table">
+        <thead>
+            <tr>
+                <th scope="col">#</th>
+                <th scope="col">Nombre</th>
+                <th scope="col">Dirección</th>
+                <th scope="col">Nro. Pedidos</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+
+                    <th scope="row"> @item.Id</th>
+                    <td>@item.Nombre</td>
+                    <td> @item.Direccion</td>
+                    <td> @item.Pedidos.Count()</td>
+             
+                </tr>
+            }
+        </tbody>
+    </table>
+
 </div>
