@@ -29,7 +29,7 @@ namespace tallerIIpractico3.Controllers
             Cadete cadete_ = new Cadete(id, nom, dir, tel);
             id++;
             cadetes.Add(cadete_);
-            
+            Response.Redirect("https://localhost:44374/");
 
         }
     }

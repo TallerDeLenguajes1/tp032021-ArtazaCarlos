@@ -15,6 +15,7 @@ namespace tallerIIpractico3
     public class Startup
     {
         static List<Cadete> cadetes = new List<Cadete>();
+        static List<Pedido> pedidos = new List<Pedido>();
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -27,6 +28,7 @@ namespace tallerIIpractico3
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton(cadetes);
+            services.AddSingleton(pedidos);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

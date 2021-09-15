@@ -6,17 +6,15 @@
     <h1 class="display-4">Lista de cadetes</h1>
     @model List<tallerIIpractico3.entities.Cadete>
 
-    @{
-        int cont = 0;
-    }
+
+
 
     @foreach (var item in Model)
     {
-        <h2>@cont</h2>
-        <br />
         <h3>Id = @item.Id</h3>
         <h3>Nombre = @item.Nombre</h3>
         <h3>Direccion = @item.Direccion</h3>
+        <h3>Pedidos = @item.Pedidos.Count()</h3>
         <br />
         <br />
     }

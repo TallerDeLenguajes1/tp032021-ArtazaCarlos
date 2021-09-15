@@ -13,8 +13,9 @@ namespace tallerIIpractico3.Controllers
         static int nro = 0;
         private readonly ILogger<PedidoController> _logger;
         private readonly List<Cadete> cadetes;
+        private readonly List<Cadete> pedidos;
 
-        public PedidoController(ILogger<PedidoController> logger, List<Cadete> cadetes)
+        public PedidoController(ILogger<PedidoController> logger, List<Cadete> cadetes, List<Cadete> pedidos)
         {
             _logger = logger;
         }
@@ -24,7 +25,7 @@ namespace tallerIIpractico3.Controllers
             return View();
         }
 
-        void addPedido(string obs, string est, int dni, string nom, string dir, string tel)
+        public void addPedido(string obs, string est, int dni, string nom, string dir, string tel)
         {
             Pedido pedido_ = new Pedido(nro, obs, est, dni, nom, dir, tel);
             int cant_Cadetes = cadetes.Count(); //cantidad de cadetes en la lista
@@ -34,7 +35,12 @@ namespace tallerIIpractico3.Controllers
 
             Cadete resultado = cadetes.Find(x => x.Id == id_cadete);
             resultado.Pedidos.Add(pedido_);
+            Response.Redirect("https://localhost:44374/");
+        }
 
+        public IActionResult ListaPedidos()
+        {
+            return View(pedidos);
         }
     }
 }
