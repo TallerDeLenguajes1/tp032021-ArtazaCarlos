@@ -13,9 +13,9 @@ namespace tallerIIpractico3.Controllers
         static int nro = 0;
         private readonly ILogger<PedidoController> _logger;
         private readonly List<Cadete> cadetes;
-        private readonly List<Cadete> pedidos;
+        private readonly List<Pedido> pedidos;
 
-        public PedidoController(ILogger<PedidoController> logger, List<Cadete> cadetes, List<Cadete> pedidos)
+        public PedidoController(ILogger<PedidoController> logger, List<Cadete> cadetes, List<Pedido> pedidos)
         {
             _logger = logger;
         }
