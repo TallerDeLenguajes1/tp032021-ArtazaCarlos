@@ -7,9 +7,9 @@
     <form asp-controller="Cadete" asp-action="addCadete" method="post">
         <fieldset>
             <legend class="">Registrar un cadete</legend>
-            <div class="input-group-sm">Nombre<input type="text"></div>
-            <div class="input-group-sm">Dirección<input type="text"></div>
-            <div class="input-group-sm">Teléfono<input type="text"></div>
+            <div class="input-group-sm">Nombre<input type="text" name="nom" required></div>
+            <div class="input-group-sm">Dirección<input type="text" name="dir" required></div>
+            <div class="input-group-sm">Teléfono<input type="text" name="tel" required></div>
             <div class="input-group-sm"><input type="submit" name="btnSubmit" value="Enviar"><input type="reset" name="btnReset" value="Borrar"></div>
 
         </fieldset>
