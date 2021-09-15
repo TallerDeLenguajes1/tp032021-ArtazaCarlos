@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
+using tallerIIpractico3.entities;
 using tallerIIpractico3.Models;
 
 namespace tallerIIpractico3.Controllers
@@ -13,7 +14,7 @@ namespace tallerIIpractico3.Controllers
     {
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, List<Cadete> cadetes)
         {
             _logger = logger;
         }
