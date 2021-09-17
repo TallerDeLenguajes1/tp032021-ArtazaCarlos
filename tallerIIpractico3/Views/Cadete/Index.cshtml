@@ -6,37 +6,28 @@
 
 
 <div class="text-center">
-    <h1 class="display-4">Lista de cadetes</h1>
-    
-    <div class="row">
-        <div class="col">
-            <a class=" text-right btn-info btn-success btn-lg" asp-action="CreateCadete"> Crear Cadete</a>
-        </div>
-    </div>
-    
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th scope="col">#</th>
-                <th scope="col">Nombre</th>
-                <th scope="col">Dirección</th>
-                <th scope="col">Nro. Pedidos</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach (var item in Model)
-            {
-                <tr>
-
-                    <th scope="row"> @item.Id</th>
-                    <td>@item.Nombre</td>
-                    <td> @item.Direccion</td>
-                    <td> @item.Pedidos.Count()</td>
-             
-                </tr>
-            }
-        </tbody>
-    </table>
-
+    <h2 class="display-4">Lista de cadetes</h2>
 </div>
+
+<button type="button" asp-action="CreateCadete" class="btn btn-primary">Crear Cadete</button>
+
+<div>
+    <table class="table table-striped">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Direccion</th>
+            <th>Cantidad de pedidos</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Nombre</td>
+                <td>@item.Direccion</td>
+                <td>@item.Pedidos.Count</td>
+            </tr>
+        }
+    </table>
+</div>
+

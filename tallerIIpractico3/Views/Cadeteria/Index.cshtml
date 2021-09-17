@@ -9,15 +9,23 @@
 
 
 
+   
+<table class="table table-striped">
+    <tr>
+        <th>ID</th>
+        <th>Nombre</th>
+        <th>Direccion</th>
+        <th>Cantidad de pedidos</th>
+    </tr>
     @foreach (var item in Model)
     {
-        <h3>Id = @item.Id</h3>
-        <h3>Nombre = @item.Nombre</h3>
-        <h3>Direccion = @item.Direccion</h3>
-        <h3>Pedidos = @item.Pedidos.Count()</h3>
-        <br />
-        <br />
-    }
-
+    <tr>
+        <td>@item.Id</td>
+        <td>@item.Nombre</td>
+        <td>@item.Direccion</td>
+        <td>@item.Pedidos.Count</td>
+    </tr>
+     }
+    </table>
 
 </div>
