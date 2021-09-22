@@ -18,14 +18,17 @@
             <th>Cliente</th>
             <th>Direccion</th>
         </tr>
-        @foreach (var item in Model)
+        @if (Model != null)
         {
+            foreach (var item in Model)
+            {
             <tr>
                 <td>@item.Nro</td>
                 <td>@item.Obs</td>
                 <td>@item.Cliente.Nombre</td>
                 <td>@item.Cliente.Direcccion</td>
             </tr>
+            }
         }
     </table>
 

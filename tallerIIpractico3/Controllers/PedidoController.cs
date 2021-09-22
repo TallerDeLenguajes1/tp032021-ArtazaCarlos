@@ -23,12 +23,20 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(_DB.leerArchivoCadete());
         }
 
-        public IActionResult crearPedido(string obs, string est, int dni, string nom, string dir, string tel)
+        public IActionResult crearPedido(string obs, string est, int dni, string nom, string dir, string tel, int id)
         {
             Pedido pedido = new Pedido(nro, obs, est, dni, nom, dir, tel);
+
+            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
+
+            Cadete cadeteSeleccionado = cadeteLista.Find(x => x.Id == id);
+            cadeteSeleccionado.Pedidos.Add(pedido);
+
+            _DB.ModificarArchivoCadete(cadeteLista);
+
             nro++;
             _DB.guardarPedido(pedido);
             return Redirect("Index");

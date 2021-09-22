@@ -2,37 +2,60 @@
     ViewData["Title"] = "Pedidos Page";
 }
 
+@model List<tallerIIpractico3.entities.Cadete> 
+
 <div class="container">
     <div class="row">
         <div class="col-6">
             <form asp-controller="Pedido" asp-action="crearPedido" method="post">
                 <fieldset>
                     <legend class="">Tomar pedido</legend>
-                    <div class="mb-3">
-                        <label for="obs" class="form-label">Observaciones</label>
-                        <input type="text" class="form-control" name="obs" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="est" class="form-label">Estado</label>
-                        <input type="text" class="form-control" name="est" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dni" class="form-label">DNI</label>
-                        <input type="text" class="form-control" name="dni" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="nom" class="form-label">Nombre</label>
-                        <input type="text" class="form-control" name="nom" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dir" class="form-label">Dirección</label>
-                        <input type="text" class="form-control" name="dir" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="tel" class="form-label">Teléfono</label>
-                        <input type="text" class="form-control" name="tel" required>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    @if (Model != null)
+                    {
+                        <div class="mb-3">
+                            <label for="obs" class="form-label">Observaciones</label>
+                            <input type="text" id="obs" class="form-control" name="obs" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="est" class="form-label">Estado</label>
+                            <input type="text" id="est" class="form-control" name="est" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dni" class="form-label">DNI</label>
+                            <input type="text" id="dni" class="form-control" name="dni" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="nom" class="form-label">Nombre</label>
+                            <input type="text" id="nom" class="form-control" name="nom" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="dir" class="form-label">Dirección</label>
+                            <input type="text" id="dir" class="form-control" name="dir" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="tel" class="form-label">Teléfono</label>
+                            <input type="text" id="tel" class="form-control" name="tel" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="cadete" class="form-label">Cadete</label>
+                            <select id="cadete" name="id">
+                                <option value="">Seleccione</option>
+                                @foreach (var item in Model)
+                                {
+                                    <option value="@item.Id">@item.Nombre</option>
+                                }
+                            </select>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
+
+                    }
+                    else if (Model == null)
+                    {
+                        <div class="mb-3">
+                            <label for="dir" class="form-label">Sin cadetes para tomar el pedido</label>
+                            <a type="button" asp-controller="Cadete" asp-action="CreateCadete" class="btn btn-primary">Crear Cadete</a>
+                        </div>
+                    }
                 </fieldset>
             </form>
         </div>

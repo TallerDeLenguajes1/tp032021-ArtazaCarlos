@@ -14,15 +14,18 @@
         <th>Direccion</th>
         <th>Cantidad de pedidos</th>
     </tr>
-    @foreach (var item in Model)
+    @if (Model != null)
     {
-    <tr>
-        <td>@item.Id</td>
-        <td>@item.Nombre</td>
-        <td>@item.Direccion</td>
-        <td>@item.Pedidos.Count</td>
-    </tr>
-     }
-    </table>
+        foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Id</td>
+                <td>@item.Nombre</td>
+                <td>@item.Direccion</td>
+                <td>@item.Pedidos.Count</td>
+            </tr>
+        }
+    }
+</table>
 
 </div>

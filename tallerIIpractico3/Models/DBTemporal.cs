@@ -12,8 +12,9 @@ namespace tallerIIpractico3.Models
 {
     public class DBTemporal
     {
-        const string pathCadetes = @"c:\pruebas\dbTemporal_cadetes.txt";
-        const string pathPedidos = @"c:\pruebas\dbTemporal_pedidos.txt";
+        const string pathCadetesTMP = @"c:\pruebas\_DB.cadetes.tmp.txt";
+        const string pathCadetes = @"c:\pruebas\_DB.cadetes.txt";
+        const string pathPedidos = @"c:\pruebas\_DB.pedidos.txt";
 
         private Cadeteria cadeteria;
 
@@ -57,10 +58,29 @@ namespace tallerIIpractico3.Models
                         listaCadetes.Add(cadeteObj);
                     }
                 }
+                return listaCadetes;
             }
             
-            return listaCadetes;
+            return listaCadetes = null;
         }
+
+        public void ModificarArchivoCadete(List<Cadete> nuevaLista)
+        {
+            StreamWriter archivo = File.CreateText(pathCadetesTMP);
+            archivo.Close();
+            foreach (var item in nuevaLista)
+            {
+                string miJson = JsonSerializer.Serialize(item);
+                using (StreamWriter strWriter = File.AppendText(pathCadetesTMP))
+                {
+                    strWriter.WriteLine(miJson);
+                }
+            }
+            File.Delete(pathCadetes);
+            File.Move(pathCadetesTMP, pathCadetes);
+
+        }
+
 
         //*********************************PEDIDOS*********************************************************************
 
@@ -94,9 +114,10 @@ namespace tallerIIpractico3.Models
                         listaPedidos.Add(pedidoObj);
                     }
                 }
+                return listaPedidos;
             }
 
-            return listaPedidos;
+            return listaPedidos = null;
         }
     }
 }
