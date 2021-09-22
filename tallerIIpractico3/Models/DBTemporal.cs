@@ -12,9 +12,10 @@ namespace tallerIIpractico3.Models
 {
     public class DBTemporal
     {
-        const string pathCadetesTMP = @"c:\pruebas\_DB.cadetes.tmp.txt";
-        const string pathCadetes = @"c:\pruebas\_DB.cadetes.txt";
-        const string pathPedidos = @"c:\pruebas\_DB.pedidos.txt";
+        const string carpeta = @"c:\TP3DB";
+        const string pathCadetesTMP = @"c:\TP3DB\_DB.cadetes.tmp.txt";
+        const string pathCadetes = @"c:\TP3DB\_DB.cadetes.txt";
+        const string pathPedidos = @"c:\TP3DB\_DB.pedidos.txt";
 
         private Cadeteria cadeteria;
 
@@ -33,6 +34,7 @@ namespace tallerIIpractico3.Models
 
             if (!File.Exists(pathCadetes))
             {
+                Directory.CreateDirectory(carpeta);
                 StreamWriter archivo = File.CreateText(pathCadetes);
                 archivo.Close();
             }
