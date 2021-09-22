@@ -2,16 +2,28 @@
     ViewData["Title"] = "Cadetes Page";
 }
 
-<div class="text-center">
-    
-    <form asp-controller="Cadete" asp-action="addCadete" method="post">
-        <fieldset>
-            <legend class="">Registrar un cadete</legend>
-            <div class="input-group-sm">Nombre<input type="text" name="nom" required></div>
-            <div class="input-group-sm">Dirección<input type="text" name="dir" required></div>
-            <div class="input-group-sm">Teléfono<input type="text" name="tel" required></div>
-            <div class="input-group-sm"><input type="submit" name="btnSubmit" value="Enviar"><input type="reset" name="btnReset" value="Borrar"></div>
-
-        </fieldset>
-    </form>
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form asp-controller="Cadete" asp-action="agregarCadete" method="post">
+                <fieldset>
+                    <legend class="">Registrar un cadete</legend>
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dir" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" name="dir" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tel" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" name="tel" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </div>
+

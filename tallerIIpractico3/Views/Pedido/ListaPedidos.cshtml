@@ -11,15 +11,22 @@
 
 
 
-    @foreach (var item in Model)
-    {
-        <h3>Nro = @item.Nro</h3>
-        <h3>Cliente = @item.Cliente.Nombre</h3>
-        <h3>Obs = @item.Obs</h3>
-        <h3>Direccion = @item.Cliente.Direcccion</h3>
-
-        <br />
-        <br />
-    }
+    <table class="table table-striped">
+        <tr>
+            <th>Nro</th>
+            <th>Observacion</th>
+            <th>Cliente</th>
+            <th>Direccion</th>
+        </tr>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@item.Nro</td>
+                <td>@item.Obs</td>
+                <td>@item.Cliente.Nombre</td>
+                <td>@item.Cliente.Direcccion</td>
+            </tr>
+        }
+    </table>
 
 </div>

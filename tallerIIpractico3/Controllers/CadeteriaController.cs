@@ -12,16 +12,16 @@ namespace tallerIIpractico3.Controllers
     public class CadeteriaController : Controller
     {
         private readonly ILogger<CadeteriaController> _logger;
-        private readonly DBTemporal dB;
+        private readonly DBTemporal _DB;
 
         public CadeteriaController(ILogger<CadeteriaController> logger, DBTemporal DB)
         {
-            _logger = logger;          
-            dB = DB;
+            _logger = logger;
+            _DB = DB;
         }
         public IActionResult Index()
         {
-            return View(dB.Cadeteria.Cadetes);
+            return View(_DB.leerDeArchivo());
         }
     }
 }

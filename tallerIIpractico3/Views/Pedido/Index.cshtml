@@ -2,20 +2,40 @@
     ViewData["Title"] = "Pedidos Page";
 }
 
-<div class="text-center">
-    <form  class="form-group"
-           asp-controller="Pedido" asp-action="addPedido" method="post">
-        <fieldset>
-            <legend class="">Tomar pedido</legend>
-            <div class="input-group-sm">Observaciones<input  class="form-control"  type="text" name="obs" required></div>
-            <div class="input-group-sm">Estado<input  class="form-control"  type="text" name="est" value="En preparacion"></div>
-            <div class="input-group-sm">DNI<input  class="form-control"  type="number" name="dni" required></div>
-            <div class="input-group-sm">Nombre<input  class="form-control"  type="text" name="nom" required></div>
-            <div class="input-group-sm">Dirección<input  class="form-control"  type="text" name="dir" required></div>
-            <div class="input-group-sm">Teléfono<input  class="form-control"  type="text" name="tel" required></div>
-            <div class="input-group-sm"><input  class="form-control"  type="submit" name="btnSubmit" value="Enviar"><input type="reset" name="btnReset" value="Borrar"></div>
-
-        </fieldset>
-    </form>
-    
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form asp-controller="Pedido" asp-action="addPedido" method="post">
+                <fieldset>
+                    <legend class="">Tomar pedido</legend>
+                    <div class="mb-3">
+                        <label for="obs" class="form-label">Observaciones</label>
+                        <input type="text" class="form-control" name="obs" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="est" class="form-label">Estado</label>
+                        <input type="text" class="form-control" name="est" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dni" class="form-label">DNI</label>
+                        <input type="text" class="form-control" name="dni" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" name="nom" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dir" class="form-label">Dirección</label>
+                        <input type="text" class="form-control" name="dir" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tel" class="form-label">Teléfono</label>
+                        <input type="text" class="form-control" name="tel" required>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
 </div>
+

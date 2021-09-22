@@ -28,14 +28,14 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult addPedido(string obs, string est, int dni, string nom, string dir, string tel)
         {
-            Pedido pedido_ = new Pedido(nro, obs, est, dni, nom, dir, tel);
-            int cant_Cadetes = dB.Cadeteria.Cadetes.Count(); //cantidad de cadetes en la lista
+            //Pedido pedido_ = new Pedido(nro, obs, est, dni, nom, dir, tel);
+            //int cant_Cadetes = dB.Cadeteria.Cadetes.Count(); //cantidad de cadetes en la lista
 
-            Random r = new Random();
-            int id_cadete = r.Next(0, cant_Cadetes + 1); //elijo al aleatoriamente un cadete
+            //Random r = new Random();
+            //int id_cadete = r.Next(0, cant_Cadetes + 1); //elijo al aleatoriamente un cadete
 
-            Cadete cadeteSeleccionado = dB.Cadeteria.Cadetes.Find(x => x.Id == id_cadete);
-            if(cadeteSeleccionado  != null) cadeteSeleccionado.Pedidos.Add(pedido_);
+            //Cadete cadeteSeleccionado = dB.Cadeteria.Cadetes.Find(x => x.Id == id_cadete);
+            //if(cadeteSeleccionado  != null) cadeteSeleccionado.Pedidos.Add(pedido_);
             return Redirect("Index");
         }
 
