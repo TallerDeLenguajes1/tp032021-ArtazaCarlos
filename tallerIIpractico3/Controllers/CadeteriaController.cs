@@ -21,7 +21,7 @@ namespace tallerIIpractico3.Controllers
         }
         public IActionResult Index()
         {
-            return View(_DB.leerDeArchivo());
+            return View(_DB.leerArchivoCadete());
         }
     }
 }

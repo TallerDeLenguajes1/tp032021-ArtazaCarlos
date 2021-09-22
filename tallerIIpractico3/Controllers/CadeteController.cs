@@ -23,7 +23,7 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult Index()
         {
-            return View(_DB.leerDeArchivo());
+            return View(_DB.leerArchivoCadete());
         }
 
         public IActionResult CreateCadete()
@@ -35,8 +35,7 @@ namespace tallerIIpractico3.Controllers
         {
             Cadete cadete_ = new Cadete(id, nom, dir, tel);
             id++;
-            _DB.Cadeteria.Cadetes.Add(cadete_); //que pasa si la lista y archivos no coinciden con la cantidad de datos
-            _DB.guardarEnArchivo(cadete_);
+            _DB.guardarCadete(cadete_);
             return Redirect("Index");
         }
     }
