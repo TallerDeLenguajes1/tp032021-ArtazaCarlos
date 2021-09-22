@@ -2,7 +2,7 @@
 # Created by https://www.toptal.com/developers/gitignore/api/visualstudiocode,visualstudio
 # Edit at https://www.toptal.com/developers/gitignore?templates=visualstudiocode,visualstudio
 
-consolePruebas/
+pruebas/
 
 ### VisualStudioCode ###
 .vscode/*
