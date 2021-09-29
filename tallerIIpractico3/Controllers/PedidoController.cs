@@ -65,7 +65,7 @@ namespace tallerIIpractico3.Controllers
 
             _DB.ModificarArchivoPedido(pedidoLista);
             _DB.ModificarArchivoCadete(cadeteLista);
-            return RedirectToAction("Index");
+            return RedirectToAction("ListaPedidos");
         }
 
         public IActionResult ListaPedidos()

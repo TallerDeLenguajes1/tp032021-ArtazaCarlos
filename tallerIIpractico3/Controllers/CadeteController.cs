@@ -83,6 +83,17 @@ namespace tallerIIpractico3.Controllers
         public IActionResult PagarACadete(int id)
         {
             Cadete cadeteAPagar = _DB.ConsultarCadete(id);
+            //List<Pedido> pedidosDelCadete = cadeteAPagar.Pedidos;
+            //foreach (var item in pedidosDelCadete)
+            //{
+            //    if ((item.Est == Estado.En_camino) || (item.Est == Estado.No_entregado))
+            //    {
+            //        pedidosDelCadete.Remove(item);
+            //    }
+            //    cadeteAPagar.Pedidos.Clear();
+            //    cadeteAPagar.Pedidos = pedidosDelCadete;
+            //}
+            cadeteAPagar.PagoReciente1 = cadeteAPagar.Pedidos.Count() * 100;
             return View(cadeteAPagar);
         }
 

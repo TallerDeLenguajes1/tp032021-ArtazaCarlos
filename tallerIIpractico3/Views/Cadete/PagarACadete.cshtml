@@ -3,9 +3,7 @@
 *@
 
 @model tallerIIpractico3.entities.Cadete
-@{ 
-    float pago = Model.Pedidos.Count() * 100;
-}
+
 <div>
     <h3>Liquidación</h3>
 </div>
@@ -30,13 +28,14 @@
                 <td>@item.Cliente.Direcccion</td>
                 <td>@item.Est</td>
             </tr>
+          
         }
 
     </table>
 </div>
 
 <div>
-    <p>Total a pagar: $ @pago </p>
+    <p>Total a pagar: $ @Model.PagoReciente1 </p>
 </div>
 
 <div>

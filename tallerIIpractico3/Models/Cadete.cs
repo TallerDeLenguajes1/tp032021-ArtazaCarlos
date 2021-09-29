@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 
+
 namespace tallerIIpractico3.entities
 {
     public class Cadete
@@ -12,12 +13,15 @@ namespace tallerIIpractico3.entities
         private string direccion;
         private string telefono;
         private List<Pedido> pedidos;
+        private float PagoReciente;
+
 
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public string Direccion { get => direccion; set => direccion = value; }
         public string Telefono { get => telefono; set => telefono = value; }
         public List<Pedido> Pedidos { get => pedidos; set => pedidos = value; }
+        public float PagoReciente1 { get => PagoReciente; set => PagoReciente = value; }
 
         public Cadete(int dni, string nom, string dir, string tel)
         {
