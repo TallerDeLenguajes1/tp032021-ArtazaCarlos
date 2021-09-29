@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models;
+using Rotativa.AspNetCore;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -30,13 +31,76 @@ namespace tallerIIpractico3.Controllers
         {            
             return View();
         }
+ 
+        //****************************************MODIFICAR//ELIMINAR******************************************
+        public IActionResult FormModificarCadete(int id)
+        {
+            Cadete cadeteAModificar = _DB.ConsultarCadete(id);
+            return View(cadeteAModificar);
+        }
 
+        public IActionResult modificarCadete(int id, string nom, string dir, string tel)
+        {
+            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
+
+            Cadete cadeteAModificar = cadeteLista.Find(x => x.Id == id);
+            cadeteAModificar.Nombre = nom;
+            cadeteAModificar.Direccion = dir;
+            cadeteAModificar.Telefono = tel;
+
+            _DB.ModificarArchivoCadete(cadeteLista);
+            return RedirectToAction("Index");
+        }
+
+        //*************************************************
+        public IActionResult ConfirmarEliminarCadete(int id)
+        {
+            Cadete cadeteAModificar = _DB.ConsultarCadete(id);
+            return View(cadeteAModificar);
+        }
+
+        public IActionResult EliminarCadete(int id)
+        {
+            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
+            Cadete cadeteABorrar = cadeteLista.Find(x => x.Id == id);
+            cadeteLista.Remove(cadeteABorrar);
+
+            _DB.ModificarArchivoCadete(cadeteLista);
+            return RedirectToAction("Index");
+        }
+
+        //**************************************AGREGAR CADETE****************************************************
         public IActionResult agregarCadete(string nom, string dir, string tel)
         {
             Cadete cadete_ = new Cadete(id, nom, dir, tel);
             id++;
             _DB.guardarCadete(cadete_);
-            return Redirect("Index");
+            return RedirectToAction("Index");
+        }
+
+        //******************************************************************************************
+
+        public IActionResult PagarACadete(int id)
+        {
+            Cadete cadeteAPagar = _DB.ConsultarCadete(id);
+            return View(cadeteAPagar);
+        }
+
+        public IActionResult ConfirmarPago(int id)
+        {
+            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
+            Cadete cadetePagado = cadeteLista.Find(x => x.Id == id);
+            cadetePagado.Pedidos.Clear();
+
+            _DB.ModificarArchivoCadete(cadeteLista);
+            return RedirectToAction("Index");
+        }
+
+
+        public IActionResult ImprimirPdf(int id)
+        {
+            Cadete cadeteAPagar = _DB.ConsultarCadete(id);
+            return new ViewAsPdf("PagarACadete", cadeteAPagar);
         }
     }
 }

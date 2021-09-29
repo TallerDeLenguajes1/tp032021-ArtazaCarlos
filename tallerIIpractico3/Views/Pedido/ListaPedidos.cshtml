@@ -17,17 +17,19 @@
             <th>Observacion</th>
             <th>Cliente</th>
             <th>Direccion</th>
+            <th>Estado</th>
         </tr>
         @if (Model != null)
         {
             foreach (var item in Model)
             {
-            <tr>
-                <td>@item.Nro</td>
-                <td>@item.Obs</td>
-                <td>@item.Cliente.Nombre</td>
-                <td>@item.Cliente.Direcccion</td>
-            </tr>
+        <tr>
+            <td>@item.Nro</td>
+            <td>@item.Obs</td>
+            <td>@item.Cliente.Nombre</td>
+            <td>@item.Cliente.Direcccion</td>
+            <td>@item.Est</td>
+        </tr>
             }
         }
     </table>

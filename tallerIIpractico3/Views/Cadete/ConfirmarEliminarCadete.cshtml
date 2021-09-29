@@ -1,0 +1,31 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model tallerIIpractico3.entities.Cadete
+
+<div class="text-center">
+    <h3 class="display-4">¿Confirma eliminar cadete?</h3>
+</div>
+
+
+<div>
+    <table class="table table-striped" style="text-align:center">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Direccion</th>
+            <th>Cantidad de pedidos</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>@Model.Id</td>
+            <td>@Model.Nombre</td>
+            <td>@Model.Direccion</td>
+            <td>@Model.Pedidos.Count</td>
+            <td>
+                <a button type="button" class="btn btn-secondary btn-sm" href="EliminarCadete?id=@Model.Id" style="margin:2px">Eliminar</a>
+                <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cadete" asp-action="Index" style="margin:2px">Cancelar</a>
+            </td>
+        </tr>
+    </table>
+</div>

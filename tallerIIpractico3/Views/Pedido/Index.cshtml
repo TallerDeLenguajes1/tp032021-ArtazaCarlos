@@ -10,15 +10,21 @@
             <form asp-controller="Pedido" asp-action="crearPedido" method="post">
                 <fieldset>
                     <legend class="">Tomar pedido</legend>
-                    @if (Model != null)
+                    @if (Model.Count() != 0)
                     {
+                        
                         <div class="mb-3">
                             <label for="obs" class="form-label">Observaciones</label>
                             <input type="text" id="obs" class="form-control" name="obs" required>
                         </div>
                         <div class="mb-3">
                             <label for="est" class="form-label">Estado</label>
-                            <input type="text" id="est" class="form-control" name="est" required>
+                            <select id="est" name="est">
+                                <option value="">Seleccione</option>
+                                <option value="En_camino">En camino</option>
+                                <option value="Entregado">Entregado</option>
+                                <option value="No_entregado">No entregado</option>
+                            </select>
                         </div>
                         <div class="mb-3">
                             <label for="dni" class="form-label">DNI</label>
@@ -42,14 +48,14 @@
                                 <option value="">Seleccione</option>
                                 @foreach (var item in Model)
                                 {
-                                    <option value="@item.Id">@item.Nombre</option>
+                                    <option value="@item.Id">@item.Nombre (@item.Pedidos.Count())</option>
                                 }
                             </select>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
 
                     }
-                    else if (Model == null)
+                    else if (Model.Count() == 0)
                     {
                         <div class="mb-3">
                             <label for="dir" class="form-label">Sin cadetes para tomar el pedido</label>

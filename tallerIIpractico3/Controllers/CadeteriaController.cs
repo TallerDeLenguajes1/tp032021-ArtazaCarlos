@@ -19,6 +19,7 @@ namespace tallerIIpractico3.Controllers
             _logger = logger;
             _DB = DB;
         }
+
         public IActionResult Index()
         {
             return View(_DB.leerArchivoCadete());

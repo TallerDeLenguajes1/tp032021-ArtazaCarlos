@@ -1,0 +1,30 @@
+﻿@{
+    ViewData["Title"] = "Modificar Cadetes";
+}
+@model tallerIIpractico3.entities.Cadete
+
+<div class="container">
+    <div class="row">
+        <div class="col-6">
+            <form asp-controller="Cadete" asp-action="modificarCadete" method="post">
+                <fieldset>
+                    <legend class="">Modificar un cadete</legend>
+                    <div class="mb-3">
+                        <label for="nom" class="form-label">Nombre</label>
+                        <input type="text" id="nom" class="form-control" name="nom" value="@Model.Nombre" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="dir" class="form-label">Dirección</label>
+                        <input type="text" id="dir" class="form-control" name="dir" value="@Model.Direccion" required>
+                    </div>
+                    <div class="mb-3">
+                        <label for="tel" class="form-label">Teléfono</label>
+                        <input type="text" id="tel" class="form-control" name="tel" value="@Model.Telefono" required>
+                    </div>
+                    <input type="number" id="id" class="form-control" name="id" value="@Model.Id" hidden>
+                    <button type="submit" class="btn btn-primary">Submit</button>
+                </fieldset>
+            </form>
+        </div>
+    </div>
+</div>

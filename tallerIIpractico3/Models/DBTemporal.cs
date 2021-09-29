@@ -63,14 +63,14 @@ namespace tallerIIpractico3.Models
                 return listaCadetes;
             }
             
-            return listaCadetes = null;
+            return listaCadetes;
         }
 
         public void ModificarArchivoCadete(List<Cadete> nuevaLista)
         {
             StreamWriter archivo = File.CreateText(pathCadetesTMP);
             archivo.Close();
-            foreach (var item in nuevaLista)
+            foreach (Cadete item in nuevaLista)
             {
                 string miJson = JsonSerializer.Serialize(item);
                 using (StreamWriter strWriter = File.AppendText(pathCadetesTMP))
@@ -83,6 +83,26 @@ namespace tallerIIpractico3.Models
 
         }
 
+        public Cadete ConsultarCadete(int id)
+        {
+            string linea = "";
+            if (File.Exists(pathCadetes))
+            {
+                using (StreamReader strReader = File.OpenText(pathCadetes))
+                {
+                    while ((linea = strReader.ReadLine()) != null)
+                    {
+                        if (linea.Contains("\"Id\":" + id))
+                        {
+                            Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
+                            return cadeteObj;
+                        }
+                    }
+                }
+            }
+            
+            return null;
+        }
 
         //*********************************PEDIDOS*********************************************************************
 
@@ -119,7 +139,7 @@ namespace tallerIIpractico3.Models
                 return listaPedidos;
             }
 
-            return listaPedidos = null;
+            return listaPedidos;
         }
     }
 }

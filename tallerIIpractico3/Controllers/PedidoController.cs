@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models;
+using Rotativa.AspNetCore;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -26,7 +27,7 @@ namespace tallerIIpractico3.Controllers
             return View(_DB.leerArchivoCadete());
         }
 
-        public IActionResult crearPedido(string obs, string est, int dni, string nom, string dir, string tel, int id)
+        public IActionResult crearPedido(string obs, Estado est, int dni, string nom, string dir, string tel, int id)
         {
             Pedido pedido = new Pedido(nro, obs, est, dni, nom, dir, tel);
 
@@ -46,5 +47,6 @@ namespace tallerIIpractico3.Controllers
         {
             return View(_DB.leerArchivoPedido());
         }
+
     }
 }
