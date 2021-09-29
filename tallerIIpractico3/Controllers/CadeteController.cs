@@ -73,8 +73,8 @@ namespace tallerIIpractico3.Controllers
         public IActionResult agregarCadete(string nom, string dir, string tel)
         {
             Cadete cadete_ = new Cadete(id, nom, dir, tel);
-            id++;
             _DB.guardarCadete(cadete_);
+            id += _DB.leerArchivoCadete().Count();
             return RedirectToAction("Index");
         }
 

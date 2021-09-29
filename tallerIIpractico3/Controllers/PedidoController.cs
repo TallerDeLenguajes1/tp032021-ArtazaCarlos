@@ -37,9 +37,8 @@ namespace tallerIIpractico3.Controllers
             cadeteSeleccionado.Pedidos.Add(pedido);
 
             _DB.ModificarArchivoCadete(cadeteLista);
-
-            nro++;
             _DB.guardarPedido(pedido);
+            nro += _DB.leerArchivoPedido().Count();
             return RedirectToAction("Index"); ;
         }
 
