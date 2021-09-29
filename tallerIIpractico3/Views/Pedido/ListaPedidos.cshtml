@@ -19,7 +19,7 @@
             <th>Direccion</th>
             <th>Estado</th>
         </tr>
-        @if (Model != null)
+        @if (Model.Count() != 0)
         {
             foreach (var item in Model)
             {
@@ -28,7 +28,23 @@
             <td>@item.Obs</td>
             <td>@item.Cliente.Nombre</td>
             <td>@item.Cliente.Direcccion</td>
-            <td>@item.Est</td>
+            <td>
+                <form asp-controller="Pedido" asp-action="ModificarPedido" method="post">
+                    <input type="number" name="nro" value="@item.Nro" hidden>
+                    <select id="estado" name="est">
+                        <option value="" selected>@item.Est</option>
+                        @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
+                        {
+                            <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
+                            <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
+                        }
+                    </select>
+                    @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
+                    {
+                        <button type="submit" class="btn btn-primary">Cambiar</button>
+                    }
+                </form>
+            </td>
         </tr>
             }
         }

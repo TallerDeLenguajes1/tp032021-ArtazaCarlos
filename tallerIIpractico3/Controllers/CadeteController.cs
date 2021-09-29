@@ -78,7 +78,7 @@ namespace tallerIIpractico3.Controllers
             return RedirectToAction("Index");
         }
 
-        //******************************************************************************************
+        //****************************************PAGAR A CADETE**************************************************
 
         public IActionResult PagarACadete(int id)
         {

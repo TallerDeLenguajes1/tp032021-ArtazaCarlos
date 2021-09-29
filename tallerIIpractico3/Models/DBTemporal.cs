@@ -14,6 +14,7 @@ namespace tallerIIpractico3.Models
     {
         const string carpeta = @"c:\TP3DB";
         const string pathCadetesTMP = @"c:\TP3DB\_DB.cadetes.tmp.txt";
+        const string pathPedidosTMP = @"c:\TP3DB\_DB.Pedidos.tmp.txt";
         const string pathCadetes = @"c:\TP3DB\_DB.cadetes.txt";
         const string pathPedidos = @"c:\TP3DB\_DB.pedidos.txt";
 
@@ -140,6 +141,23 @@ namespace tallerIIpractico3.Models
             }
 
             return listaPedidos;
+        }
+
+        public void ModificarArchivoPedido(List<Pedido> nuevaLista)
+        {
+            StreamWriter archivo = File.CreateText(pathPedidosTMP);
+            archivo.Close();
+            foreach (Pedido item in nuevaLista)
+            {
+                string miJson = JsonSerializer.Serialize(item);
+                using (StreamWriter strWriter = File.AppendText(pathPedidosTMP))
+                {
+                    strWriter.WriteLine(miJson);
+                }
+            }
+            File.Delete(pathPedidos);
+            File.Move(pathPedidosTMP, pathPedidos);
+
         }
     }
 }

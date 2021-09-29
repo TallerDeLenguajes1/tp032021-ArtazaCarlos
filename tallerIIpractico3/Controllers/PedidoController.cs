@@ -40,7 +40,32 @@ namespace tallerIIpractico3.Controllers
 
             nro++;
             _DB.guardarPedido(pedido);
-            return Redirect("Index");
+            return RedirectToAction("Index"); ;
+        }
+
+        public IActionResult ModificarPedido(int nro, Estado est)
+        {
+            List<Pedido> pedidoLista = _DB.leerArchivoPedido();
+            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
+
+            Pedido pedidoAModificar = pedidoLista.Find(x => x.Nro == nro);
+            pedidoAModificar.Est = est;
+
+            foreach (var item in cadeteLista)
+            {
+                List<Pedido> pedidosDelCadete = item.Pedidos;
+                foreach (var item2 in pedidosDelCadete)
+                {
+                    if (item2.Nro == nro)
+                    {
+                        item2.Est = est;
+                    }
+                }
+            }
+
+            _DB.ModificarArchivoPedido(pedidoLista);
+            _DB.ModificarArchivoCadete(cadeteLista);
+            return RedirectToAction("Index");
         }
 
         public IActionResult ListaPedidos()
