@@ -35,11 +35,11 @@
 </div>
 
 <div>
-    <p>Total a pagar: $ @Model.PagoReciente1 </p>
+    <p>Total a pagar: $ @Model.Pago </p>
 </div>
 
 <div>
-    <a button type="button" class="btn btn-secondary btn-sm" href="ConfirmarPago?id=@Model.Id" style="margin:2px">Confirmar Pago</a>
+    <a button type="button" class="btn btn-secondary btn-sm" href="ConfirmarPago?id=@Model.Id" style="margin:2px">Pagar y Limpiar Lista</a>
     <a button type="button" class="btn btn-secondary btn-sm" href="ImprimirPdf?id=@Model.Id" style="margin:2px">Imprimir</a>
     <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cadete" asp-action="Index" style="margin:2px">Cancelar</a>
 </div>

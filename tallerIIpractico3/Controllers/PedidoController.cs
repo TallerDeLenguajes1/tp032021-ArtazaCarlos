@@ -12,7 +12,6 @@ namespace tallerIIpractico3.Controllers
 {
     public class PedidoController : Controller
     {
-        static int nro = 0;
         private readonly ILogger<PedidoController> _logger;
         private readonly DBTemporal _DB;
 
@@ -29,6 +28,7 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult crearPedido(string obs, Estado est, int dni, string nom, string dir, string tel, int id)
         {
+            int nro = _DB.leerArchivoPedido().Count() + 1;
             Pedido pedido = new Pedido(nro, obs, est, dni, nom, dir, tel);
 
             List<Cadete> cadeteLista = _DB.leerArchivoCadete();
@@ -38,7 +38,7 @@ namespace tallerIIpractico3.Controllers
 
             _DB.ModificarArchivoCadete(cadeteLista);
             _DB.guardarPedido(pedido);
-            nro += _DB.leerArchivoPedido().Count();
+            nro = _DB.leerArchivoPedido().Count() + 1;
             return RedirectToAction("Index"); ;
         }
 
@@ -50,20 +50,24 @@ namespace tallerIIpractico3.Controllers
             Pedido pedidoAModificar = pedidoLista.Find(x => x.Nro == nro);
             pedidoAModificar.Est = est;
 
-            foreach (var item in cadeteLista)
+            foreach (Cadete cadete in cadeteLista)
             {
-                List<Pedido> pedidosDelCadete = item.Pedidos;
-                foreach (var item2 in pedidosDelCadete)
+                foreach (Pedido pedido in cadete.Pedidos)
                 {
-                    if (item2.Nro == nro)
+                    if (pedido.Nro == nro)
                     {
-                        item2.Est = est;
+                        pedido.Est = est;
+                    }
+                    if (pedido.Est == Estado.Entregado)
+                    {
+                        cadete.CantidadDeEntregados++;
                     }
                 }
             }
 
             _DB.ModificarArchivoPedido(pedidoLista);
             _DB.ModificarArchivoCadete(cadeteLista);
+            
             return RedirectToAction("ListaPedidos");
         }
 

@@ -38,10 +38,13 @@ namespace tallerIIpractico3.Models
                 Directory.CreateDirectory(carpeta);
                 StreamWriter archivo = File.CreateText(pathCadetes);
                 archivo.Close();
+                archivo.Dispose();
             }
             using (StreamWriter strWriter = File.AppendText(pathCadetes))
             {
                 strWriter.WriteLine(miJson);
+                strWriter.Close();
+                strWriter.Dispose();
             }
             
         }
@@ -60,6 +63,8 @@ namespace tallerIIpractico3.Models
                         Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
                         listaCadetes.Add(cadeteObj);
                     }
+                    strReader.Close();
+                    strReader.Dispose();
                 }
                 return listaCadetes;
             }
@@ -77,33 +82,62 @@ namespace tallerIIpractico3.Models
                 using (StreamWriter strWriter = File.AppendText(pathCadetesTMP))
                 {
                     strWriter.WriteLine(miJson);
-                }
+                    strWriter.Close();
+                    strWriter.Dispose();
+                } 
             }
             File.Delete(pathCadetes);
             File.Move(pathCadetesTMP, pathCadetes);
 
         }
 
-        public Cadete ConsultarCadete(int id)
+        //public Cadete ConsultarCadete(int id)
+        //{
+        //    string linea = "";
+        //    if (File.Exists(pathCadetes))
+        //    {
+        //        using (StreamReader strReader = File.OpenText(pathCadetes))
+        //        {
+        //            while ((linea = strReader.ReadLine()) != null)
+        //            {
+        //                if (linea.StartsWith("\"Id\":" + id))
+        //                {
+        //                    Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
+        //                    return cadeteObj;
+        //                }
+        //            }
+        //            strReader.Close();
+        //            strReader.Dispose();
+        //        }
+        //    }
+
+        //    return null;
+        //}
+
+        public Cadete consultarUnCadete(int id)
         {
+            Cadete cadete = new Cadete();
+            int b = 0;
             string linea = "";
             if (File.Exists(pathCadetes))
             {
                 using (StreamReader strReader = File.OpenText(pathCadetes))
                 {
-                    while ((linea = strReader.ReadLine()) != null)
+                    while (((linea = strReader.ReadLine()) != null) || (b == 0))
                     {
-                        if (linea.Contains("\"Id\":" + id))
+                        Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
+                        if (cadeteObj.Id == id)
                         {
-                            Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
-                            return cadeteObj;
+                            b = 1;
+                            cadete = cadeteObj;
                         }
                     }
                 }
             }
-            
-            return null;
+
+            return cadete;
         }
+
 
         //*********************************PEDIDOS*********************************************************************
 
@@ -115,10 +149,13 @@ namespace tallerIIpractico3.Models
             {
                 StreamWriter archivo = File.CreateText(pathPedidos);
                 archivo.Close();
+                archivo.Dispose();
             }
             using (StreamWriter strWriter = File.AppendText(pathPedidos))
             {
                 strWriter.WriteLine(miJson);
+                strWriter.Close();
+                strWriter.Dispose();
             }
 
         }
@@ -136,6 +173,8 @@ namespace tallerIIpractico3.Models
                         Pedido pedidoObj = JsonSerializer.Deserialize<Pedido>(linea);
                         listaPedidos.Add(pedidoObj);
                     }
+                    strReader.Close();
+                    strReader.Dispose();
                 }
                 return listaPedidos;
             }
@@ -153,6 +192,8 @@ namespace tallerIIpractico3.Models
                 using (StreamWriter strWriter = File.AppendText(pathPedidosTMP))
                 {
                     strWriter.WriteLine(miJson);
+                    strWriter.Close();
+                    strWriter.Dispose();
                 }
             }
             File.Delete(pathPedidos);

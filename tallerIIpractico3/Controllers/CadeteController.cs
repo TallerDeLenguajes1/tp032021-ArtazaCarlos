@@ -8,11 +8,12 @@ using tallerIIpractico3.entities;
 using tallerIIpractico3.Models;
 using Rotativa.AspNetCore;
 
+
+
 namespace tallerIIpractico3.Controllers
 {
     public class CadeteController : Controller
     {
-        static int id = 0;
         private readonly ILogger<CadeteController> _logger;
         private readonly DBTemporal _DB;
 
@@ -35,7 +36,7 @@ namespace tallerIIpractico3.Controllers
         //****************************************MODIFICAR//ELIMINAR******************************************
         public IActionResult FormModificarCadete(int id)
         {
-            Cadete cadeteAModificar = _DB.ConsultarCadete(id);
+            Cadete cadeteAModificar = _DB.consultarUnCadete(id);
             return View(cadeteAModificar);
         }
 
@@ -55,7 +56,7 @@ namespace tallerIIpractico3.Controllers
         //*************************************************
         public IActionResult ConfirmarEliminarCadete(int id)
         {
-            Cadete cadeteAModificar = _DB.ConsultarCadete(id);
+            Cadete cadeteAModificar = _DB.consultarUnCadete(id);
             return View(cadeteAModificar);
         }
 
@@ -72,9 +73,9 @@ namespace tallerIIpractico3.Controllers
         //**************************************AGREGAR CADETE****************************************************
         public IActionResult agregarCadete(string nom, string dir, string tel)
         {
+            int id = _DB.leerArchivoCadete().Count() + 1;
             Cadete cadete_ = new Cadete(id, nom, dir, tel);
             _DB.guardarCadete(cadete_);
-            id += _DB.leerArchivoCadete().Count();
             return RedirectToAction("Index");
         }
 
@@ -82,26 +83,19 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult PagarACadete(int id)
         {
-            Cadete cadeteAPagar = _DB.ConsultarCadete(id);
-            //List<Pedido> pedidosDelCadete = cadeteAPagar.Pedidos;
-            //foreach (var item in pedidosDelCadete)
-            //{
-            //    if ((item.Est == Estado.En_camino) || (item.Est == Estado.No_entregado))
-            //    {
-            //        pedidosDelCadete.Remove(item);
-            //    }
-            //    cadeteAPagar.Pedidos.Clear();
-            //    cadeteAPagar.Pedidos = pedidosDelCadete;
-            //}
-            cadeteAPagar.PagoReciente1 = cadeteAPagar.Pedidos.Count() * 100;
-            return View(cadeteAPagar);
+            List<Cadete> listaCadete = _DB.leerArchivoCadete();
+            Cadete cadete = listaCadete.Find(x => x.Id == id);
+            controlDePedidosEntregados(id);
+            cadete.Pago = cadete.CantidadDeEntregados * 100;
+            _DB.ModificarArchivoCadete(listaCadete);
+            return View(cadete);
         }
 
         public IActionResult ConfirmarPago(int id)
         {
             List<Cadete> cadeteLista = _DB.leerArchivoCadete();
             Cadete cadetePagado = cadeteLista.Find(x => x.Id == id);
-            cadetePagado.Pedidos.Clear();
+            borrarPedidosFinalizados(cadetePagado);
 
             _DB.ModificarArchivoCadete(cadeteLista);
             return RedirectToAction("Index");
@@ -110,8 +104,48 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult ImprimirPdf(int id)
         {
-            Cadete cadeteAPagar = _DB.ConsultarCadete(id);
-            return new ViewAsPdf("PagarACadete", cadeteAPagar);
+            Cadete cadete = _DB.consultarUnCadete(id);
+            return new ViewAsPdf("PagarACadete", cadete);
+        }
+
+        public void controlDePedidosEntregados(int id)
+        {
+            List<Cadete> listaCadete = _DB.leerArchivoCadete();
+            Cadete cadete = listaCadete.Find(x => x.Id == id);
+            List<Pedido> listaTemporalEntregados = new List<Pedido>();
+
+            foreach (var item in cadete.Pedidos)
+            {
+                if (item.Est != Estado.No_entregado)
+                {
+                    listaTemporalEntregados.Add(item);
+                }
+                if (item.Est == Estado.Entregado)
+                {
+                    cadete.CantidadDeEntregados++;
+                }
+            }
+            cadete.Pedidos.Clear();
+            cadete.Pedidos = listaTemporalEntregados;
+            _DB.ModificarArchivoCadete(listaCadete);
+        }
+
+        public void borrarPedidosFinalizados(Cadete cadete)
+        {
+            List<Cadete> listaCadete = _DB.leerArchivoCadete();
+            List<Pedido> listaTemporalEntregados = new List<Pedido>();
+
+            foreach (var item in cadete.Pedidos)
+            {
+                if (item.Est == Estado.En_camino)
+                {
+                    listaTemporalEntregados.Add(item);
+                }
+            }
+            cadete.Pedidos.Clear();
+            cadete.Pedidos = listaTemporalEntregados;
+            cadete.CantidadDeEntregados = 0;
+            _DB.ModificarArchivoCadete(listaCadete);
         }
     }
 }

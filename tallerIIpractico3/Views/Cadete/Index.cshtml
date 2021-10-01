@@ -17,7 +17,7 @@
             <th>ID</th>
             <th>Nombre</th>
             <th>Direccion</th>
-            <th>Cantidad de pedidos</th>
+            <th>Pedidos Pendientes</th>
             <th></th>
             
         </tr>
@@ -29,7 +29,7 @@
         <td>@item.Id</td>
         <td>@item.Nombre</td>
         <td>@item.Direccion</td>
-        <td>@item.Pedidos.Count</td>
+        <td>@item.Pedidos.Count()</td>
         <td><a button type="button" class="btn btn-secondary btn-sm" href="Cadete/PagarACadete?id=@item.Id" style="margin:2px">Pagar</a></td>
         <td>
             <a button type="button" class="btn btn-secondary btn-sm" href="Cadete/FormModificarCadete?id=@item.Id" style="margin:2px">Modificar</a>

@@ -6,12 +6,10 @@
 @model List<tallerIIpractico3.entities.Pedido>
 <div class="text-center">
     <h1 class="display-4">Lista de Pedidos</h1>
+</div>
 
-
-
-
-
-    <table class="table table-striped">
+<div>
+    <table class="table table-striped" style="text-align:center">
         <tr>
             <th>Nro</th>
             <th>Observacion</th>
@@ -23,29 +21,29 @@
         {
             foreach (var item in Model)
             {
-        <tr>
-            <td>@item.Nro</td>
-            <td>@item.Obs</td>
-            <td>@item.Cliente.Nombre</td>
-            <td>@item.Cliente.Direcccion</td>
-            <td>
-                <form asp-controller="Pedido" asp-action="ModificarPedido" method="post">
-                    <input type="number" name="nro" value="@item.Nro" hidden>
-                    <select id="estado" name="est">
-                        <option value="" selected>@item.Est</option>
-                        @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
-                        {
-                            <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
-                            <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
-                        }
-                    </select>
-                    @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
-                    {
-                        <button type="submit" class="btn btn-primary">Cambiar</button>
-                    }
-                </form>
-            </td>
-        </tr>
+                <tr>
+                    <td>@item.Nro</td>
+                    <td>@item.Obs</td>
+                    <td>@item.Cliente.Nombre</td>
+                    <td>@item.Cliente.Direcccion</td>
+                    <td>
+                        <form asp-controller="Pedido" asp-action="ModificarPedido" method="post">
+                            <input type="number" name="nro" value="@item.Nro" hidden>
+                            <select id="estado" name="est">
+                                <option value="" selected>@item.Est</option>
+                                @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
+                                {
+                                    <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
+                                    <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
+                                }
+                            </select>
+                            @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
+                            {
+                                <button type="submit" class="btn btn-primary">Cambiar</button>
+                            }
+                        </form>
+                    </td>
+                </tr>
             }
         }
     </table>
