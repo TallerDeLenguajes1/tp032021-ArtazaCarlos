@@ -24,7 +24,6 @@ namespace tallerIIpractico3.Models
 
         public DBTemporal()
         {
-            Cadeteria = new Cadeteria();
         }
 
         //*********************************CADETES*********************************************************************
