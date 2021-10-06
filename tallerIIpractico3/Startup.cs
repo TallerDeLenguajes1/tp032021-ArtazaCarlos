@@ -18,6 +18,7 @@ namespace tallerIIpractico3
         //static List<Cadete> cadetes = new List<Cadete>();
         //static List<Pedido> pedidos = new List<Pedido>();
         static DBTemporal DB = new DBTemporal();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -30,6 +31,7 @@ namespace tallerIIpractico3
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton(DB);
+            
             //services.AddSingleton(pedidos);
         }
 
