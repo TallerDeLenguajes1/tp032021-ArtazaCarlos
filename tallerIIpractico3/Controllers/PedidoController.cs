@@ -36,7 +36,7 @@ namespace tallerIIpractico3.Controllers
             Cadete cadeteSeleccionado = cadeteLista.Find(x => x.Id == id);
             cadeteSeleccionado.Pedidos.Add(pedido);
 
-            _DB.ModificarArchivoCadete(cadeteLista);
+            //_DB.ModificarArchivoCadete(cadeteLista);
             _DB.guardarPedido(pedido);
             nro = _DB.leerArchivoPedido().Count() + 1;
             return RedirectToAction("Index"); ;
@@ -66,8 +66,8 @@ namespace tallerIIpractico3.Controllers
             }
 
             _DB.ModificarArchivoPedido(pedidoLista);
-            _DB.ModificarArchivoCadete(cadeteLista);
-            
+            //_DB.ModificarArchivoCadete(cadeteLista);
+
             return RedirectToAction("ListaPedidos");
         }
 

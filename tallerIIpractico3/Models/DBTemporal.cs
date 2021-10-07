@@ -17,20 +17,17 @@ namespace tallerIIpractico3.Models
         const string pathPedidosTMP = @"c:\TP3DB\_DB.Pedidos.tmp.txt";
         const string pathCadetes = @"c:\TP3DB\_DB.cadetes.txt";
         const string pathPedidos = @"c:\TP3DB\_DB.pedidos.txt";
-
-        private Cadeteria cadeteria;
-
-        public Cadeteria Cadeteria { get => cadeteria; set => cadeteria = value; }
-
         public DBTemporal()
         {
         }
 
         //*********************************CADETES*********************************************************************
 
-        public void guardarCadete(Cadete cadeteObj)
+        public void guardarCadete(string nom, string dir, string tel)
         {
-            string miJson = JsonSerializer.Serialize(cadeteObj);
+            int id = leerArchivoCadete().Count() + 1;
+            Cadete cadete_ = new Cadete(id, nom, dir, tel);
+            string miJson = JsonSerializer.Serialize(cadete_);
 
             if (!File.Exists(pathCadetes))
             {
@@ -71,7 +68,18 @@ namespace tallerIIpractico3.Models
             return listaCadetes;
         }
 
-        public void ModificarArchivoCadete(List<Cadete> nuevaLista)
+        public void ModificarCadete(int id, string nom, string dir, string tel)
+        {
+            List<Cadete> cadeteLista = leerArchivoCadete();
+
+            Cadete cadeteAModificar = cadeteLista.Find(x => x.Id == id);
+            cadeteAModificar.Nombre = nom;
+            cadeteAModificar.Direccion = dir;
+            cadeteAModificar.Telefono = tel;
+            ModificarArchivoCadete(cadeteLista);
+        }
+
+        private void ModificarArchivoCadete(List<Cadete> nuevaLista)
         {
             StreamWriter archivo = File.CreateText(pathCadetesTMP);
             archivo.Close();

@@ -42,14 +42,7 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult modificarCadete(int id, string nom, string dir, string tel)
         {
-            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
-
-            Cadete cadeteAModificar = cadeteLista.Find(x => x.Id == id);
-            cadeteAModificar.Nombre = nom;
-            cadeteAModificar.Direccion = dir;
-            cadeteAModificar.Telefono = tel;
-
-            _DB.ModificarArchivoCadete(cadeteLista);
+            _DB.ModificarCadete(id, nom, dir, tel);
             return RedirectToAction("Index");
         }
 
@@ -66,16 +59,14 @@ namespace tallerIIpractico3.Controllers
             Cadete cadeteABorrar = cadeteLista.Find(x => x.Id == id);
             cadeteLista.Remove(cadeteABorrar);
 
-            _DB.ModificarArchivoCadete(cadeteLista);
+            //_DB.ModificarArchivoCadete(cadeteLista);
             return RedirectToAction("Index");
         }
 
         //**************************************AGREGAR CADETE****************************************************
         public IActionResult agregarCadete(string nom, string dir, string tel)
         {
-            int id = _DB.leerArchivoCadete().Count() + 1;
-            Cadete cadete_ = new Cadete(id, nom, dir, tel);
-            _DB.guardarCadete(cadete_);
+            _DB.guardarCadete(nom, dir, tel);
             return RedirectToAction("Index");
         }
 
@@ -87,7 +78,7 @@ namespace tallerIIpractico3.Controllers
             Cadete cadete = listaCadete.Find(x => x.Id == id);
             controlDePedidosEntregados(id);
             cadete.Pago = cadete.CantidadDeEntregados * 100;
-            _DB.ModificarArchivoCadete(listaCadete);
+            // _DB.ModificarArchivoCadete(listaCadete);
             return View(cadete);
         }
 
@@ -97,7 +88,7 @@ namespace tallerIIpractico3.Controllers
             Cadete cadetePagado = cadeteLista.Find(x => x.Id == id);
             borrarPedidosFinalizados(cadetePagado);
 
-            _DB.ModificarArchivoCadete(cadeteLista);
+            // _DB.ModificarArchivoCadete(cadeteLista);
             return RedirectToAction("Index");
         }
 
@@ -127,7 +118,7 @@ namespace tallerIIpractico3.Controllers
             }
             cadete.Pedidos.Clear();
             cadete.Pedidos = listaTemporalEntregados;
-            _DB.ModificarArchivoCadete(listaCadete);
+            //_DB.ModificarArchivoCadete(listaCadete);
         }
 
         public void borrarPedidosFinalizados(Cadete cadete)
@@ -145,7 +136,7 @@ namespace tallerIIpractico3.Controllers
             cadete.Pedidos.Clear();
             cadete.Pedidos = listaTemporalEntregados;
             cadete.CantidadDeEntregados = 0;
-            _DB.ModificarArchivoCadete(listaCadete);
+            // _DB.ModificarArchivoCadete(listaCadete);
         }
     }
 }

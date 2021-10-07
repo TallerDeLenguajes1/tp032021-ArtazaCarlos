@@ -15,8 +15,6 @@ namespace tallerIIpractico3.entities
 
         public Cadeteria()
         {
-            Cadetes = new List<Cadete>();
-            Pedidos = new List<Pedido>();
 
         }
     }
