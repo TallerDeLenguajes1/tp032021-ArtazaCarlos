@@ -26,8 +26,13 @@ namespace tallerIIpractico3.Models
         public void guardarCadete(string nom, string dir, string tel)
         {
             int id = leerArchivoCadete().Count() + 1;
-            Cadete cadete_ = new Cadete(id, nom, dir, tel);
-            string miJson = JsonSerializer.Serialize(cadete_);
+            Cadete cadeteObj = new Cadete(id, nom, dir, tel);
+            guardarCadeteEnArchivo(cadeteObj);
+        }
+
+        private void guardarCadeteEnArchivo(Cadete cadeteObj)
+        {
+            string miJson = JsonSerializer.Serialize(cadeteObj);
 
             if (!File.Exists(pathCadetes))
             {
@@ -42,7 +47,6 @@ namespace tallerIIpractico3.Models
                 strWriter.Close();
                 strWriter.Dispose();
             }
-            
         }
 
 
