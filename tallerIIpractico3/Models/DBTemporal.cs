@@ -21,7 +21,9 @@ namespace tallerIIpractico3.Models
         {
         }
 
-        //*********************************CADETES*********************************************************************
+        //###################################### CADETES ######################################
+
+        //*********************************AGREGAR UN CADETES**********************************
 
         public void guardarCadete(string nom, string dir, string tel)
         {
@@ -49,6 +51,32 @@ namespace tallerIIpractico3.Models
             }
         }
 
+        //*********************************MODIFICAR CADETES**********************************
+        public void modificarCadete(int id, string nom, string dir, string tel)
+        {
+            List<Cadete> cadeteLista = leerArchivoCadete();
+            Cadete cadeteAModificar = cadeteLista.Find(x => x.Id == id);
+            cadeteAModificar.Nombre = nom;
+            cadeteAModificar.Direccion = dir;
+            cadeteAModificar.Telefono = tel;
+
+            ModificarArchivoCadete(cadeteLista);
+        }
+
+        //*********************************ELIMINAR CADETES**********************************
+
+        public void eliminarCadete(int id)
+        {
+            List<Cadete> cadeteLista = leerArchivoCadete();
+            Cadete cadeteABorrar = cadeteLista.Find(x => x.Id == id);
+            cadeteLista.Remove(cadeteABorrar);
+
+            ModificarArchivoCadete(cadeteLista);
+        }
+
+
+
+        //*********************************LEER ARCHIVO DE CADETES**********************************
 
         public List<Cadete> leerArchivoCadete()
         {
@@ -68,62 +96,9 @@ namespace tallerIIpractico3.Models
                 }
                 return listaCadetes;
             }
-            
+
             return listaCadetes;
         }
-
-        public void ModificarCadete(int id, string nom, string dir, string tel)
-        {
-            List<Cadete> cadeteLista = leerArchivoCadete();
-
-            Cadete cadeteAModificar = cadeteLista.Find(x => x.Id == id);
-            cadeteAModificar.Nombre = nom;
-            cadeteAModificar.Direccion = dir;
-            cadeteAModificar.Telefono = tel;
-            ModificarArchivoCadete(cadeteLista);
-        }
-
-        private void ModificarArchivoCadete(List<Cadete> nuevaLista)
-        {
-            StreamWriter archivo = File.CreateText(pathCadetesTMP);
-            archivo.Close();
-            foreach (Cadete item in nuevaLista)
-            {
-                string miJson = JsonSerializer.Serialize(item);
-                using (StreamWriter strWriter = File.AppendText(pathCadetesTMP))
-                {
-                    strWriter.WriteLine(miJson);
-                    strWriter.Close();
-                    strWriter.Dispose();
-                } 
-            }
-            File.Delete(pathCadetes);
-            File.Move(pathCadetesTMP, pathCadetes);
-
-        }
-
-        //public Cadete ConsultarCadete(int id)
-        //{
-        //    string linea = "";
-        //    if (File.Exists(pathCadetes))
-        //    {
-        //        using (StreamReader strReader = File.OpenText(pathCadetes))
-        //        {
-        //            while ((linea = strReader.ReadLine()) != null)
-        //            {
-        //                if (linea.StartsWith("\"Id\":" + id))
-        //                {
-        //                    Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
-        //                    return cadeteObj;
-        //                }
-        //            }
-        //            strReader.Close();
-        //            strReader.Dispose();
-        //        }
-        //    }
-
-        //    return null;
-        //}
 
         public Cadete consultarUnCadete(int id)
         {
@@ -149,8 +124,28 @@ namespace tallerIIpractico3.Models
             return cadete;
         }
 
+        //***************************FUNCIONES ADICIONALES PARA CADETES**********************
 
-        //*********************************PEDIDOS*********************************************************************
+        private void ModificarArchivoCadete(List<Cadete> nuevaLista)
+        {
+        StreamWriter archivo = File.CreateText(pathCadetesTMP);
+        archivo.Close();
+        foreach (Cadete item in nuevaLista)
+        {
+            string miJson = JsonSerializer.Serialize(item);
+            using (StreamWriter strWriter = File.AppendText(pathCadetesTMP))
+            {
+                strWriter.WriteLine(miJson);
+                strWriter.Close();
+                strWriter.Dispose();
+            }
+        }
+        File.Delete(pathCadetes);
+        File.Move(pathCadetesTMP, pathCadetes);
+        }
+    
+
+        //###################################### PEDIDOS ######################################
 
         public void guardarPedido(Pedido pedido)
         {

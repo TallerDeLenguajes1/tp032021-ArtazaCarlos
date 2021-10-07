@@ -32,8 +32,15 @@ namespace tallerIIpractico3.Controllers
         {            
             return View();
         }
- 
-        //****************************************MODIFICAR//ELIMINAR******************************************
+
+        //**************************************AGREGAR CADETE**************************************
+        public IActionResult agregarCadete(string nom, string dir, string tel)
+        {
+            _DB.guardarCadete(nom, dir, tel);
+            return RedirectToAction("Index");
+        }
+
+        //***************************************MODIFICAR CADETE************************************
         public IActionResult FormModificarCadete(int id)
         {
             Cadete cadeteAModificar = _DB.consultarUnCadete(id);
@@ -42,33 +49,24 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult modificarCadete(int id, string nom, string dir, string tel)
         {
-            _DB.ModificarCadete(id, nom, dir, tel);
+            _DB.modificarCadete(id, nom, dir, tel);
             return RedirectToAction("Index");
         }
 
-        //*************************************************
+        //***************************************ELIMINAR CADETE************************************
         public IActionResult ConfirmarEliminarCadete(int id)
         {
-            Cadete cadeteAModificar = _DB.consultarUnCadete(id);
-            return View(cadeteAModificar);
+            Cadete cadeteAEliminar = _DB.consultarUnCadete(id);
+            return View(cadeteAEliminar);
         }
 
-        public IActionResult EliminarCadete(int id)
+        public IActionResult eliminarCadete(int id)
         {
-            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
-            Cadete cadeteABorrar = cadeteLista.Find(x => x.Id == id);
-            cadeteLista.Remove(cadeteABorrar);
-
-            //_DB.ModificarArchivoCadete(cadeteLista);
+            _DB.eliminarCadete(id);
             return RedirectToAction("Index");
         }
 
-        //**************************************AGREGAR CADETE****************************************************
-        public IActionResult agregarCadete(string nom, string dir, string tel)
-        {
-            _DB.guardarCadete(nom, dir, tel);
-            return RedirectToAction("Index");
-        }
+        
 
         //****************************************PAGAR A CADETE**************************************************
 
