@@ -66,15 +66,13 @@ namespace tallerIIpractico3.Controllers
             return RedirectToAction("Index");
         }
 
-        
-
-        //****************************************PAGAR A CADETE*******************************************
+        //****************************************PAGAR A CADETE*****************************************
 
         public IActionResult PagarACadete(int id)
         {
             return View(_DB.cargarPagoAlCadete(id));
         }
-
+        
         public IActionResult ConfirmarPago(int id)
         {
             _DB.limpiarListaPedidoDelCadete(id);
