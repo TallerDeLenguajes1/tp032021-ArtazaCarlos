@@ -18,7 +18,6 @@ namespace tallerIIpractico3.entities
         private Cliente cliente;
         private Estado est;
         private string nombreCadete;
-
         public int Nro { get => nro; set => nro = value; }
         public string Obs { get => obs; set => obs = value; }
         public Cliente Cliente { get => cliente; set => cliente = value; }

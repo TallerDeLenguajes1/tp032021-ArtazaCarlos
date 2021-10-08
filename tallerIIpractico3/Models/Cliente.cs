@@ -21,7 +21,6 @@ namespace tallerIIpractico3.entities
             Direcccion = dir;
             Telefono = tel;
         }
-
         public Cliente()
         {
         }

@@ -14,7 +14,6 @@ namespace tallerIIpractico3.Controllers
     {
         private readonly ILogger<PedidoController> _logger;
         private readonly DBTemporal _DB;
-
         public PedidoController(ILogger<PedidoController> logger, DBTemporal DB )
         {
             _logger = logger;

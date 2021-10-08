@@ -17,7 +17,6 @@ namespace tallerIIpractico3.entities
         private int cantidadDeEntregados;
         private float pago;
 
-
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
         public int Dni { get => dni; set => dni = value; }
