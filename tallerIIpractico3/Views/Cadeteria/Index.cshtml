@@ -11,6 +11,7 @@
     <tr>
         <th>ID</th>
         <th>Nombre</th>
+        <th>DNI</th>
         <th>Direccion</th>
         <th>Cantidad de pedidos</th>
     </tr>
@@ -18,12 +19,13 @@
     {
         foreach (var item in Model)
         {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Nombre</td>
-                <td>@item.Direccion</td>
-                <td>@item.Pedidos.Count</td>
-            </tr>
+        <tr>
+            <td>@item.Id</td>
+            <td>@item.Nombre</td>
+            <td>@item.Dni</td>
+            <td>@item.Direccion</td>
+            <td>@item.Pedidos.Count</td>
+        </tr>
         }
     }
 </table>
