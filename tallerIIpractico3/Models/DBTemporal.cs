@@ -74,7 +74,37 @@ namespace tallerIIpractico3.Models
             ModificarArchivoCadete(cadeteLista);
         }
 
+        //*********************************PAGAR A UN CADETE**********************************
+        public Cadete cargarPagoAlCadete(int id)
+        {
+            return controlDePedidosEntregados(id);
+        }
 
+        private Cadete controlDePedidosEntregados(int id)
+        {
+            List<Cadete> listaCadete = leerArchivoCadete();
+            Cadete cadete = listaCadete.Find(x => x.Id == id);
+            List<Pedido> listaTemporalEntregados = new List<Pedido>();
+            cadete.CantidadDeEntregados = 0;
+
+            foreach (Pedido pedido in cadete.Pedidos)
+            {
+                if (pedido.Est != Estado.No_entregado)
+                {
+                    listaTemporalEntregados.Add(pedido);
+                }
+                if (pedido.Est == Estado.Entregado)
+                {
+                    cadete.CantidadDeEntregados++;
+                }
+            }
+            cadete.Pedidos.Clear();
+            cadete.Pedidos = listaTemporalEntregados;
+            cadete.Pago = cadete.CantidadDeEntregados * 100;
+            ModificarArchivoCadete(listaCadete);
+
+            return cadete;
+        }
 
         //*********************************LEER ARCHIVO DE CADETES**********************************
 
@@ -143,26 +173,19 @@ namespace tallerIIpractico3.Models
         File.Delete(pathCadetes);
         File.Move(pathCadetesTMP, pathCadetes);
         }
-    
+
+       
+
 
         //###################################### PEDIDOS ######################################
 
-        public void guardarPedido(Pedido pedido)
+        public void guardarPedido(Pedido pedido, int idCadete)
         {
-            string miJson = JsonSerializer.Serialize(pedido);
-
-            if (!File.Exists(pathPedidos))
-            {
-                StreamWriter archivo = File.CreateText(pathPedidos);
-                archivo.Close();
-                archivo.Dispose();
-            }
-            using (StreamWriter strWriter = File.AppendText(pathPedidos))
-            {
-                strWriter.WriteLine(miJson);
-                strWriter.Close();
-                strWriter.Dispose();
-            }
+            List<Cadete> cadeteLista = leerArchivoCadete();
+            Cadete cadeteSeleccionado = cadeteLista.Find(x => x.Id == idCadete);
+            cadeteSeleccionado.Pedidos.Add(pedido);
+            ModificarArchivoCadete(cadeteLista);
+            agregarPedidoAlArchivo(pedido);
 
         }
 
@@ -188,7 +211,9 @@ namespace tallerIIpractico3.Models
             return listaPedidos;
         }
 
-        public void ModificarArchivoPedido(List<Pedido> nuevaLista)
+
+        //***************************FUNCIONES ADICIONALES PARA PEDIDOS**********************
+        private void ModificarArchivoPedido(List<Pedido> nuevaLista)
         {
             StreamWriter archivo = File.CreateText(pathPedidosTMP);
             archivo.Close();
@@ -205,6 +230,49 @@ namespace tallerIIpractico3.Models
             File.Delete(pathPedidos);
             File.Move(pathPedidosTMP, pathPedidos);
 
+        }
+
+        private void agregarPedidoAlArchivo(Pedido pedido)
+        {
+            string miJson = JsonSerializer.Serialize(pedido);
+
+            if (!File.Exists(pathPedidos))
+            {
+                StreamWriter archivo = File.CreateText(pathPedidos);
+                archivo.Close();
+                archivo.Dispose();
+            }
+            using (StreamWriter strWriter = File.AppendText(pathPedidos))
+            {
+                strWriter.WriteLine(miJson);
+                strWriter.Close();
+                strWriter.Dispose();
+            }
+        }
+
+        public void modificarArchivoCadetePedido(int nroPedido, Estado estadoPedido)
+        {
+            List<Pedido> pedidoLista = leerArchivoPedido();
+            List<Cadete> cadeteLista = leerArchivoCadete();
+
+            //modifico el estado del pedido en la lista de pedidos
+            Pedido pedidoAModificar = pedidoLista.Find(x => x.Nro == nroPedido);
+            pedidoAModificar.Est = estadoPedido;
+
+            //modifico el estado del pedido en la lista de cadetes
+            foreach (Cadete cadete in cadeteLista)
+            {
+                foreach (Pedido pedido in cadete.Pedidos)
+                {
+                    if (pedido.Nro == nroPedido)
+                    {
+                        pedido.Est = estadoPedido;
+                    }
+                }
+            }
+
+            ModificarArchivoPedido(pedidoLista);
+            ModificarArchivoCadete(cadeteLista);
         }
     }
 }

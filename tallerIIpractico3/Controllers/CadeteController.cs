@@ -68,16 +68,11 @@ namespace tallerIIpractico3.Controllers
 
         
 
-        //****************************************PAGAR A CADETE**************************************************
+        //****************************************PAGAR A CADETE*******************************************
 
         public IActionResult PagarACadete(int id)
         {
-            List<Cadete> listaCadete = _DB.leerArchivoCadete();
-            Cadete cadete = listaCadete.Find(x => x.Id == id);
-            controlDePedidosEntregados(id);
-            cadete.Pago = cadete.CantidadDeEntregados * 100;
-            // _DB.ModificarArchivoCadete(listaCadete);
-            return View(cadete);
+            return View(_DB.cargarPagoAlCadete(id));
         }
 
         public IActionResult ConfirmarPago(int id)
@@ -97,29 +92,7 @@ namespace tallerIIpractico3.Controllers
             return new ViewAsPdf("PagarACadete", cadete);
         }
 
-        public void controlDePedidosEntregados(int id)
-        {
-            List<Cadete> listaCadete = _DB.leerArchivoCadete();
-            Cadete cadete = listaCadete.Find(x => x.Id == id);
-            List<Pedido> listaTemporalEntregados = new List<Pedido>();
-
-            foreach (var item in cadete.Pedidos)
-            {
-                if (item.Est != Estado.No_entregado)
-                {
-                    listaTemporalEntregados.Add(item);
-                }
-                if (item.Est == Estado.Entregado)
-                {
-                    cadete.CantidadDeEntregados++;
-                }
-            }
-            cadete.Pedidos.Clear();
-            cadete.Pedidos = listaTemporalEntregados;
-            //_DB.ModificarArchivoCadete(listaCadete);
-        }
-
-        public void borrarPedidosFinalizados(Cadete cadete)
+        private void borrarPedidosFinalizados(Cadete cadete)
         {
             List<Cadete> listaCadete = _DB.leerArchivoCadete();
             List<Pedido> listaTemporalEntregados = new List<Pedido>();
@@ -134,6 +107,7 @@ namespace tallerIIpractico3.Controllers
             cadete.Pedidos.Clear();
             cadete.Pedidos = listaTemporalEntregados;
             cadete.CantidadDeEntregados = 0;
+            cadete.Pago = 0;
             // _DB.ModificarArchivoCadete(listaCadete);
         }
     }
