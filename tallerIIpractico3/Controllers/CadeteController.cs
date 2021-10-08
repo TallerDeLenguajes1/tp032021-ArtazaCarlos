@@ -34,9 +34,9 @@ namespace tallerIIpractico3.Controllers
         }
 
         //**************************************AGREGAR CADETE**************************************
-        public IActionResult agregarCadete(string nom, string dir, string tel)
+        public IActionResult agregarCadete(string nom, int dni, string dir, string tel)
         {
-            _DB.guardarCadete(nom, dir, tel);
+            _DB.guardarCadete(nom, dni, dir, tel);
             return RedirectToAction("Index");
         }
 
@@ -77,11 +77,7 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult ConfirmarPago(int id)
         {
-            List<Cadete> cadeteLista = _DB.leerArchivoCadete();
-            Cadete cadetePagado = cadeteLista.Find(x => x.Id == id);
-            borrarPedidosFinalizados(cadetePagado);
-
-            // _DB.ModificarArchivoCadete(cadeteLista);
+            _DB.limpiarListaPedidoDelCadete(id);
             return RedirectToAction("Index");
         }
 
@@ -92,23 +88,5 @@ namespace tallerIIpractico3.Controllers
             return new ViewAsPdf("PagarACadete", cadete);
         }
 
-        private void borrarPedidosFinalizados(Cadete cadete)
-        {
-            List<Cadete> listaCadete = _DB.leerArchivoCadete();
-            List<Pedido> listaTemporalEntregados = new List<Pedido>();
-
-            foreach (var item in cadete.Pedidos)
-            {
-                if (item.Est == Estado.En_camino)
-                {
-                    listaTemporalEntregados.Add(item);
-                }
-            }
-            cadete.Pedidos.Clear();
-            cadete.Pedidos = listaTemporalEntregados;
-            cadete.CantidadDeEntregados = 0;
-            cadete.Pago = 0;
-            // _DB.ModificarArchivoCadete(listaCadete);
-        }
     }
 }

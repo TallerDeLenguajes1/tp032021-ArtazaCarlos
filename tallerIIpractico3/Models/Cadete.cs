@@ -10,6 +10,7 @@ namespace tallerIIpractico3.entities
     {
         private int id;
         private string nombre;
+        private int dni;
         private string direccion;
         private string telefono;
         private List<Pedido> pedidos;
@@ -19,16 +20,19 @@ namespace tallerIIpractico3.entities
 
         public int Id { get => id; set => id = value; }
         public string Nombre { get => nombre; set => nombre = value; }
+        public int Dni { get => dni; set => dni = value; }
         public string Direccion { get => direccion; set => direccion = value; }
         public string Telefono { get => telefono; set => telefono = value; }
         public List<Pedido> Pedidos { get => pedidos; set => pedidos = value; }
         public float Pago { get => pago; set => pago = value; }
         public int CantidadDeEntregados { get => cantidadDeEntregados; set => cantidadDeEntregados = value; }
 
-        public Cadete(int dni, string nom, string dir, string tel)
+
+        public Cadete(int id, string nom, int dni, string dir, string tel)
         {
-            Id = dni;
+            Id = id;
             Nombre = nom;
+            Dni = dni;
             Direccion = dir;
             Telefono = tel;
             Pedidos = new List<Pedido>();

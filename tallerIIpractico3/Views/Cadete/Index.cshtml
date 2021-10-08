@@ -16,10 +16,11 @@
         <tr>
             <th>ID</th>
             <th>Nombre</th>
+            <th>DNI</th>
             <th>Direccion</th>
             <th>Pedidos Pendientes</th>
             <th></th>
-            
+
         </tr>
         @if (Model != null)
         {
@@ -28,6 +29,7 @@
     <tr>
         <td>@item.Id</td>
         <td>@item.Nombre</td>
+        <td>@item.Dni</td>
         <td>@item.Direccion</td>
         <td>@item.Pedidos.Count()</td>
         <td><a button type="button" class="btn btn-secondary btn-sm" href="Cadete/PagarACadete?id=@item.Id" style="margin:2px">Pagar</a></td>

@@ -25,10 +25,10 @@ namespace tallerIIpractico3.Models
 
         //*********************************AGREGAR UN CADETES**********************************
 
-        public void guardarCadete(string nom, string dir, string tel)
+        public void guardarCadete(string nom, int dni, string dir, string tel)
         {
             int id = leerArchivoCadete().Count() + 1;
-            Cadete cadeteObj = new Cadete(id, nom, dir, tel);
+            Cadete cadeteObj = new Cadete(id, nom, dni, dir, tel);
             guardarCadeteEnArchivo(cadeteObj);
         }
 
@@ -106,6 +106,31 @@ namespace tallerIIpractico3.Models
             return cadete;
         }
 
+        public void limpiarListaPedidoDelCadete(int id)
+        {
+            borrarPedidosFinalizados(id);
+        }
+
+        private void borrarPedidosFinalizados(int idCadete)
+        {
+            List<Cadete> listaCadete = leerArchivoCadete();
+            Cadete cadete = listaCadete.Find(x => x.Id == idCadete);
+            List<Pedido> listaTemporalEntregados = new List<Pedido>();
+
+            foreach (var item in cadete.Pedidos)
+            {
+                if (item.Est == Estado.En_camino)
+                {
+                    listaTemporalEntregados.Add(item);
+                }
+            }
+            cadete.Pedidos.Clear();
+            cadete.Pedidos = listaTemporalEntregados;
+            cadete.CantidadDeEntregados = 0;
+            cadete.Pago = 0;
+            ModificarArchivoCadete(listaCadete);
+        }
+
         //*********************************LEER ARCHIVO DE CADETES**********************************
 
         public List<Cadete> leerArchivoCadete()
@@ -174,21 +199,22 @@ namespace tallerIIpractico3.Models
         File.Move(pathCadetesTMP, pathCadetes);
         }
 
-       
-
 
         //###################################### PEDIDOS ######################################
 
-        public void guardarPedido(Pedido pedido, int idCadete)
+        //*********************************AGREGAR PEDIDO **********************************
+        public void guardarPedido(int nro, string obs, Estado est, string nom, string dir, string tel, int idCadete)
         {
             List<Cadete> cadeteLista = leerArchivoCadete();
             Cadete cadeteSeleccionado = cadeteLista.Find(x => x.Id == idCadete);
+            Pedido pedido = new Pedido(nro, obs, est, cadeteSeleccionado.Nombre, nom, dir, tel);
             cadeteSeleccionado.Pedidos.Add(pedido);
             ModificarArchivoCadete(cadeteLista);
             agregarPedidoAlArchivo(pedido);
 
         }
 
+        //*********************************LEER PEDIDOS **********************************
         public List<Pedido> leerArchivoPedido()
         {
             List<Pedido> listaPedidos = new List<Pedido>();

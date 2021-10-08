@@ -26,11 +26,10 @@ namespace tallerIIpractico3.Controllers
             return View(_DB.leerArchivoCadete());
         }
 
-        public IActionResult crearPedido(string obs, Estado est, int dni, string nom, string dir, string tel, int idCadete)
+        public IActionResult crearPedido(string obs, Estado est, string nom, string dir, string tel, int idCadete)
         {
             int nro = _DB.leerArchivoPedido().Count() + 1;
-            Pedido pedido = new Pedido(nro, obs, est, dni, nom, dir, tel);
-            _DB.guardarPedido(pedido, idCadete);
+            _DB.guardarPedido(nro, obs, est, nom, dir, tel, idCadete);
 
             return RedirectToAction("Index"); ;
         }
