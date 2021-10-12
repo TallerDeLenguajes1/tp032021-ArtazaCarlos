@@ -57,7 +57,7 @@
                     <td>@item.Cliente.Direcccion</td>
                     <td>@item.NomCadete</td>
                     <td>
-                        <form asp-controller="Pedido" asp-action="ModificarPedido" method="post">
+                        <form asp-controller="Pedido" asp-action="ModificarPedidoListaCompleta" method="post">
                             <input type="number" name="nroPedido" value="@item.Nro" hidden>
                             <select id="estado" name="estadoPedido">
                                 <option value="" selected>@item.Est</option>

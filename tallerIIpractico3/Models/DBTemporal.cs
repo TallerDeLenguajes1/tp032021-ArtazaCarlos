@@ -14,11 +14,11 @@ namespace tallerIIpractico3.Models
     public class DBTemporal
     {
         private static Logger logger = LogManager.GetCurrentClassLogger();
-        const string carpeta = @"TP3DB";
-        const string pathCadetesTMP = @"TP3DB\_DB.cadetes.tmp.txt";
-        const string pathPedidosTMP = @"TP3DB\_DB.Pedidos.tmp.txt";
-        const string pathCadetes = @"TP3DB\_DB.cadetes.txt";
-        const string pathPedidos = @"TP3DB\_DB.pedidos.txt";
+        private const string carpeta = @"TP3DB";
+        private const string pathCadetesTMP = @"TP3DB\_DB.cadetes.tmp.txt";
+        private const string pathPedidosTMP = @"TP3DB\_DB.Pedidos.tmp.txt";
+        private const string pathCadetes = @"TP3DB\_DB.cadetes.txt";
+        private const string pathPedidos = @"TP3DB\_DB.pedidos.txt";
         public DBTemporal()
         {
         }
@@ -52,15 +52,12 @@ namespace tallerIIpractico3.Models
                     strWriter.Close();
                     strWriter.Dispose();
                 }
-
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
             }
-            
         }
-
         //*********************************MODIFICAR CADETES**********************************
         public bool modificarCadete(int id, string nom, string dir, string tel)
         {
@@ -80,7 +77,6 @@ namespace tallerIIpractico3.Models
                 return false;
             }  
         }
-
         //*********************************ELIMINAR CADETES**********************************
 
         public bool eliminarCadete(int id)
@@ -96,10 +92,8 @@ namespace tallerIIpractico3.Models
             else
             {
                 return false;
-            }
-            
+            } 
         }
-
         //*********************************PAGAR A UN CADETE**********************************
         public Cadete cargarPagoAlCadete(int id)
         {
@@ -131,9 +125,7 @@ namespace tallerIIpractico3.Models
                 cadete.Pedidos.Clear();
                 cadete.Pedidos = listaTemporalEntregados;
                 cadete.Pago = cadete.CantidadDeEntregados * 100;
-                ModificarArchivoCadete(listaCadete);
-
-                
+                ModificarArchivoCadete(listaCadete);  
             }
             catch (Exception ex)
             {
@@ -172,11 +164,8 @@ namespace tallerIIpractico3.Models
             {
                 logger.Fatal(ex.ToString());
                 return false;
-            }
-            
-            
+            } 
         }
-
         //*********************************LEER ARCHIVO DE CADETES**********************************
 
         public List<Cadete> leerArchivoCadete()
@@ -207,7 +196,6 @@ namespace tallerIIpractico3.Models
                 logger.Error(ex.ToString());
                 return listaCadetes;
             }
-            
         }
 
         public Cadete consultarUnCadete(int id)
@@ -265,11 +253,8 @@ namespace tallerIIpractico3.Models
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-            }
-            
+            } 
         }
-
-
         //###################################### PEDIDOS ######################################
 
         //*********************************AGREGAR PEDIDO **********************************
@@ -290,8 +275,6 @@ namespace tallerIIpractico3.Models
                 logger.Fatal(ex.ToString());
                 return false;
             }
-            
-
         }
 
         //*********************************LEER PEDIDOS **********************************
@@ -323,9 +306,30 @@ namespace tallerIIpractico3.Models
                 return listaPedidos;
             }
         }
-
-
         //***************************FUNCIONES ADICIONALES PARA PEDIDOS**********************
+
+        public List<Pedido> busquedaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
+        {
+            List<Pedido> listaFiltrada = new List<Pedido>();
+            try
+            {
+                List<Pedido> listaCompleta = leerArchivoPedido();
+                foreach (Pedido item in listaCompleta)
+                {
+                    if ((item.FechaHora.Date >= fechaInicial.Date) && (item.FechaHora.Date <= fechaFinal.Date))
+                    {
+                        listaFiltrada.Add(item);
+                    }
+                }
+                return listaFiltrada;
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex.ToString());
+                return listaFiltrada;
+            }  
+        }
+
         private void ModificarArchivoPedido(List<Pedido> nuevaLista)
         {
             try
@@ -372,8 +376,7 @@ namespace tallerIIpractico3.Models
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-            }
-            
+            } 
         }
 
         public bool modificarArchivoCadetePedido(int nroPedido, Estado estadoPedido)

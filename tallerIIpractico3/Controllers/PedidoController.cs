@@ -14,6 +14,12 @@ namespace tallerIIpractico3.Controllers
     {
         private readonly ILogger<PedidoController> _logger;
         private readonly DBTemporal _DB;
+        private static DateTime fechaInicial;
+        private static DateTime fechaFinal;
+
+        public static DateTime FechaInicial { get => fechaInicial; set => fechaInicial = value; }
+        public static DateTime FechaFinal { get => fechaFinal; set => fechaFinal = value; }
+
         public PedidoController(ILogger<PedidoController> logger, DBTemporal DB )
         {
             _logger = logger;
@@ -37,19 +43,6 @@ namespace tallerIIpractico3.Controllers
                 return RedirectToAction("Index", "Logger");
             }
         }
-
-        public IActionResult ModificarPedido(int nroPedido, Estado estadoPedido)
-        {
-            if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
-            {
-                return RedirectToAction("ListaPedidos");
-            }
-            else
-            {
-                return RedirectToAction("Index", "Logger");
-            } 
-        }
-
         public IActionResult ListaPedidos()
         {
             return View();
@@ -58,18 +51,44 @@ namespace tallerIIpractico3.Controllers
         {
             return View(_DB.leerArchivoPedido());
         }
+
+        //modifica el pedido desde un listado completo de pedidos
+        public IActionResult ModificarPedidoListaCompleta(int nroPedido, Estado estadoPedido)
+        {
+            if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
+            {
+                return RedirectToAction("ListaCompleta");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logger");
+            } 
+        }
+        //modifica el pedido desde un listado filtrado de pedidos
+        public IActionResult ModificarPedidoListaFiltrada(int nroPedido, Estado estadoPedido)
+        {
+            if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
+            {
+                return RedirectToAction("ListaFiltrada2");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logger");
+            }
+        }
+
         public IActionResult ListaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
         {
-            List<Pedido> listaFiltrada = new List<Pedido>();
-            List<Pedido> listaCompleta = _DB.leerArchivoPedido();
-            foreach (Pedido item in listaCompleta)
-            {
-                if ((item.FechaHora.Date >= fechaInicial.Date) && (item.FechaHora.Date <= fechaFinal.Date) )
-                {
-                    listaFiltrada.Add(item);
-                }
-            }
-            return View(listaFiltrada);
+            FechaInicial = fechaInicial;
+            FechaFinal = fechaFinal;
+            return View(_DB.busquedaFiltrada(fechaInicial, fechaFinal));
+        }
+
+        //posee la misma funcion que ListaFiltrada solo que sin argumentos, tomando los datos
+        //static FechaInicial y FechaFinal de la clase Pedido
+        public IActionResult ListaFiltrada2()
+        {
+            return View(_DB.busquedaFiltrada(FechaInicial, FechaFinal));
         }
     }
 }
