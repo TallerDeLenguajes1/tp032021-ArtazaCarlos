@@ -50,8 +50,14 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult modificarCadete(int id, string nom, string dir, string tel)
         {
-            _DB.modificarCadete(id, nom, dir, tel);
-            return RedirectToAction("Index");
+            if (_DB.modificarCadete(id, nom, dir, tel))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logger");
+            }
         }
 
         //***************************************ELIMINAR CADETE************************************

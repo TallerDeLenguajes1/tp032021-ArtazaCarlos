@@ -28,9 +28,14 @@ namespace tallerIIpractico3.Controllers
         public IActionResult crearPedido(string obs, Estado est, string nom, string dir, string tel, int idCadete)
         {
             int nro = _DB.leerArchivoPedido().Count() + 1;
-            _DB.guardarPedido(nro, obs, est, nom, dir, tel, idCadete);
-
-            return RedirectToAction("Index"); ;
+            if (_DB.guardarPedido(nro, obs, est, nom, dir, tel, idCadete))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logger");
+            }
         }
 
         public IActionResult ModificarPedido(int nroPedido, Estado estadoPedido)

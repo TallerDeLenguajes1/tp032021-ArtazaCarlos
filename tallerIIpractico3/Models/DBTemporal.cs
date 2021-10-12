@@ -62,15 +62,23 @@ namespace tallerIIpractico3.Models
         }
 
         //*********************************MODIFICAR CADETES**********************************
-        public void modificarCadete(int id, string nom, string dir, string tel)
+        public bool modificarCadete(int id, string nom, string dir, string tel)
         {
-            List<Cadete> cadeteLista = leerArchivoCadete();
-            Cadete cadeteAModificar = cadeteLista.Find(x => x.Id == id);
-            cadeteAModificar.Nombre = nom;
-            cadeteAModificar.Direccion = dir;
-            cadeteAModificar.Telefono = tel;
-
-            ModificarArchivoCadete(cadeteLista);
+            try
+            {
+                List<Cadete> cadeteLista = leerArchivoCadete();
+                Cadete cadeteAModificar = cadeteLista.Find(x => x.Id == id);
+                cadeteAModificar.Nombre = nom;
+                cadeteAModificar.Direccion = dir;
+                cadeteAModificar.Telefono = tel;
+                ModificarArchivoCadete(cadeteLista);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex.ToString());
+                return false;
+            }  
         }
 
         //*********************************ELIMINAR CADETES**********************************
@@ -265,14 +273,24 @@ namespace tallerIIpractico3.Models
         //###################################### PEDIDOS ######################################
 
         //*********************************AGREGAR PEDIDO **********************************
-        public void guardarPedido(int nro, string obs, Estado est, string nom, string dir, string tel, int idCadete)
+        public bool guardarPedido(int nro, string obs, Estado est, string nom, string dir, string tel, int idCadete)
         {
-            List<Cadete> cadeteLista = leerArchivoCadete();
-            Cadete cadeteSeleccionado = cadeteLista.Find(x => x.Id == idCadete);
-            Pedido pedido = new Pedido(nro, obs, est, cadeteSeleccionado.Nombre, nom, dir, tel);
-            cadeteSeleccionado.Pedidos.Add(pedido);
-            ModificarArchivoCadete(cadeteLista);
-            agregarPedidoAlArchivo(pedido);
+            try
+            {
+                List<Cadete> cadeteLista = leerArchivoCadete();
+                Cadete cadeteSeleccionado = cadeteLista.Find(x => x.Id == idCadete);
+                Pedido pedido = new Pedido(nro, obs, est, idCadete, nom, dir, tel);
+                cadeteSeleccionado.Pedidos.Add(pedido);
+                ModificarArchivoCadete(cadeteLista);
+                agregarPedidoAlArchivo(pedido);
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex.ToString());
+                return false;
+            }
+            
 
         }
 
