@@ -7,13 +7,14 @@ using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models;
 using Rotativa.AspNetCore;
-
+using NLog;
 
 
 namespace tallerIIpractico3.Controllers
 {
     public class CadeteController : Controller
     {
+        private static Logger logger = LogManager.GetCurrentClassLogger();
         private readonly ILogger<CadeteController> _logger;
         private readonly DBTemporal _DB;
 
@@ -62,21 +63,39 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult eliminarCadete(int id)
         {
-            _DB.eliminarCadete(id);
-            return RedirectToAction("Index");
+            if (_DB.eliminarCadete(id))
+            {
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                logger.Error("linea 81 Model/DBTemporal no encuentra al cadete en los archivos, datos dañados, renombrados o eliminados");
+                return RedirectToAction("Index", "Logger");
+            }
         }
 
         //****************************************PAGAR A CADETE*****************************************
 
         public IActionResult PagarACadete(int id)
         {
-            return View(_DB.cargarPagoAlCadete(id));
+            Cadete cadeteAPagar = _DB.cargarPagoAlCadete(id);
+            if(cadeteAPagar != null)
+            {
+                return View(cadeteAPagar);
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logger");
+            } 
         }
         
         public IActionResult ConfirmarPago(int id)
         {
-            _DB.limpiarListaPedidoDelCadete(id);
-            return RedirectToAction("Index");
+            if (_DB.limpiarListaPedidoDelCadete(id))
+            {
+                return RedirectToAction("Index");
+            }
+            return RedirectToAction("Index", "Logger");
         }
 
 

@@ -7,16 +7,18 @@ using System.Threading.Tasks;
 using tallerIIpractico3.entities;
 using System.Text.Json;
 using System.Text.Json.Serialization;
+using NLog;
 
 namespace tallerIIpractico3.Models
 {
     public class DBTemporal
     {
-        const string carpeta = @"c:\TP3DB";
-        const string pathCadetesTMP = @"c:\TP3DB\_DB.cadetes.tmp.txt";
-        const string pathPedidosTMP = @"c:\TP3DB\_DB.Pedidos.tmp.txt";
-        const string pathCadetes = @"c:\TP3DB\_DB.cadetes.txt";
-        const string pathPedidos = @"c:\TP3DB\_DB.pedidos.txt";
+        private static Logger logger = LogManager.GetCurrentClassLogger();
+        const string carpeta = @"TP3DB";
+        const string pathCadetesTMP = @"TP3DB\_DB.cadetes.tmp.txt";
+        const string pathPedidosTMP = @"TP3DB\_DB.Pedidos.tmp.txt";
+        const string pathCadetes = @"TP3DB\_DB.cadetes.txt";
+        const string pathPedidos = @"TP3DB\_DB.pedidos.txt";
         public DBTemporal()
         {
         }
@@ -34,21 +36,29 @@ namespace tallerIIpractico3.Models
 
         private void guardarCadeteEnArchivo(Cadete cadeteObj)
         {
-            string miJson = JsonSerializer.Serialize(cadeteObj);
+            try
+            {
+                string miJson = JsonSerializer.Serialize(cadeteObj);
+                if (!File.Exists(pathCadetes))
+                {
+                    Directory.CreateDirectory(carpeta);
+                    StreamWriter archivo = File.CreateText(pathCadetes);
+                    archivo.Close();
+                    archivo.Dispose();
+                }
+                using (StreamWriter strWriter = File.AppendText(pathCadetes))
+                {
+                    strWriter.WriteLine(miJson);
+                    strWriter.Close();
+                    strWriter.Dispose();
+                }
 
-            if (!File.Exists(pathCadetes))
-            {
-                Directory.CreateDirectory(carpeta);
-                StreamWriter archivo = File.CreateText(pathCadetes);
-                archivo.Close();
-                archivo.Dispose();
             }
-            using (StreamWriter strWriter = File.AppendText(pathCadetes))
+            catch (Exception ex)
             {
-                strWriter.WriteLine(miJson);
-                strWriter.Close();
-                strWriter.Dispose();
+                logger.Error(ex.ToString());
             }
+            
         }
 
         //*********************************MODIFICAR CADETES**********************************
@@ -65,13 +75,21 @@ namespace tallerIIpractico3.Models
 
         //*********************************ELIMINAR CADETES**********************************
 
-        public void eliminarCadete(int id)
+        public bool eliminarCadete(int id)
         {
             List<Cadete> cadeteLista = leerArchivoCadete();
             Cadete cadeteABorrar = cadeteLista.Find(x => x.Id == id);
-            cadeteLista.Remove(cadeteABorrar);
-
-            ModificarArchivoCadete(cadeteLista);
+            if (cadeteABorrar != null)
+            {
+                cadeteLista.Remove(cadeteABorrar);
+                ModificarArchivoCadete(cadeteLista);
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+            
         }
 
         //*********************************PAGAR A UN CADETE**********************************
@@ -82,53 +100,73 @@ namespace tallerIIpractico3.Models
 
         private Cadete controlDePedidosEntregados(int id)
         {
+
             List<Cadete> listaCadete = leerArchivoCadete();
             Cadete cadete = listaCadete.Find(x => x.Id == id);
             List<Pedido> listaTemporalEntregados = new List<Pedido>();
-            cadete.CantidadDeEntregados = 0;
 
-            foreach (Pedido pedido in cadete.Pedidos)
+            try
             {
-                if (pedido.Est != Estado.No_entregado)
-                {
-                    listaTemporalEntregados.Add(pedido);
-                }
-                if (pedido.Est == Estado.Entregado)
-                {
-                    cadete.CantidadDeEntregados++;
-                }
-            }
-            cadete.Pedidos.Clear();
-            cadete.Pedidos = listaTemporalEntregados;
-            cadete.Pago = cadete.CantidadDeEntregados * 100;
-            ModificarArchivoCadete(listaCadete);
+                cadete.CantidadDeEntregados = 0;
 
+                foreach (Pedido pedido in cadete.Pedidos)
+                {
+                    if (pedido.Est != Estado.No_entregado)
+                    {
+                        listaTemporalEntregados.Add(pedido);
+                    }
+                    if (pedido.Est == Estado.Entregado)
+                    {
+                        cadete.CantidadDeEntregados++;
+                    }
+                }
+                cadete.Pedidos.Clear();
+                cadete.Pedidos = listaTemporalEntregados;
+                cadete.Pago = cadete.CantidadDeEntregados * 100;
+                ModificarArchivoCadete(listaCadete);
+
+                
+            }
+            catch (Exception ex)
+            {
+                logger.Fatal(ex.ToString());
+            }
             return cadete;
         }
 
-        public void limpiarListaPedidoDelCadete(int id)
+        public bool limpiarListaPedidoDelCadete(int id)
         {
-            borrarPedidosFinalizados(id);
+            return borrarPedidosFinalizados(id);
         }
 
-        private void borrarPedidosFinalizados(int idCadete)
+        private bool borrarPedidosFinalizados(int idCadete)
         {
             List<Cadete> listaCadete = leerArchivoCadete();
             Cadete cadete = listaCadete.Find(x => x.Id == idCadete);
             List<Pedido> listaTemporalEntregados = new List<Pedido>();
-
-            foreach (var item in cadete.Pedidos)
+            try
             {
-                if (item.Est == Estado.En_camino)
+                foreach (var item in cadete.Pedidos)
                 {
-                    listaTemporalEntregados.Add(item);
+                    if (item.Est == Estado.En_camino)
+                    {
+                        listaTemporalEntregados.Add(item);
+                    }
                 }
+                cadete.Pedidos.Clear();
+                cadete.Pedidos = listaTemporalEntregados;
+                cadete.CantidadDeEntregados = 0;
+                cadete.Pago = 0;
+                ModificarArchivoCadete(listaCadete);
+                return true;
             }
-            cadete.Pedidos.Clear();
-            cadete.Pedidos = listaTemporalEntregados;
-            cadete.CantidadDeEntregados = 0;
-            cadete.Pago = 0;
-            ModificarArchivoCadete(listaCadete);
+            catch (Exception ex)
+            {
+                logger.Fatal(ex.ToString());
+                return false;
+            }
+            
+            
         }
 
         //*********************************LEER ARCHIVO DE CADETES**********************************
@@ -137,22 +175,31 @@ namespace tallerIIpractico3.Models
         {
             List<Cadete> listaCadetes = new List<Cadete>();
             string linea = "";
-            if (File.Exists(pathCadetes))
+            try
             {
-                using (StreamReader strReader = File.OpenText(pathCadetes))
+                if (File.Exists(pathCadetes))
                 {
-                    while ((linea = strReader.ReadLine()) != null)
+                    using (StreamReader strReader = File.OpenText(pathCadetes))
                     {
-                        Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
-                        listaCadetes.Add(cadeteObj);
+                        while ((linea = strReader.ReadLine()) != null)
+                        {
+                            Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
+                            listaCadetes.Add(cadeteObj);
+                        }
+                        strReader.Close();
+                        strReader.Dispose();
                     }
-                    strReader.Close();
-                    strReader.Dispose();
+                    return listaCadetes;
                 }
+
                 return listaCadetes;
             }
-
-            return listaCadetes;
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return listaCadetes;
+            }
+            
         }
 
         public Cadete consultarUnCadete(int id)
@@ -160,43 +207,58 @@ namespace tallerIIpractico3.Models
             Cadete cadete = new Cadete();
             int b = 0;
             string linea = "";
-            if (File.Exists(pathCadetes))
+            try
             {
-                using (StreamReader strReader = File.OpenText(pathCadetes))
+                if (File.Exists(pathCadetes))
                 {
-                    while (((linea = strReader.ReadLine()) != null) || (b == 0))
+                    using (StreamReader strReader = File.OpenText(pathCadetes))
                     {
-                        Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
-                        if (cadeteObj.Id == id)
+                        while (((linea = strReader.ReadLine()) != null) || (b == 0))
                         {
-                            b = 1;
-                            cadete = cadeteObj;
+                            Cadete cadeteObj = JsonSerializer.Deserialize<Cadete>(linea);
+                            if (cadeteObj.Id == id)
+                            {
+                                b = 1;
+                                cadete = cadeteObj;
+                            }
                         }
                     }
                 }
+                return cadete;
             }
-
-            return cadete;
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return cadete;
+            }
         }
 
         //***************************FUNCIONES ADICIONALES PARA CADETES**********************
 
         private void ModificarArchivoCadete(List<Cadete> nuevaLista)
         {
-        StreamWriter archivo = File.CreateText(pathCadetesTMP);
-        archivo.Close();
-        foreach (Cadete item in nuevaLista)
-        {
-            string miJson = JsonSerializer.Serialize(item);
-            using (StreamWriter strWriter = File.AppendText(pathCadetesTMP))
+            try
             {
-                strWriter.WriteLine(miJson);
-                strWriter.Close();
-                strWriter.Dispose();
+                StreamWriter archivo = File.CreateText(pathCadetesTMP);
+                archivo.Close();
+                foreach (Cadete item in nuevaLista)
+                {
+                    string miJson = JsonSerializer.Serialize(item);
+                    using (StreamWriter strWriter = File.AppendText(pathCadetesTMP))
+                    {
+                        strWriter.WriteLine(miJson);
+                        strWriter.Close();
+                        strWriter.Dispose();
+                    }
+                }
+                File.Delete(pathCadetes);
+                File.Move(pathCadetesTMP, pathCadetes);
             }
-        }
-        File.Delete(pathCadetes);
-        File.Move(pathCadetesTMP, pathCadetes);
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+            }
+            
         }
 
 
@@ -219,61 +281,81 @@ namespace tallerIIpractico3.Models
         {
             List<Pedido> listaPedidos = new List<Pedido>();
             string linea = "";
-            if (File.Exists(pathPedidos))
+            try
             {
-                using (StreamReader strReader = File.OpenText(pathPedidos))
+                if (File.Exists(pathPedidos))
                 {
-                    while ((linea = strReader.ReadLine()) != null)
+                    using (StreamReader strReader = File.OpenText(pathPedidos))
                     {
-                        Pedido pedidoObj = JsonSerializer.Deserialize<Pedido>(linea);
-                        listaPedidos.Add(pedidoObj);
+                        while ((linea = strReader.ReadLine()) != null)
+                        {
+                            Pedido pedidoObj = JsonSerializer.Deserialize<Pedido>(linea);
+                            listaPedidos.Add(pedidoObj);
+                        }
+                        strReader.Close();
+                        strReader.Dispose();
                     }
-                    strReader.Close();
-                    strReader.Dispose();
+                    return listaPedidos;
                 }
                 return listaPedidos;
             }
-
-            return listaPedidos;
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return listaPedidos;
+            }
         }
 
 
         //***************************FUNCIONES ADICIONALES PARA PEDIDOS**********************
         private void ModificarArchivoPedido(List<Pedido> nuevaLista)
         {
-            StreamWriter archivo = File.CreateText(pathPedidosTMP);
-            archivo.Close();
-            foreach (Pedido item in nuevaLista)
+            try
             {
-                string miJson = JsonSerializer.Serialize(item);
-                using (StreamWriter strWriter = File.AppendText(pathPedidosTMP))
+                StreamWriter archivo = File.CreateText(pathPedidosTMP);
+                archivo.Close();
+                foreach (Pedido item in nuevaLista)
+                {
+                    string miJson = JsonSerializer.Serialize(item);
+                    using (StreamWriter strWriter = File.AppendText(pathPedidosTMP))
+                    {
+                        strWriter.WriteLine(miJson);
+                        strWriter.Close();
+                        strWriter.Dispose();
+                    }
+                }
+                File.Delete(pathPedidos);
+                File.Move(pathPedidosTMP, pathPedidos);
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+            }
+        }
+
+        private void agregarPedidoAlArchivo(Pedido pedido)
+        {
+            try
+            {
+                string miJson = JsonSerializer.Serialize(pedido);
+                if (!File.Exists(pathPedidos))
+                {
+                    StreamWriter archivo = File.CreateText(pathPedidos);
+                    archivo.Close();
+                    archivo.Dispose();
+                }
+                using (StreamWriter strWriter = File.AppendText(pathPedidos))
                 {
                     strWriter.WriteLine(miJson);
                     strWriter.Close();
                     strWriter.Dispose();
                 }
             }
-            File.Delete(pathPedidos);
-            File.Move(pathPedidosTMP, pathPedidos);
-
-        }
-
-        private void agregarPedidoAlArchivo(Pedido pedido)
-        {
-            string miJson = JsonSerializer.Serialize(pedido);
-
-            if (!File.Exists(pathPedidos))
+            catch (Exception ex)
             {
-                StreamWriter archivo = File.CreateText(pathPedidos);
-                archivo.Close();
-                archivo.Dispose();
+                logger.Error(ex.ToString());
             }
-            using (StreamWriter strWriter = File.AppendText(pathPedidos))
-            {
-                strWriter.WriteLine(miJson);
-                strWriter.Close();
-                strWriter.Dispose();
-            }
+            
         }
 
         public void modificarArchivoCadetePedido(int nroPedido, Estado estadoPedido)

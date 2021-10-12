@@ -10,13 +10,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models;
+using NLog;
 
 namespace tallerIIpractico3
 {
     public class Startup
     {
-        //static List<Cadete> cadetes = new List<Cadete>();
-        //static List<Pedido> pedidos = new List<Pedido>();
+        
         static DBTemporal DB = new DBTemporal();
 
         public Startup(IConfiguration configuration)
@@ -31,8 +31,6 @@ namespace tallerIIpractico3
         {
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
             services.AddSingleton(DB);
-            
-            //services.AddSingleton(pedidos);
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
