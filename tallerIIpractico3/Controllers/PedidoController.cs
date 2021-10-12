@@ -52,7 +52,24 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult ListaPedidos()
         {
+            return View();
+        }
+        public IActionResult ListaCompleta()
+        {
             return View(_DB.leerArchivoPedido());
+        }
+        public IActionResult ListaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
+        {
+            List<Pedido> listaFiltrada = new List<Pedido>();
+            List<Pedido> listaCompleta = _DB.leerArchivoPedido();
+            foreach (Pedido item in listaCompleta)
+            {
+                if ((item.FechaHora.Date >= fechaInicial.Date) && (item.FechaHora.Date <= fechaFinal.Date) )
+                {
+                    listaFiltrada.Add(item);
+                }
+            }
+            return View(listaFiltrada);
         }
     }
 }
