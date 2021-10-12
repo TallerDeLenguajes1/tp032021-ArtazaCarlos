@@ -358,29 +358,37 @@ namespace tallerIIpractico3.Models
             
         }
 
-        public void modificarArchivoCadetePedido(int nroPedido, Estado estadoPedido)
+        public bool modificarArchivoCadetePedido(int nroPedido, Estado estadoPedido)
         {
             List<Pedido> pedidoLista = leerArchivoPedido();
             List<Cadete> cadeteLista = leerArchivoCadete();
-
-            //modifico el estado del pedido en la lista de pedidos
-            Pedido pedidoAModificar = pedidoLista.Find(x => x.Nro == nroPedido);
-            pedidoAModificar.Est = estadoPedido;
-
-            //modifico el estado del pedido en la lista de cadetes
-            foreach (Cadete cadete in cadeteLista)
+            try
             {
-                foreach (Pedido pedido in cadete.Pedidos)
+                //modifico el estado del pedido en la lista de pedidos
+                Pedido pedidoAModificar = pedidoLista.Find(x => x.Nro == nroPedido);
+                pedidoAModificar.Est = estadoPedido;
+
+                //modifico el estado del pedido en la lista de cadetes
+                foreach (Cadete cadete in cadeteLista)
                 {
-                    if (pedido.Nro == nroPedido)
+                    foreach (Pedido pedido in cadete.Pedidos)
                     {
-                        pedido.Est = estadoPedido;
+                        if (pedido.Nro == nroPedido)
+                        {
+                            pedido.Est = estadoPedido;
+                        }
                     }
                 }
+                ModificarArchivoPedido(pedidoLista);
+                ModificarArchivoCadete(cadeteLista);
+                return true;
             }
-
-            ModificarArchivoPedido(pedidoLista);
-            ModificarArchivoCadete(cadeteLista);
+            catch (Exception ex)
+            {
+                logger.Fatal(ex.ToString());
+                return false;
+            }
+            
         }
     }
 }

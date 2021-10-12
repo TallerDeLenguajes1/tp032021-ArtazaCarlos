@@ -35,8 +35,15 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult ModificarPedido(int nroPedido, Estado estadoPedido)
         {
-            _DB.modificarArchivoCadetePedido(nroPedido, estadoPedido);
-            return RedirectToAction("ListaPedidos");
+            if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
+            {
+                return RedirectToAction("ListaPedidos");
+            }
+            else
+            {
+                return RedirectToAction("Index", "Logger");
+            }
+            
         }
 
         public IActionResult ListaPedidos()
