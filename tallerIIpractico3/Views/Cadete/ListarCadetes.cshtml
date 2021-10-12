@@ -1,0 +1,33 @@
+﻿@{
+    ViewData["Title"] = "Cadeteria Page";
+}
+@model List<tallerIIpractico3.entities.Cadete>
+
+<div class="text-left">
+    <p class="titulo3">Lista de Cadetes</p>
+</div>
+
+<div class="container">
+    <table class="table table-striped" style="text-align:center">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>DNI</th>
+            <th>Direccion</th>
+            <th>Cantidad de pedidos</th>
+        </tr>
+        @if (Model != null)
+        {
+            foreach (var item in Model)
+            {
+                <tr>
+                    <td>@item.Id</td>
+                    <td>@item.Nombre</td>
+                    <td>@item.Dni</td>
+                    <td>@item.Direccion</td>
+                    <td>@item.Pedidos.Count</td>
+                </tr>
+            }
+        }
+    </table>
+</div>

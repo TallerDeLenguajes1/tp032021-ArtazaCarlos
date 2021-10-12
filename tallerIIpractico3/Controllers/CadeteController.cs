@@ -29,6 +29,11 @@ namespace tallerIIpractico3.Controllers
             return View(_DB.leerArchivoCadete());
         }
 
+        public IActionResult ListarCadetes()
+        {
+            return View(_DB.leerArchivoCadete());
+        }
+
         public IActionResult CreateCadete()
         {            
             return View();
@@ -110,6 +115,6 @@ namespace tallerIIpractico3.Controllers
             Cadete cadete = _DB.consultarUnCadete(id);
             return new ViewAsPdf("PagarACadete", cadete);
         }
-
+       
     }
 }
