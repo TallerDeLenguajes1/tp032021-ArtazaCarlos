@@ -1,1 +1,0 @@
-{"Id":1,"Nombre":"carlos lopez lopez","Dni":33208837,"Direccion":"san cayetano","Telefono":"\u002B76769898989","Pedidos":[],"Pago":0,"CantidadDeEntregados":0}
