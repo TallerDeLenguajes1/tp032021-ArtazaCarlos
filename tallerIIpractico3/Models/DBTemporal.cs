@@ -279,7 +279,7 @@ namespace tallerIIpractico3.Models
             {
                 List<Cadete> cadeteLista = leerArchivoCadete();
                 Cadete cadeteSeleccionado = cadeteLista.Find(x => x.Id == idCadete);
-                Pedido pedido = new Pedido(nro, obs, est, idCadete, nom, dir, tel);
+                Pedido pedido = new Pedido(nro, obs, est, cadeteSeleccionado.Nombre, nom, dir, tel);
                 cadeteSeleccionado.Pedidos.Add(pedido);
                 ModificarArchivoCadete(cadeteLista);
                 agregarPedidoAlArchivo(pedido);

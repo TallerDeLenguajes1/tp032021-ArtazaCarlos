@@ -47,14 +47,12 @@ namespace tallerIIpractico3.Controllers
             else
             {
                 return RedirectToAction("Index", "Logger");
-            }
-            
+            } 
         }
 
         public IActionResult ListaPedidos()
         {
             return View(_DB.leerArchivoPedido());
         }
-
     }
 }
