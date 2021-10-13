@@ -78,3 +78,35 @@ body {
     padding: 10px;
     font-family:'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif
 }
+
+.botones-home {
+    position: relative;
+    width: 85px;
+    margin-top: 4px;
+}
+
+.overlay {
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: 100%;
+    width: 84px;
+    opacity: 0;
+    transition: .5s ease;
+    background-color: #008CBA;
+}
+
+.botones-home:hover .overlay {
+    opacity: 1;
+}
+
+.text {
+    color:white;
+    font-weight:300;
+    font-size: 20px;
+    text-align: center;
+    vertical-align: middle;
+    width: 84px;
+}
