@@ -3,12 +3,17 @@
 }
 
 <div class="" style="border-bottom: solid black 1px; border-left: solid black 1px; padding: 1em ">
-    
-    <a asp-area="" asp-controller="Cadete" asp-action="Index"> 
-        <img src="~/img/cadete.jpg" class="border border-secondary" style="width: 82px">
-    </a>
-    <a asp-area="" asp-controller="Pedido" asp-action="Index">
-        <img src="~/img/pedido.jpg" class="border border-secondary" style="width: 100px">
-    </a>
+    <div style="width: 85px">
+        <a asp-area="" asp-controller="Cadete" asp-action="Index">
+            <img src="~/img/cadete.jpg" class="border border-secondary" style="width: 82px">
+            <fieldset style="text-align:center">Cadetes</fieldset>
+        </a>
+    </div>
+    <div style="width: 87px">
+        <a asp-area="" asp-controller="Pedido" asp-action="Index">
+            <img src="~/img/pedido.jpg" class="border border-secondary" style="width: 84px">
+            <fieldset style="text-align:center">Pedidos</fieldset>
+        </a>
+    </div>
 
 </div>
