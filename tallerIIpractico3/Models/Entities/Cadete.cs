@@ -13,7 +13,7 @@ namespace tallerIIpractico3.entities
         private string nombre;
         private string direccion;
         private string telefono;
-        private TipoVehiculo vehiculo;
+        private string vehiculo;
         private List<Pedido> pedidos;
 
 
@@ -21,7 +21,7 @@ namespace tallerIIpractico3.entities
         public string Nombre { get => nombre; set => nombre = value; }
         public string Direccion { get => direccion; set => direccion = value; }
         public string Telefono { get => telefono; set => telefono = value; }
-        public TipoVehiculo Vehiculo { get => vehiculo; set => vehiculo = value; }
+        public string Vehiculo { get => vehiculo; set => vehiculo = value; }
         public List<Pedido> Pedidos { get => pedidos; set => pedidos = value; }
 
 
@@ -30,7 +30,7 @@ namespace tallerIIpractico3.entities
             Nombre = nom;
             Direccion = dir;
             Telefono = tel;
-            Vehiculo = vehiculo;
+            Vehiculo = vehiculo.ToString();
             Pedidos = new List<Pedido>();
         }
 

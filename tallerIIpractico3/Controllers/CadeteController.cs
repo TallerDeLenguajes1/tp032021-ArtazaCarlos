@@ -5,7 +5,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
-using tallerIIpractico3.Models;
+using tallerIIpractico3.Models.Db;
 using Rotativa.AspNetCore;
 using NLog;
 
@@ -14,10 +14,11 @@ namespace tallerIIpractico3.Controllers
 {
     public class CadeteController : Controller
     {
+        private readonly RepositorioCadete cadeteDb;
 
-        public CadeteController()
+        public CadeteController(RepositorioCadete cadeteDb)
         {
-            
+            this.cadeteDb = cadeteDb;
         }
 
         public IActionResult Index()
