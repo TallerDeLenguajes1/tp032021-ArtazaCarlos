@@ -23,13 +23,13 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult Index()
         {
-            return View();
+            return View(cadeteDb.CadeteList());
         }
 
-        public IActionResult CadeteList()
-        {
-            return View();
-        }
+        //public IActionResult CadeteList()
+        //{
+        //    return View(cadeteDb.CadeteList());
+        //}
 
         public IActionResult CreateCadete()
         {            
@@ -39,7 +39,7 @@ namespace tallerIIpractico3.Controllers
         //**************************************AGREGAR CADETE**************************************
         public IActionResult SaveCadete(Cadete cadete)
         {
-            //_DB.guardarCadete(nom, dni, dir, tel);
+            cadeteDb.addCadete(cadete);
             return RedirectToAction("Index");
         }
 

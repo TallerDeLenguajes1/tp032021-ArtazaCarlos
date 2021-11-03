@@ -20,7 +20,6 @@ namespace tallerIIpractico3.Models.Db
         public List<Cadete> CadeteList()
         {
             List<Cadete> ListaDeCadetes = new List<Cadete>();
-            Cadete cadeteTemp = new Cadete();
             string queryString = @"SELECT
                                         cadeteId,
                                         nombre,
@@ -38,6 +37,7 @@ namespace tallerIIpractico3.Models.Db
                     SQLiteDataReader CadeteFilas = command.ExecuteReader();
                     while (CadeteFilas.Read())
                     {
+                        Cadete cadeteTemp = new Cadete();
                         cadeteTemp.Id = Convert.ToInt32(CadeteFilas["cadeteId"]);
                         cadeteTemp.Nombre = CadeteFilas["nombre"].ToString();
                         cadeteTemp.Direccion = CadeteFilas["direccion"].ToString();
