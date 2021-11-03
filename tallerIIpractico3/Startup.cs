@@ -6,15 +6,12 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using System;
 using System.Threading.Tasks;
-using tallerIIpractico3.Models;
+using tallerIIpractico3.Models.Db;
 
 namespace tallerIIpractico3
 {
     public class Startup
     {
-        
-        static DBTemporal DB = new DBTemporal();
-
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -25,8 +22,11 @@ namespace tallerIIpractico3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            RepositorioCadete cadeteDb = new RepositorioCadete(Configuration.GetConnectionString("default"));
+
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddSingleton(DB);
+            services.AddSingleton(cadeteDb);
+
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

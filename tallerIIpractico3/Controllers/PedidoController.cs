@@ -13,82 +13,81 @@ namespace tallerIIpractico3.Controllers
     public class PedidoController : Controller
     {
         private readonly ILogger<PedidoController> _logger;
-        private readonly DBTemporal _DB;
+
         private static DateTime fechaInicial;
         private static DateTime fechaFinal;
 
         public static DateTime FechaInicial { get => fechaInicial; set => fechaInicial = value; }
         public static DateTime FechaFinal { get => fechaFinal; set => fechaFinal = value; }
 
-        public PedidoController(ILogger<PedidoController> logger, DBTemporal DB )
+        public PedidoController(ILogger<PedidoController> logger )
         {
             _logger = logger;
-            _DB = DB;
         }
 
-        public IActionResult Index()
-        {
-            return View(_DB.leerArchivoCadete());
-        }
+        //public IActionResult Index()
+        //{
+        //    return View(_DB.leerArchivoCadete());
+        //}
 
-        public IActionResult crearPedido(string obs, Estado est, string nom, string dir, string tel, int idCadete)
-        {
-            int nro = _DB.leerArchivoPedido().Count() + 1;
-            if (_DB.guardarPedido(nro, obs, est, nom, dir, tel, idCadete))
-            {
-                return RedirectToAction("Index");
-            }
-            else
-            {
-                return RedirectToAction("Index", "Logger");
-            }
-        }
-        public IActionResult ListaPedidos()
-        {
-            return View();
-        }
-        public IActionResult ListaCompleta()
-        {
-            return View(_DB.leerArchivoPedido());
-        }
+        //public IActionResult crearPedido(string obs, Estado est, string nom, string dir, string tel, int idCadete)
+        //{
+        //    int nro = _DB.leerArchivoPedido().Count() + 1;
+        //    if (_DB.guardarPedido(nro, obs, est, nom, dir, tel, idCadete))
+        //    {
+        //        return RedirectToAction("Index");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index", "Logger");
+        //    }
+        //}
+        //public IActionResult ListaPedidos()
+        //{
+        //    return View();
+        //}
+        //public IActionResult ListaCompleta()
+        //{
+        //    return View(_DB.leerArchivoPedido());
+        //}
 
-        //modifica el pedido desde un listado completo de pedidos
-        public IActionResult ModificarPedidoListaCompleta(int nroPedido, Estado estadoPedido)
-        {
-            if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
-            {
-                return RedirectToAction("ListaCompleta");
-            }
-            else
-            {
-                return RedirectToAction("Index", "Logger");
-            } 
-        }
-        //modifica el pedido desde un listado filtrado de pedidos
-        public IActionResult ModificarPedidoListaFiltrada(int nroPedido, Estado estadoPedido)
-        {
-            if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
-            {
-                return RedirectToAction("ListaFiltrada2");
-            }
-            else
-            {
-                return RedirectToAction("Index", "Logger");
-            }
-        }
+        ////modifica el pedido desde un listado completo de pedidos
+        //public IActionResult ModificarPedidoListaCompleta(int nroPedido, Estado estadoPedido)
+        //{
+        //    if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
+        //    {
+        //        return RedirectToAction("ListaCompleta");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index", "Logger");
+        //    } 
+        //}
+        ////modifica el pedido desde un listado filtrado de pedidos
+        //public IActionResult ModificarPedidoListaFiltrada(int nroPedido, Estado estadoPedido)
+        //{
+        //    if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
+        //    {
+        //        return RedirectToAction("ListaFiltrada2");
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index", "Logger");
+        //    }
+        //}
 
-        public IActionResult ListaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
-        {
-            FechaInicial = fechaInicial;
-            FechaFinal = fechaFinal;
-            return View(_DB.busquedaFiltrada(fechaInicial, fechaFinal));
-        }
+        //public IActionResult ListaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
+        //{
+        //    FechaInicial = fechaInicial;
+        //    FechaFinal = fechaFinal;
+        //    return View(_DB.busquedaFiltrada(fechaInicial, fechaFinal));
+        //}
 
-        //posee la misma funcion que ListaFiltrada solo que sin argumentos, tomando los datos
-        //static FechaInicial y FechaFinal de la clase Pedido
-        public IActionResult ListaFiltrada2()
-        {
-            return View(_DB.busquedaFiltrada(FechaInicial, FechaFinal));
-        }
+        ////posee la misma funcion que ListaFiltrada solo que sin argumentos, tomando los datos
+        ////static FechaInicial y FechaFinal de la clase Pedido
+        //public IActionResult ListaFiltrada2()
+        //{
+        //    return View(_DB.busquedaFiltrada(FechaInicial, FechaFinal));
+        //}
     }
 }

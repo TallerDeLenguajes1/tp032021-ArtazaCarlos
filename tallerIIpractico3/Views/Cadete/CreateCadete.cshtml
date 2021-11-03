@@ -1,30 +1,33 @@
-﻿@{
-    ViewData["Title"] = "Crear Cadetes";
-}
+﻿@model tallerIIpractico3.entities.Cadete
 
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <form asp-controller="Cadete" asp-action="agregarCadete" method="post">
+            <form asp-controller="Cadete" asp-action="SaveCadete" method="post">
                 <fieldset>
                     <legend class="">Registrar un cadete</legend>
                     <div class="mb-3">
                         <label for="nom" class="form-label">Nombre</label>
-                        <input type="text" id="nom" class="form-control" name="nom" placeholder="López, David" required>
-                    </div>
-                    <div class="mb-3">
-                        <label for="dni" class="form-label">DNI</label>
-                        <input type="text" id="dni" class="form-control" name="dni" placeholder="40786667" required>
+                        <input type="text" id="nom" class="form-control" asp-for="Nombre" placeholder="López, David" required>
                     </div>
                     <div class="mb-3">
                         <label for="dir" class="form-label">Dirección</label>
-                        <input type="text" id="dir" class="form-control" name="dir" placeholder="San Lorenzo 789" required>
+                        <input type="text" id="dir" class="form-control" asp-for="Direccion" placeholder="San Lorenzo 789" required>
                     </div>
                     <div class="mb-3">
                         <label for="tel" class="form-label">Teléfono</label>
-                        <input type="text" id="tel" class="form-control" name="tel" placeholder="3815456876" required>
+                        <input type="text" id="tel" class="form-control" asp-for="Telefono" placeholder="3815456876" required>
                     </div>
-                    <button type="submit" class="btn btn-primary">Submit</button>
+                    <div class="mb-3">
+                        <label for="vehiculo" class="form-label">Vehiculo</label>
+                        <select id="vehiculo" asp-for="Vehiculo">
+                            <option value="">Seleccione</option>
+                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta">Bicicleta</option>
+                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto">Auto</option>
+                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto">Moto</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Enviar</button>
                 </fieldset>
             </form>
         </div>
