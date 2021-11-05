@@ -14,16 +14,16 @@ namespace tallerIIpractico3.Controllers
 {
     public class CadeteController : Controller
     {
-        private readonly RepositorioCadete cadeteDb;
+        private readonly DbSqlite db;
 
-        public CadeteController(RepositorioCadete cadeteDb)
+        public CadeteController(DbSqlite Db)
         {
-            this.cadeteDb = cadeteDb;
+            db = Db;
         }
 
         public IActionResult Index()
         {
-            return View(cadeteDb.CadeteList());
+            return View(db.CadeteDb.CadeteList());
         }
 
         //public IActionResult CadeteList()
@@ -39,7 +39,7 @@ namespace tallerIIpractico3.Controllers
         //**************************************AGREGAR CADETE**************************************
         public IActionResult SaveCadete(Cadete cadete)
         {
-            cadeteDb.addCadete(cadete);
+            db.CadeteDb.addCadete(cadete);
             return RedirectToAction("Index");
         }
 

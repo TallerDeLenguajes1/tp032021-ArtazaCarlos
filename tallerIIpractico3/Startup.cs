@@ -8,6 +8,8 @@ using System;
 using System.Threading.Tasks;
 using tallerIIpractico3.Models.Db;
 
+
+
 namespace tallerIIpractico3
 {
     public class Startup
@@ -22,10 +24,9 @@ namespace tallerIIpractico3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            RepositorioCadete cadeteDb = new RepositorioCadete(Configuration.GetConnectionString("default"));
-
+            DbSqlite Db = new DbSqlite(Configuration.GetConnectionString("default"));
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
-            services.AddSingleton(cadeteDb);
+            services.AddSingleton(Db);
 
         }
 
