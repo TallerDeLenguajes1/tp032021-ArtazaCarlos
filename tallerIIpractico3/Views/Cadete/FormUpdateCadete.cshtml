@@ -1,27 +1,30 @@
-﻿@model tallerIIpractico3.entities.Cadete
+﻿@{
+    ViewData["Title"] = "Modificar Cadetes";
+}
+@model tallerIIpractico3.entities.Cadete
 
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <form asp-controller="Cadete" asp-action="SaveCadete" method="post">
+            <form asp-controller="Cadete" asp-action="modificarCadete" method="post">
                 <fieldset>
                     <legend class="">Registrar un cadete</legend>
                     <div class="mb-3">
                         <label asp-for="Nombre" class="form-label"></label>
-                        <input type="text"  id="Nombre" class="form-control" asp-for="Nombre" placeholder="López, David" required>
+                        <input type="text" id="Nombre" class="form-control" asp-for="Nombre" value="@Model.Nombre" required>
                     </div>
                     <div class="mb-3">
                         <label asp-for="Direccion" class="form-label"></label>
-                        <input type="text" id="Direccion" class="form-control" asp-for="Direccion" placeholder="San Lorenzo 789" required>
+                        <input type="text" id="Direccion" class="form-control" asp-for="Direccion" value="@Model.Direccion" required>
                     </div>
                     <div class="mb-3">
                         <label asp-for="Telefono" class="form-label"></label>
-                        <input type="text" id="Telefono" class="form-control" asp-for="Telefono" placeholder="3815456876" required>
+                        <input type="text" id="Telefono" class="form-control" asp-for="Telefono" value="@Model.Telefono" required>
                     </div>
                     <div class="mb-3">
                         <label asp-for="Vehiculo" class="form-label"></label>
                         <select id="Vehiculo" asp-for="Vehiculo">
-                            <option value="">Seleccione</option>
+                            <option value="" selected>Seleccione</option>
                             <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta">Bicicleta</option>
                             <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto">Auto</option>
                             <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto">Moto</option>
@@ -32,6 +35,4 @@
             </form>
         </div>
     </div>
-
 </div>
-

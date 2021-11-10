@@ -26,12 +26,12 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult Index()
         {
-            return View(db.CadeteDb.CadeteList());
+            return View(db.CadeteDb.ReadCadetes());
         }
 
         public IActionResult ListaCompleta()
         {
-            return View(db.PedidoDb.PedidoList());
+            return View(db.PedidoDb.ReadPedidos());
         }
 
         public IActionResult ListaPedidos()

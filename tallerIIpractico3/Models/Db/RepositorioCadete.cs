@@ -17,7 +17,7 @@ namespace tallerIIpractico3.Models.Db
         }
 
 
-        public List<Cadete> CadeteList()
+        public List<Cadete> ReadCadetes()
         {
             List<Cadete> ListaDeCadetes = new List<Cadete>();
             string queryString = @"SELECT
@@ -54,7 +54,7 @@ namespace tallerIIpractico3.Models.Db
 
 
 
-        public void addCadete(Cadete cadete)
+        public void SaveCadete(Cadete cadete)
         {
             string queryString = @"INSERT INTO Cadetes (
                                                             nombre,
@@ -83,6 +83,61 @@ namespace tallerIIpractico3.Models.Db
                 }
             }
 
+        }
+
+        public void UpdateCadete(Cadete cadeteUpdate)
+        {
+            string queryString = @"UPDATE Cadetes
+                                                SET 
+                                                    nombre = '@nombre',
+                                                    direccion = '@direccion',
+                                                    telefono = '@telefono',
+                                                    vehiculo = '@vehiculo'
+                                                WHERE 
+                                                    cadeteId = '@id';";
+
+            using (var conexion = new SQLiteConnection(connectionString))
+            {
+                using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                {
+                    command.Parameters.AddWithValue("@nombre", cadeteUpdate.Nombre);
+                    command.Parameters.AddWithValue("@direccion", cadeteUpdate.Direccion);
+                    command.Parameters.AddWithValue("@telefono", cadeteUpdate.Telefono);
+                    command.Parameters.AddWithValue("@vehiculo", cadeteUpdate.Vehiculo);
+                    conexion.Open();
+                    command.ExecuteNonQuery();
+                }
+                conexion.Close();
+            }
+        }
+
+        public Cadete CadeteById(int id)
+        {
+            Cadete cadeteId = new Cadete();
+            string queryString = @"SELECT * FROM Cadetes WHERE cadeteId = @id;";
+
+            using (var conexion = new SQLiteConnection(connectionString))
+            {
+                using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                {
+                    command.Parameters.AddWithValue("@id", id);
+                    conexion.Open();
+                    command.ExecuteNonQuery();
+                    //Cadete cadeteTemp = new Cadete();
+                    SQLiteDataReader dataReader = command.ExecuteReader();
+                    while (dataReader.Read())
+                    {
+                        cadeteId.Id = Convert.ToInt32(dataReader["cadeteId"]);
+                        cadeteId.Nombre = dataReader["nombre"].ToString();
+                        cadeteId.Direccion = dataReader["direccion"].ToString();
+                        cadeteId.Telefono = dataReader["telefono"].ToString();
+                        cadeteId.Vehiculo = dataReader["vehiculo"].ToString();
+                    }
+                    
+                    }
+                    conexion.Close();
+                }
+            return cadeteId;
         }
 
     }

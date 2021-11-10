@@ -16,7 +16,7 @@ namespace tallerIIpractico3.Models.Db
             connectionString = ConnectionString;
         }
 
-        public List<Pedido> PedidoList()
+        public List<Pedido> ReadPedidos()
         {
             List<Pedido> ListaDePedidos = new List<Pedido>();
             string queryString = @"SELECT * FROM Pedidos INNER JOIN Clientes 
