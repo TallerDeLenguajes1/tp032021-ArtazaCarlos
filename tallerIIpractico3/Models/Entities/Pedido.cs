@@ -13,31 +13,30 @@ namespace tallerIIpractico3.entities
     }
     public class Pedido
     {
-        private int nro;
-        private DateTime fechaHora;
-        private string obs;
+        private int id;
+        private DateTime fecha;
+        private string observaciones;
         private Cliente cliente;
-        private Estado est;
-        private string nomCadete;
-        public int Nro { get => nro; set => nro = value; }
-        public DateTime FechaHora { get => fechaHora; set => fechaHora = value; }
-        public string Obs { get => obs; set => obs = value; }
-        public Cliente Cliente { get => cliente; set => cliente = value; }
-        public Estado Est { get => est; set => est = value; }
-        public string NomCadete { get => nomCadete; set => nomCadete = value; }
+        private string estado;
 
-        public Pedido(int num, string obs_, Estado est, string nomCadete, string nom, string dir, string tel)
-        {
-            Cliente = new Cliente(nom, dir, tel);
-            Nro = num;
-            FechaHora = DateTime.Now;
-            Obs = obs_;
-            Est = est;
-            NomCadete = nomCadete;
-        }
+
+        public int Id { get => id; set => id = value; }
+        public DateTime Fecha { get => fecha; set => fecha = value; }
+        public string Observaciones { get => observaciones; set => observaciones = value; }
+        public Cliente Cliente { get => cliente; set => cliente = value; }
+        public string Estado { get => estado; set => estado = value; }
 
         public Pedido()
         {
+        }
+
+        public Pedido(int id, DateTime fecha, string observaciones, Cliente cliente, Estado estado)
+        {
+            Id = id;
+            Fecha = fecha;
+            Observaciones = observaciones;
+            Cliente = cliente;
+            Estado = estado.ToString();
         }
     }
 }

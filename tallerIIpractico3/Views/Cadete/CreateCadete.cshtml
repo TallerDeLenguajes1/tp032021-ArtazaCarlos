@@ -7,19 +7,19 @@
                 <fieldset>
                     <legend class="">Registrar un cadete</legend>
                     <div class="mb-3">
-                        <label for="nom" class="form-label">Nombre</label>
-                        <input type="text" id="nom" class="form-control" asp-for="Nombre" placeholder="López, David" required>
+                        <label asp-for="Nombre" class="form-label"></label>
+                        <input type="text"  class="form-control" asp-for="Nombre" placeholder="López, David" required>
                     </div>
                     <div class="mb-3">
-                        <label for="dir" class="form-label">Dirección</label>
+                        <label asp-for="Direccion" class="form-label"></label>
                         <input type="text" id="dir" class="form-control" asp-for="Direccion" placeholder="San Lorenzo 789" required>
                     </div>
                     <div class="mb-3">
-                        <label for="tel" class="form-label">Teléfono</label>
+                        <label asp-for="Telefono" class="form-label"></label>
                         <input type="text" id="tel" class="form-control" asp-for="Telefono" placeholder="3815456876" required>
                     </div>
                     <div class="mb-3">
-                        <label for="vehiculo" class="form-label">Vehiculo</label>
+                        <label asp-for="Vehiculo" class="form-label"></label>
                         <select id="vehiculo" asp-for="Vehiculo">
                             <option value="">Seleccione</option>
                             <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta">Bicicleta</option>

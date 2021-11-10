@@ -5,30 +5,39 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
-using tallerIIpractico3.Models;
+using tallerIIpractico3.Models.Db;
 using Rotativa.AspNetCore;
 
 namespace tallerIIpractico3.Controllers
 {
     public class PedidoController : Controller
     {
-        private readonly ILogger<PedidoController> _logger;
-
+        private readonly DbSqlite db;
         private static DateTime fechaInicial;
         private static DateTime fechaFinal;
 
         public static DateTime FechaInicial { get => fechaInicial; set => fechaInicial = value; }
         public static DateTime FechaFinal { get => fechaFinal; set => fechaFinal = value; }
 
-        public PedidoController(ILogger<PedidoController> logger )
+        public PedidoController(DbSqlite Db)
         {
-            _logger = logger;
+            db = Db;
         }
 
-        //public IActionResult Index()
-        //{
-        //    return View(_DB.leerArchivoCadete());
-        //}
+        public IActionResult Index()
+        {
+            return View(db.CadeteDb.CadeteList());
+        }
+
+        public IActionResult ListaCompleta()
+        {
+            return View(db.PedidoDb.PedidoList());
+        }
+
+        public IActionResult ListaPedidos()
+        {
+            return View();
+        }
 
         //public IActionResult crearPedido(string obs, Estado est, string nom, string dir, string tel, int idCadete)
         //{
@@ -42,14 +51,8 @@ namespace tallerIIpractico3.Controllers
         //        return RedirectToAction("Index", "Logger");
         //    }
         //}
-        //public IActionResult ListaPedidos()
-        //{
-        //    return View();
-        //}
-        //public IActionResult ListaCompleta()
-        //{
-        //    return View(_DB.leerArchivoPedido());
-        //}
+
+
 
         ////modifica el pedido desde un listado completo de pedidos
         //public IActionResult ModificarPedidoListaCompleta(int nroPedido, Estado estadoPedido)

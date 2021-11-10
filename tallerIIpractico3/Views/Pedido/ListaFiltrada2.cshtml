@@ -50,31 +50,30 @@
             foreach (var item in Model)
             {
                 <tr>
-                    <td>@item.Nro</td>
-                    <td>@item.FechaHora</td>
-                    <td>@item.Obs</td>
+                    <td>@item.Id</td>
+                    <td>@item.Fecha</td>
+                    <td>@item.Observaciones</td>
                     <td>@item.Cliente.Nombre</td>
                     <td>@item.Cliente.Direcccion</td>
-                    <td>@item.NomCadete</td>
                     <td>
-                        <form asp-controller="Pedido" asp-action="ModificarPedidoListaFiltrada" method="post">
-                            <input type="number" name="nroPedido" value="@item.Nro" hidden>
+                        <form asp-controller="Pedido" asp-action="ModificarPedidoListaCompleta" method="post">
+                            <input type="number" name="nroPedido" value="@item.Id" hidden>
                             <select id="estado" name="estadoPedido">
-                                <option value="" selected>@item.Est</option>
-                                @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
+                                <option value="" selected>@item.Estado</option>
+                                @if (item.Estado == tallerIIpractico3.entities.Estado.En_camino.ToString())
                                 {
                                     <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
                                     <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
                                 }
                             </select>
-                            @if (item.Est == tallerIIpractico3.entities.Estado.En_camino)
+                            @if (item.Estado == tallerIIpractico3.entities.Estado.En_camino.ToString())
                             {
                                 <button type="submit" class="btn btn-primary">Cambiar</button>
                             }
                         </form>
                     </td>
                 </tr>
-                if (item.Est == tallerIIpractico3.entities.Estado.Entregado)
+                if (item.Estado == tallerIIpractico3.entities.Estado.Entregado.ToString())
                 {
                     Entregados++;
                 }
