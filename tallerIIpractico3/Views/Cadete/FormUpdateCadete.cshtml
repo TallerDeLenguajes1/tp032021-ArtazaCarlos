@@ -6,7 +6,7 @@
 <div class="container">
     <div class="row">
         <div class="col-6">
-            <form asp-controller="Cadete" asp-action="modificarCadete" method="post">
+            <form asp-controller="Cadete" asp-action="ModificarCadete" method="post">
                 <fieldset>
                     <legend class="">Registrar un cadete</legend>
                     <div class="mb-3">
@@ -30,6 +30,7 @@
                             <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto">Moto</option>
                         </select>
                     </div>
+                    <input type="number" class="form-control" asp-for="Id" value="@Model.Id" hidden>
                     <button type="submit" class="btn btn-primary">Enviar</button>
                 </fieldset>
             </form>

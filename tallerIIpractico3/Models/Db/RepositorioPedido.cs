@@ -4,16 +4,19 @@ using System.Data.SQLite;
 using System.Linq;
 using System.Threading.Tasks;
 using tallerIIpractico3.entities;
+using NLog;
 
 namespace tallerIIpractico3.Models.Db
 {
-    public class RepositorioPedido
+    public class RepositorioPedidoSQLite : IRepositorioPedido
     {
         private readonly string connectionString;
+        private readonly Logger logger;
 
-        public RepositorioPedido(string ConnectionString)
+        public RepositorioPedidoSQLite(string ConnectionString, Logger logger)
         {
             connectionString = ConnectionString;
+            this.logger = logger;
         }
 
         public List<Pedido> ReadPedidos()
@@ -22,38 +25,124 @@ namespace tallerIIpractico3.Models.Db
             string queryString = @"SELECT * FROM Pedidos INNER JOIN Clientes 
                                     USING(clienteId) 
                                     WHERE Pedidos.activo = 1 AND Clientes.activo = 1";
-
-            using (var conexion = new SQLiteConnection(connectionString))
+            try
             {
-                using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                using (var conexion = new SQLiteConnection(connectionString))
                 {
-                    conexion.Open();
-                    command.ExecuteNonQuery();
-                    SQLiteDataReader PedidoFilas = command.ExecuteReader();
-                    while (PedidoFilas.Read())
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
                     {
-                        Pedido PedidoTemp = new Pedido();
-                        Cliente ClienteTemp = new Cliente();
+                        conexion.Open();
+                        command.ExecuteNonQuery();
+                        SQLiteDataReader PedidoFilas = command.ExecuteReader();
+                        while (PedidoFilas.Read())
+                        {
+                            Pedido PedidoTemp = new Pedido();
+                            Cliente ClienteTemp = new Cliente();
 
-                        PedidoTemp.Id = Convert.ToInt32(PedidoFilas["pedidoId"]);
-                        PedidoTemp.Fecha = Convert.ToDateTime(PedidoFilas["fecha"]);
-                        PedidoTemp.Observaciones = Convert.ToString(PedidoFilas["observaciones"]);
-                        PedidoTemp.Estado = Convert.ToString(PedidoFilas["estado"]);
+                            PedidoTemp.Id = Convert.ToInt32(PedidoFilas["pedidoId"]);
+                            PedidoTemp.Fecha = Convert.ToString(PedidoFilas["fecha"]);
+                            PedidoTemp.Observaciones = Convert.ToString(PedidoFilas["observaciones"]);
+                            PedidoTemp.EstadoPedido = Convert.ToString(PedidoFilas["estadoPedido"]);
 
-                        ClienteTemp.Id = Convert.ToInt32(PedidoFilas["pedidoId"]);
-                        ClienteTemp.Nombre = Convert.ToString(PedidoFilas["nombre"]);
-                        ClienteTemp.Direcccion = Convert.ToString(PedidoFilas["direccion"]);
-                        ClienteTemp.Telefono = Convert.ToString(PedidoFilas["telefono"]);
+                            ClienteTemp.Id = Convert.ToInt32(PedidoFilas["clienteId"]);
+                            ClienteTemp.Nombre = Convert.ToString(PedidoFilas["nombre"]);
+                            ClienteTemp.Direccion = Convert.ToString(PedidoFilas["direccion"]);
+                            ClienteTemp.Telefono = Convert.ToString(PedidoFilas["telefono"]);
 
-                        PedidoTemp.Cliente = ClienteTemp;
-                        ListaDePedidos.Add(PedidoTemp);
+                            PedidoTemp.Cliente = ClienteTemp;
+                            ListaDePedidos.Add(PedidoTemp);
+                        }
+
+                        conexion.Close();
                     }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+            
+            }
+            return ListaDePedidos;
+        }
 
+        public void SavePedido(Pedido pedido, int cadeteId)
+        {
+            string queryString = @"INSERT INTO Pedidos (
+                                                fecha,
+                                                observaciones,
+                                                clienteId,
+                                                cadeteId,
+                                                estadoPedido
+                                            )
+                                            VALUES (
+                                                @fecha,
+                                                @observaciones,
+                                                @clienteId,
+                                                @cadeteId,
+                                                @estadoPedido
+                                            );";
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    
+                    
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@fecha", pedido.Fecha);
+                        command.Parameters.AddWithValue("@observaciones", pedido.Observaciones);
+                        command.Parameters.AddWithValue("@clienteId", pedido.Cliente.Id);
+                        command.Parameters.AddWithValue("@cadeteId", cadeteId);
+                        command.Parameters.AddWithValue("@estadoPedido", pedido.EstadoPedido);
+                        conexion.Open();
+                        command.ExecuteNonQuery();
+                        conexion.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+             
+            }
+        }
+
+        public void UpdatePedido(int pedidoId, string estado)
+        {
+            string queryString = @"UPDATE Pedidos
+                                                SET
+                                                    estadoPedido = @estado
+                                                WHERE pedidoId = @Id;";
+
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@estado", estado);
+                        command.Parameters.AddWithValue("@Id", pedidoId);
+                        conexion.Open();
+                        command.ExecuteNonQuery();
+                    }
                     conexion.Close();
                 }
             }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                throw;
+            }
+        }
 
-            return ListaDePedidos;
+        public void DeletePedido(int id)
+        {
+            throw new NotImplementedException();
+        }
+
+        public Pedido PedidoById(int id)
+        {
+            throw new NotImplementedException();
         }
     }
 }

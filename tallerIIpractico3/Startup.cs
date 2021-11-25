@@ -4,9 +4,12 @@ using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using NLog;
 using System;
 using System.Threading.Tasks;
 using tallerIIpractico3.Models.Db;
+using NLog.Web;
+
 
 
 
@@ -24,9 +27,15 @@ namespace tallerIIpractico3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            DbSqlite Db = new DbSqlite(Configuration.GetConnectionString("default"));
-            services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            Logger logger = NLogBuilder.ConfigureNLog("Nlog.config").GetCurrentClassLogger();
+            IRepositorioCadete RepositorioCadete = new RepositorioCadeteSQLite(Configuration.GetConnectionString("default"), logger);
+            IRepositorioPedido RepositorioPedido = new RepositorioPedidoSQLite(Configuration.GetConnectionString("default"), logger);
+            IRepositorioCliente RepositorioCliente = new RepositorioClienteSQLite(Configuration.GetConnectionString("default"), logger);
+
+            Db Db = new(RepositorioCadete, RepositorioPedido, RepositorioCliente);
             services.AddSingleton(Db);
+
+            services.AddControllersWithViews().AddRazorRuntimeCompilation();
 
         }
 
@@ -48,6 +57,8 @@ namespace tallerIIpractico3
 
             app.UseRouting();
 
+            //Session()
+
             app.UseAuthorization();
 
             app.UseEndpoints(endpoints =>
@@ -57,7 +68,7 @@ namespace tallerIIpractico3
                     pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
-            Rotativa.AspNetCore.RotativaConfiguration.Setup(env.WebRootPath, "../Rotativa");
+          
         }
     }
 }

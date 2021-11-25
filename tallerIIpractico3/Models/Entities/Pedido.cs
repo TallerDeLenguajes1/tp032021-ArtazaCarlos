@@ -7,6 +7,7 @@ namespace tallerIIpractico3.entities
 {   
     public enum Estado
     {
+        Sin_asignar,
         En_camino,
         Entregado,
         No_entregado,
@@ -14,29 +15,37 @@ namespace tallerIIpractico3.entities
     public class Pedido
     {
         private int id;
-        private DateTime fecha;
+        private string fecha;
         private string observaciones;
         private Cliente cliente;
-        private string estado;
+        private string estadoPedido;
 
 
         public int Id { get => id; set => id = value; }
-        public DateTime Fecha { get => fecha; set => fecha = value; }
+        public string Fecha { get => fecha; set => fecha = value; }
         public string Observaciones { get => observaciones; set => observaciones = value; }
         public Cliente Cliente { get => cliente; set => cliente = value; }
-        public string Estado { get => estado; set => estado = value; }
+        public string EstadoPedido { get => estadoPedido; set => estadoPedido = value; }
 
         public Pedido()
         {
         }
 
-        public Pedido(int id, DateTime fecha, string observaciones, Cliente cliente, Estado estado)
+        public Pedido(string observaciones, Cliente cliente)
         {
-            Id = id;
-            Fecha = fecha;
+            Id = 9999;
+            Fecha = DateTime.Now.ToString();
             Observaciones = observaciones;
             Cliente = cliente;
-            Estado = estado.ToString();
+            EstadoPedido = Estado.En_camino.ToString();
+        }
+
+        public Pedido(string observaciones)
+        {
+            Id = 9999;
+            Fecha = DateTime.Now.ToString();
+            Observaciones = observaciones;
+            EstadoPedido = Estado.En_camino.ToString();
         }
     }
 }

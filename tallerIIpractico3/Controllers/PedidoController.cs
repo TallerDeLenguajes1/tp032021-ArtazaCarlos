@@ -6,51 +6,50 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models.Db;
-using Rotativa.AspNetCore;
 
 namespace tallerIIpractico3.Controllers
 {
     public class PedidoController : Controller
     {
-        private readonly DbSqlite db;
+        private readonly Db db;
         private static DateTime fechaInicial;
         private static DateTime fechaFinal;
 
         public static DateTime FechaInicial { get => fechaInicial; set => fechaInicial = value; }
         public static DateTime FechaFinal { get => fechaFinal; set => fechaFinal = value; }
 
-        public PedidoController(DbSqlite Db)
+        public PedidoController(Db Db)
         {
             db = Db;
         }
 
         public IActionResult Index()
         {
-            return View(db.CadeteDb.ReadCadetes());
-        }
-
-        public IActionResult ListaCompleta()
-        {
             return View(db.PedidoDb.ReadPedidos());
         }
 
-        public IActionResult ListaPedidos()
+        public IActionResult CreateView()
         {
-            return View();
+            return View(db.CadeteDb.ReadCadetes());
         }
 
-        //public IActionResult crearPedido(string obs, Estado est, string nom, string dir, string tel, int idCadete)
-        //{
-        //    int nro = _DB.leerArchivoPedido().Count() + 1;
-        //    if (_DB.guardarPedido(nro, obs, est, nom, dir, tel, idCadete))
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index", "Logger");
-        //    }
-        //}
+        public IActionResult CreatePedido(string obs, string nom, string dir, string tel, int cadeteId)
+        {
+            Cliente cliente = new(nom, dir, tel);
+            db.ClienteDb.SaveCliente(cliente);
+            Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(nom, tel);
+            Pedido pedido = new(obs, clienteWithId);
+            db.PedidoDb.SavePedido(pedido, cadeteId);
+
+            return RedirectToAction("Index");
+        }
+
+        public IActionResult UpdatePedido(int pedidoId, Estado estadoPedido)
+        {
+            db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString());
+            return RedirectToAction("Index");
+        }
+
 
 
 

@@ -6,17 +6,17 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models.Db;
-using Rotativa.AspNetCore;
 using NLog;
+using Microsoft.AspNetCore.Http;
 
 
 namespace tallerIIpractico3.Controllers
 {
     public class CadeteController : Controller
     {
-        private readonly DbSqlite db;
+        private readonly Db db;
 
-        public CadeteController(DbSqlite Db)
+        public CadeteController(Db Db)
         {
             db = Db;
         }
@@ -49,18 +49,17 @@ namespace tallerIIpractico3.Controllers
             return View(db.CadeteDb.CadeteById(id));
         }
 
-        public IActionResult modificarCadete(Cadete cadeteUpdate)
+        public IActionResult ModificarCadete(Cadete cadeteUpdate)
         {
-
+            db.CadeteDb.UpdateCadete(cadeteUpdate);
             return RedirectToAction("Index");
         }
 
         ////***************************************ELIMINAR CADETE************************************
-        //public IActionResult ConfirmarEliminarCadete(int id)
-        //{
-        //    Cadete cadeteAEliminar = _DB.consultarUnCadete(id);
-        //    return View(cadeteAEliminar);
-        //}
+        public IActionResult ConfirmarEliminarCadete(int id)
+        {
+            return View(db.CadeteDb.CadeteById(id));
+        }
 
         //public IActionResult eliminarCadete(int id)
         //{
