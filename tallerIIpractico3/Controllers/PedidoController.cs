@@ -6,12 +6,14 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models.Db;
+using NLog;
 
 namespace tallerIIpractico3.Controllers
 {
     public class PedidoController : Controller
     {
         private readonly Db db;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
         private static DateTime fechaInicial;
         private static DateTime fechaFinal;
 
@@ -21,6 +23,7 @@ namespace tallerIIpractico3.Controllers
         public PedidoController(Db Db)
         {
             db = Db;
+        
         }
 
         public IActionResult Index()

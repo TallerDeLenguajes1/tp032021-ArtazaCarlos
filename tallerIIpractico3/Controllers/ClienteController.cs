@@ -14,10 +14,12 @@ namespace tallerIIpractico3.Controllers
     public class ClienteController : Controller
     {
         private readonly Db db;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
         public ClienteController(Db Db)
         {
             db = Db;
+         
         }
 
 

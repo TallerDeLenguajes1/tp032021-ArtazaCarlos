@@ -10,15 +10,19 @@ using NLog;
 using Microsoft.AspNetCore.Http;
 
 
+
 namespace tallerIIpractico3.Controllers
 {
     public class CadeteController : Controller
     {
         private readonly Db db;
+        private readonly Logger logger = LogManager.GetCurrentClassLogger();
+
 
         public CadeteController(Db Db)
         {
             db = Db;
+            
         }
 
         public IActionResult Index()
@@ -32,11 +36,18 @@ namespace tallerIIpractico3.Controllers
         }
 
         public IActionResult CreateCadete()
-        {            
-            return View(new Cadete());
+        {
+            string rol = HttpContext.Session.GetString("rol");
+            if (rol == "admin")
+            {
+                return View(new Cadete());
+            }
+            return RedirectToAction("Index", "Logger");
         }
 
         //**************************************AGREGAR CADETE**************************************
+
+        [HttpPost]
         public IActionResult SaveCadete(Cadete cadete)
         {
             db.CadeteDb.SaveCadete(cadete);
@@ -44,6 +55,8 @@ namespace tallerIIpractico3.Controllers
         }
 
         //***************************************MODIFICAR CADETE************************************
+
+        [HttpGet]
         public IActionResult FormUpdateCadete(int id)
         {
             return View(db.CadeteDb.CadeteById(id));
@@ -56,6 +69,8 @@ namespace tallerIIpractico3.Controllers
         }
 
         ////***************************************ELIMINAR CADETE************************************
+        
+        [HttpGet]
         public IActionResult ConfirmarEliminarCadete(int id)
         {
             return View(db.CadeteDb.CadeteById(id));

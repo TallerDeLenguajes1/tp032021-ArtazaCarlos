@@ -47,6 +47,7 @@ namespace tallerIIpractico3.Models.Db
                             cadeteTemp.Vehiculo = CadeteFilas["vehiculo"].ToString();
                             ListaDeCadetes.Add(cadeteTemp);
                         }
+                        CadeteFilas.Close();
                         conexion.Close();
                     }
                 }

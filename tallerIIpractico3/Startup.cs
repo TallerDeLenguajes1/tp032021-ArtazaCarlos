@@ -9,8 +9,7 @@ using System;
 using System.Threading.Tasks;
 using tallerIIpractico3.Models.Db;
 using NLog.Web;
-
-
+using AutoMapper;
 
 
 namespace tallerIIpractico3
@@ -27,15 +26,25 @@ namespace tallerIIpractico3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.AddAutoMapper(typeof(sistemaDeCadeteria.PerfilDeMapeo));
+            
             Logger logger = NLogBuilder.ConfigureNLog("Nlog.config").GetCurrentClassLogger();
+
             IRepositorioCadete RepositorioCadete = new RepositorioCadeteSQLite(Configuration.GetConnectionString("default"), logger);
             IRepositorioPedido RepositorioPedido = new RepositorioPedidoSQLite(Configuration.GetConnectionString("default"), logger);
             IRepositorioCliente RepositorioCliente = new RepositorioClienteSQLite(Configuration.GetConnectionString("default"), logger);
+            IRepositorioUsuario RepositorioUsuario = new RepositorioUsuarioSQLite(Configuration.GetConnectionString("default"), logger);
 
-            Db Db = new(RepositorioCadete, RepositorioPedido, RepositorioCliente);
+            Db Db = new(RepositorioCadete, RepositorioPedido, RepositorioCliente, RepositorioUsuario);
             services.AddSingleton(Db);
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+            services.AddSession(options =>
+            {
+                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.Cookie.HttpOnly = true;
+            });
+
 
         }
 
@@ -57,7 +66,7 @@ namespace tallerIIpractico3
 
             app.UseRouting();
 
-            //Session()
+            app.UseSession();
 
             app.UseAuthorization();
 
@@ -65,7 +74,7 @@ namespace tallerIIpractico3
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
+                    pattern: "{controller=Usuario}/{action=Index}/{id?}");
             });
 
           

@@ -199,6 +199,7 @@ namespace tallerIIpractico3.Models.Db
                           
                             ListaDeClientes.Add(clienteTemp);
                         }
+                        clienteFilas.Close();
                         conexion.Close();
                     }
                 }

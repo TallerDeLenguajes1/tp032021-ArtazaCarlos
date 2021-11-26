@@ -24,7 +24,7 @@ namespace tallerIIpractico3.Models.Db
             List<Pedido> ListaDePedidos = new List<Pedido>();
             string queryString = @"SELECT * FROM Pedidos INNER JOIN Clientes 
                                     USING(clienteId) 
-                                    WHERE Pedidos.activo = 1 AND Clientes.activo = 1";
+                                    WHERE Pedidos.activo = 1";
             try
             {
                 using (var conexion = new SQLiteConnection(connectionString))
@@ -52,7 +52,7 @@ namespace tallerIIpractico3.Models.Db
                             PedidoTemp.Cliente = ClienteTemp;
                             ListaDePedidos.Add(PedidoTemp);
                         }
-
+                        PedidoFilas.Close();
                         conexion.Close();
                     }
                 }
