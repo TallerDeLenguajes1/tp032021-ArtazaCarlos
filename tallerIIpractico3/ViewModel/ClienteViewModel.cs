@@ -4,18 +4,20 @@ namespace tallerIIpractico3.ViewModel
 {
     public class ClienteViewModel
     {
-
+        private int id;
         private string nombre;
         private string direccion;
         private string telefono;
 
+
+        public int Id { get => id; set => id = value; }
         [Required]
         public string Nombre { get => nombre; set => nombre = value; }
         [Required]
         public string Direccion { get => direccion; set => direccion = value; }
         [Required]
         public string Telefono { get => telefono; set => telefono = value; }
-
+        
 
         public ClienteViewModel()
         {

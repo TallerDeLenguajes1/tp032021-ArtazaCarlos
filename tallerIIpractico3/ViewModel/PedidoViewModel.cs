@@ -32,7 +32,7 @@ namespace tallerIIpractico3.ViewModel
         }
     }
 
-    public class CreatePedidoNewCliente_ViewModel
+    public class CreatePedidoViewModel
     {
         private List<CadeteViewModel> cadetes;
         private ClienteViewModel cliente;
@@ -45,7 +45,7 @@ namespace tallerIIpractico3.ViewModel
         public string PedidoObs { get => pedidoObs; set => pedidoObs = value; }
         public int CadeteId { get => cadeteId; set => cadeteId = value; }
 
-        public CreatePedidoNewCliente_ViewModel()
+        public CreatePedidoViewModel()
         {
 
         }

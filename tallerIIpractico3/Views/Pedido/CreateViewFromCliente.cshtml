@@ -1,19 +1,21 @@
-﻿@model tallerIIpractico3.ViewModel.CreatePedidoViewModel 
-
+﻿@model tallerIIpractico3.ViewModel.CreatePedidoViewModel
+@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
 @{
-    ViewData["Title"] = "CreateView";
 }
-
 
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Pedido" asp-action="CreatePedido">
+        <form asp-controller="Pedido" asp-action="CreatePedidoFromCliente">
             <fieldset>
-            <legend>Pedido - Nuevo Cliente</legend>
+            <legend>Pedido para Cliente: </legend>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
+            <input asp-for="Cliente.Id" class="form-control" hidden/>
+
             <div class="form-group">
                 <label asp-for="PedidoObs" class="control-label">Observaciones</label>
                 <input asp-for="PedidoObs" class="form-control" />
@@ -21,23 +23,23 @@
             </div>
             <div class="form-group">
                 <label asp-for="Cliente.Nombre" class="control-label">Nombre</label>
-                <input asp-for="Cliente.Nombre" class="form-control" />
+                <input asp-for="Cliente.Nombre" class="form-control" readonly/>
                 <span asp-validation-for="Cliente.Nombre" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Cliente.Direccion" class="control-label">Direccion</label>
-                <input asp-for="Cliente.Direccion" class="form-control"/>
+                <input asp-for="Cliente.Direccion" class="form-control" readonly/>
                 <span asp-validation-for="Cliente.Direccion" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Cliente.Telefono" class="control-label">Telefono</label>
-                <input asp-for="Cliente.Telefono" class="form-control" />
+                <input asp-for="Cliente.Telefono" class="form-control" readonly/>
                 <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
             </div>
             <div class="mb-3">
                 <label asp-for="CadeteId" class="control-label">Cadete</label>
                 <select asp-for="CadeteId" asp-items="@(new SelectList(Model.Cadetes, "Id", "Nombre"))">
-                    <option value="" selected>----</option>
+                    <option value="" selected>>----</</option>
                 </select>
             </div>
             </fieldset>
@@ -50,7 +52,7 @@
 </div>
 
 <div>
-    <a asp-action="IndexPedido">Lista de Pedidos</a>
+    <a asp-controller="Cliente" asp-action="IndexCliente">Lista de Clientes</a>
 </div>
 
 @section Scripts {

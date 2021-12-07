@@ -4,10 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
-
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
+<hr />
 <table class="table">
     <thead>
         <tr>
@@ -42,7 +39,7 @@
                 @Html.DisplayFor(modelItem => item.Telefono)
             </td>
             <td>
-                @Html.ActionLink("Tomar Pedido", "", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Tomar Pedido", "CreateViewFromCliente", "Pedido", item) |
                 @Html.ActionLink("Modificar", "EditView", item) |
                 @Html.ActionLink("Eliminar", "Delete", item)
             </td>

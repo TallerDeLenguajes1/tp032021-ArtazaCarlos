@@ -35,9 +35,11 @@ namespace tallerIIpractico3.Controllers
             return View(db.PedidoDb.ReadPedidos());
         }
 
+
+//************************CREAR PEDIDO DESDE MENU******************************
         public IActionResult CreateView()
         {
-            CreatePedidoNewCliente_ViewModel modelosParaPedido = new CreatePedidoNewCliente_ViewModel();
+            CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
             List<Cadete> cadetes = db.CadeteDb.ReadCadetes();
             var cadetesModel = mapper.Map<List<CadeteViewModel>>(cadetes);
             modelosParaPedido.Cadetes = cadetesModel;
@@ -45,8 +47,8 @@ namespace tallerIIpractico3.Controllers
             return View(modelosParaPedido);
         }
 
-
-        public IActionResult CreatePedido(CreatePedidoNewCliente_ViewModel modelosParaPedido)
+     
+        public IActionResult CreatePedido(CreatePedidoViewModel modelosParaPedido)
         {
             var clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
             db.ClienteDb.SaveCliente(clienteDb);
@@ -54,6 +56,31 @@ namespace tallerIIpractico3.Controllers
 
             Pedido pedido = new(modelosParaPedido.PedidoObs);
             pedido.Cliente = clienteWithId;
+            db.PedidoDb.SavePedido(pedido, modelosParaPedido.CadeteId);
+
+            return RedirectToAction("IndexPedido");
+        }
+
+//************************CREAR PEDIDO DESDE CLIENTES CARGADOS******************************
+        public IActionResult CreateViewFromCliente(Cliente cliente)
+        {
+            CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
+
+            List<Cadete> cadetes = db.CadeteDb.ReadCadetes();
+            var cadetesModel = mapper.Map<List<CadeteViewModel>>(cadetes);
+            var clienteVM = mapper.Map<ClienteViewModel>(cliente);
+
+            modelosParaPedido.Cadetes = cadetesModel;
+            modelosParaPedido.Cliente = clienteVM;
+
+            return View(modelosParaPedido);
+        }
+
+        public IActionResult CreatePedidoFromCliente(CreatePedidoViewModel modelosParaPedido)
+        {
+            Pedido pedido = new(modelosParaPedido.PedidoObs);
+            Cliente clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
+            pedido.Cliente = clienteDb;
             db.PedidoDb.SavePedido(pedido, modelosParaPedido.CadeteId);
 
             return RedirectToAction("IndexPedido");
@@ -77,9 +104,6 @@ namespace tallerIIpractico3.Controllers
 
         //    return RedirectToAction("IndexPedido");
         //}
-
-
-
 
 
 
