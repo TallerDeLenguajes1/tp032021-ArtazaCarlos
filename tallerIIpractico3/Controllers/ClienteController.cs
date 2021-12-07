@@ -23,7 +23,7 @@ namespace tallerIIpractico3.Controllers
         }
 
 
-        public IActionResult Index()
+        public IActionResult IndexCliente()
         {
             return View(db.ClienteDb.ReadCliente());
         }
@@ -36,7 +36,7 @@ namespace tallerIIpractico3.Controllers
         public IActionResult CreateCliente(Cliente cliente)
         {
             db.ClienteDb.SaveCliente(cliente);
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexCliente");
         }
 
         public IActionResult EditView(Cliente cliente)
@@ -47,7 +47,7 @@ namespace tallerIIpractico3.Controllers
         public IActionResult UpdateCliente(Cliente cliente)
         {
             db.ClienteDb.UpdateCliente(cliente);
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexCliente");
         }
 
     }

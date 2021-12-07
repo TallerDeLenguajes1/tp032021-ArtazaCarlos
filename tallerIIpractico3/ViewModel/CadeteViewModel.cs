@@ -3,10 +3,11 @@ using System.ComponentModel.DataAnnotations;
 
 namespace tallerIIpractico3.ViewModel
 {
-    public enum TipoVehiculo { Bicicleta, Auto, Moto }
+    public enum TipoVehiculo { Bicicleta, Auto, Moto } 
+
     public class CadeteViewModel
     {
-
+        private int id;
         private string nombre;
         private string direccion;
         private string telefono;
@@ -15,6 +16,7 @@ namespace tallerIIpractico3.ViewModel
         private List<PedidoViewModel> pedidos;
 
 
+        public int Id { get => id; set => id = value; }
         [Required]
         public string Nombre { get => nombre; set => nombre = value; }
         [Required]
@@ -26,30 +28,12 @@ namespace tallerIIpractico3.ViewModel
 
         public int PedidosPendientes { get => pedidosPendientes; set => pedidosPendientes = value; }
         public List<PedidoViewModel> Pedidos { get => pedidos; set => pedidos = value; }
-
-
-        public CadeteViewModel(string nom, string dir, string tel, TipoVehiculo vehiculo)
-        {
-            Nombre = nom;
-            Direccion = dir;
-            Telefono = tel;
-            Vehiculo = vehiculo.ToString();
-            Pedidos = new List<PedidoViewModel>();
-            PedidosPendientes = 0;
-        }
+        
 
         public CadeteViewModel()
         {
-            Pedidos = new List<PedidoViewModel>();
         }
 
-        public void addOrder(PedidoViewModel ped)
-        {
-            Pedidos.Add(ped);
-        }
-        public void removeOrder(PedidoViewModel ped)
-        {
-            Pedidos.Remove(ped);
-        }
+
     }
 }

@@ -27,7 +27,7 @@ namespace tallerIIpractico3.Controllers
             this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult IndexUsuario()
         {
             return View();
         }
@@ -41,7 +41,7 @@ namespace tallerIIpractico3.Controllers
             {
                 return RedirectToAction("Index", "Home");
             }    
-            return View("Index");
+            return View("IndexUsuario");
         }
 
         public IActionResult CreateUsuarioView()
@@ -56,7 +56,7 @@ namespace tallerIIpractico3.Controllers
             {
                 var usu = mapper.Map<Usuario>(usuVm);
                 db.UsuarioDb.SaveUsuario(usu);
-                return RedirectToAction("Index");
+                return RedirectToAction("IndexUsuario");
 
             }
             else

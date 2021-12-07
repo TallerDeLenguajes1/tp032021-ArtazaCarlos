@@ -25,7 +25,7 @@ namespace tallerIIpractico3.Controllers
             
         }
 
-        public IActionResult Index()
+        public IActionResult IndexCadete()
         {
             return View(db.CadeteDb.ReadCadetes());
         }
@@ -42,7 +42,7 @@ namespace tallerIIpractico3.Controllers
             {
                 return View(new Cadete());
             }
-            return RedirectToAction("Index", "Logger");
+            return RedirectToAction("IndexLogger", "Logger");
         }
 
         //**************************************AGREGAR CADETE**************************************
@@ -51,7 +51,7 @@ namespace tallerIIpractico3.Controllers
         public IActionResult SaveCadete(Cadete cadete)
         {
             db.CadeteDb.SaveCadete(cadete);
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexCadete");
         }
 
         //***************************************MODIFICAR CADETE************************************
@@ -65,7 +65,7 @@ namespace tallerIIpractico3.Controllers
         public IActionResult ModificarCadete(Cadete cadeteUpdate)
         {
             db.CadeteDb.UpdateCadete(cadeteUpdate);
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexCadete");
         }
 
         ////***************************************ELIMINAR CADETE************************************

@@ -12,7 +12,7 @@ namespace tallerIIpractico3.Controllers
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public IActionResult Index()
+        public IActionResult IndexLogger()
         {
             return View();
         }

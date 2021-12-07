@@ -20,13 +20,5 @@ namespace tallerIIpractico3.ViewModel
         public ClienteViewModel()
         {
         }
-
-        public ClienteViewModel(string nombre, string direcccion, string telefono)
-        {
-     
-            Nombre = nombre;
-            Direccion = direcccion;
-            Telefono = telefono;
-        }
     }
 }

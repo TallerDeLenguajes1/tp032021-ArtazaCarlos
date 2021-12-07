@@ -23,14 +23,5 @@ namespace tallerIIpractico3.ViewModel
         public UsuarioViewModel()
         {
         }
-
-        public UsuarioViewModel(int id, string nombre, string user, string password)
-        {
-
-            Nombre = nombre;
-            User = user;
-            Password = password;
-
-        }
     }
 }

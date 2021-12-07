@@ -32,7 +32,6 @@ namespace tallerIIpractico3.Models.Db
                     using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
                     {
                         conexion.Open();
-                        command.ExecuteNonQuery();
                         SQLiteDataReader PedidoFilas = command.ExecuteReader();
                         while (PedidoFilas.Read())
                         {

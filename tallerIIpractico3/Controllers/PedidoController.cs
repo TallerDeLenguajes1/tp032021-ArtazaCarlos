@@ -7,51 +7,78 @@ using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
 using tallerIIpractico3.Models.Db;
 using NLog;
+using tallerIIpractico3.ViewModel;
+using AutoMapper;
 
 namespace tallerIIpractico3.Controllers
 {
     public class PedidoController : Controller
     {
         private readonly Db db;
+        private readonly IMapper mapper;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
-        private static DateTime fechaInicial;
-        private static DateTime fechaFinal;
 
-        public static DateTime FechaInicial { get => fechaInicial; set => fechaInicial = value; }
-        public static DateTime FechaFinal { get => fechaFinal; set => fechaFinal = value; }
+        //private static DateTime fechaInicial;
+        //private static DateTime fechaFinal;
 
-        public PedidoController(Db Db)
+        //public static DateTime FechaInicial { get => fechaInicial; set => fechaInicial = value; }
+        //public static DateTime FechaFinal { get => fechaFinal; set => fechaFinal = value; }
+
+        public PedidoController(Db Db, IMapper mapper)
         {
             db = Db;
-        
+            this.mapper = mapper;
         }
 
-        public IActionResult Index()
+        public IActionResult IndexPedido()
         {
             return View(db.PedidoDb.ReadPedidos());
         }
 
         public IActionResult CreateView()
         {
-            return View(db.CadeteDb.ReadCadetes());
+            CreatePedidoNewCliente_ViewModel modelosParaPedido = new CreatePedidoNewCliente_ViewModel();
+            List<Cadete> cadetes = db.CadeteDb.ReadCadetes();
+            var cadetesModel = mapper.Map<List<CadeteViewModel>>(cadetes);
+            modelosParaPedido.Cadetes = cadetesModel;
+
+            return View(modelosParaPedido);
         }
 
-        public IActionResult CreatePedido(string obs, string nom, string dir, string tel, int cadeteId)
+
+        public IActionResult CreatePedido(CreatePedidoNewCliente_ViewModel modelosParaPedido)
         {
-            Cliente cliente = new(nom, dir, tel);
-            db.ClienteDb.SaveCliente(cliente);
-            Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(nom, tel);
-            Pedido pedido = new(obs, clienteWithId);
-            db.PedidoDb.SavePedido(pedido, cadeteId);
+            var clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
+            db.ClienteDb.SaveCliente(clienteDb);
+            Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(clienteDb.Nombre, clienteDb.Telefono);
 
-            return RedirectToAction("Index");
+            Pedido pedido = new(modelosParaPedido.PedidoObs);
+            pedido.Cliente = clienteWithId;
+            db.PedidoDb.SavePedido(pedido, modelosParaPedido.CadeteId);
+
+            return RedirectToAction("IndexPedido");
         }
 
-        public IActionResult UpdatePedido(int pedidoId, Estado estadoPedido)
+
+        public IActionResult UpdatePedido(int pedidoId, entities.Estado estadoPedido)
         {
             db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString());
-            return RedirectToAction("Index");
+            return RedirectToAction("IndexPedido");
         }
+
+
+        //public IActionResult CreatePedido(string obs, string nom, string dir, string tel, int cadeteId)
+        //{
+        //    Cliente cliente = new(nom, dir, tel);
+        //    db.ClienteDb.SaveCliente(cliente);
+        //    Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(nom, tel);
+        //    Pedido pedido = new(obs, clienteWithId);
+        //    db.PedidoDb.SavePedido(pedido, cadeteId);
+
+        //    return RedirectToAction("IndexPedido");
+        //}
+
+
 
 
 

@@ -26,6 +26,7 @@ namespace tallerIIpractico3
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+
             services.AddAutoMapper(typeof(sistemaDeCadeteria.PerfilDeMapeo));
             
             Logger logger = NLogBuilder.ConfigureNLog("Nlog.config").GetCurrentClassLogger();
@@ -74,7 +75,7 @@ namespace tallerIIpractico3
             {
                 endpoints.MapControllerRoute(
                     name: "default",
-                    pattern: "{controller=Usuario}/{action=Index}/{id?}");
+                    pattern: "{controller=Home}/{action=Index}/{id?}");
             });
 
           
