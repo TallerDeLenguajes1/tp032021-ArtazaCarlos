@@ -1,11 +1,12 @@
 ﻿@model IEnumerable<tallerIIpractico3.entities.Cliente>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "IndexCliente";
 }
 
 <hr />
-<table class="table">
+
+<table class="table" style="text-align:center;">
     <thead>
         <tr>
             <th>
@@ -20,6 +21,7 @@
             <th>
                 @Html.DisplayNameFor(model => model.Telefono)
             </th>
+            <th></th>
             <th></th>
         </tr>
     </thead>
@@ -38,11 +40,13 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Telefono)
             </td>
+            <td style="border:solid gray 1px">
+                @Html.ActionLink("Tomar Pedido", "CreateViewFromCliente", "Pedido", item)
+            </td>
             <td>
-                @Html.ActionLink("Tomar Pedido", "CreateViewFromCliente", "Pedido", item) |
                 @Html.ActionLink("Modificar", "EditView", item) |
                 @Html.ActionLink("Eliminar", "Delete", item)
-            </td>
+            </td> 
         </tr>
 }
     </tbody>

@@ -12,7 +12,7 @@ namespace tallerIIpractico3.ViewModel
         private string direccion;
         private string telefono;
         private string vehiculo;
-        private int pedidosPendientes;
+
         private List<PedidoViewModel> pedidos;
 
 
@@ -26,7 +26,7 @@ namespace tallerIIpractico3.ViewModel
         [Required]
         public string Vehiculo { get => vehiculo; set => vehiculo = value; }
 
-        public int PedidosPendientes { get => pedidosPendientes; set => pedidosPendientes = value; }
+
         public List<PedidoViewModel> Pedidos { get => pedidos; set => pedidos = value; }
         
 

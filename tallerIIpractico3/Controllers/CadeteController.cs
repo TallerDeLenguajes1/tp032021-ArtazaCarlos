@@ -8,26 +8,29 @@ using tallerIIpractico3.entities;
 using tallerIIpractico3.Models.Db;
 using NLog;
 using Microsoft.AspNetCore.Http;
-
-
+using tallerIIpractico3.ViewModel;
+using AutoMapper;
 
 namespace tallerIIpractico3.Controllers
 {
     public class CadeteController : Controller
     {
         private readonly Db db;
+        private readonly IMapper mapper;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
 
-        public CadeteController(Db Db)
+        public CadeteController(Db Db, IMapper mapper)
         {
             db = Db;
-            
+            this.mapper = mapper;
         }
 
         public IActionResult IndexCadete()
         {
-            return View(db.CadeteDb.ReadCadetes());
+            List<Cadete> cadetes = db.CadeteDb.ReadCadetes();
+            cadetes.ForEach(cadete => cadete.Pedidos = db.PedidoDb.GetPedidosImpagos(cadete.Id));
+            return View(cadetes);
         }
 
         public IActionResult CadeteList()
@@ -37,20 +40,16 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult CreateCadete()
         {
-            string rol = HttpContext.Session.GetString("rol");
-            if (rol == "admin")
-            {
-                return View(new Cadete());
-            }
-            return RedirectToAction("IndexLogger", "Logger");
+            return View(new CadeteViewModel());
         }
 
         //**************************************AGREGAR CADETE**************************************
 
         [HttpPost]
-        public IActionResult SaveCadete(Cadete cadete)
+        public IActionResult SaveCadete(CadeteViewModel cadeteVM)
         {
-            db.CadeteDb.SaveCadete(cadete);
+            Cadete cadeteDb = mapper.Map<Cadete>(cadeteVM);
+            db.CadeteDb.SaveCadete(cadeteDb);
             return RedirectToAction("IndexCadete");
         }
 
@@ -70,11 +69,24 @@ namespace tallerIIpractico3.Controllers
 
         ////***************************************ELIMINAR CADETE************************************
         
-        [HttpGet]
-        public IActionResult ConfirmarEliminarCadete(int id)
-        {
-            return View(db.CadeteDb.CadeteById(id));
-        }
+        //[HttpGet]
+        //public IActionResult ConfirmarEliminarCadete(int id)
+        //{
+        //    return View(db.CadeteDb.CadeteById(id));
+        //}
+
+        //public IActionResult PagarACadete(int id)
+        //{
+        //    Cadete cadeteAPagar = _DB.cargarPagoAlCadete(id);
+        //    if (cadeteAPagar != null)
+        //    {
+        //        return View(cadeteAPagar);
+        //    }
+        //    else
+        //    {
+        //        return RedirectToAction("Index", "Logger");
+        //    }
+        //}
 
         //public IActionResult eliminarCadete(int id)
         //{
@@ -91,18 +103,7 @@ namespace tallerIIpractico3.Controllers
 
         ////****************************************PAGAR A CADETE*****************************************
 
-        //public IActionResult PagarACadete(int id)
-        //{
-        //    Cadete cadeteAPagar = _DB.cargarPagoAlCadete(id);
-        //    if(cadeteAPagar != null)
-        //    {
-        //        return View(cadeteAPagar);
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index", "Logger");
-        //    } 
-        //}
+
 
         //public IActionResult ConfirmarPago(int id)
         //{
@@ -114,11 +115,7 @@ namespace tallerIIpractico3.Controllers
         //}
 
 
-        //public IActionResult ImprimirPdf(int id)
-        //{
-        //    Cadete cadete = _DB.consultarUnCadete(id);
-        //    return new ViewAsPdf("PagarACadete", cadete);
-        //}
+
 
     }
 }

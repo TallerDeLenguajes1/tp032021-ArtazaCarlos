@@ -1,37 +1,54 @@
-﻿@model tallerIIpractico3.entities.Cadete
+﻿@model tallerIIpractico3.ViewModel.CadeteViewModel
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <form asp-controller="Cadete" asp-action="SaveCadete" method="post">
-                <fieldset>
-                    <legend class="">Registrar un cadete</legend>
-                    <div class="mb-3">
-                        <label asp-for="Nombre" class="form-label"></label>
-                        <input type="text"  id="Nombre" class="form-control" asp-for="Nombre" placeholder="López, David" required>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Direccion" class="form-label"></label>
-                        <input type="text" id="Direccion" class="form-control" asp-for="Direccion" placeholder="San Lorenzo 789" required>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Telefono" class="form-label"></label>
-                        <input type="text" id="Telefono" class="form-control" asp-for="Telefono" placeholder="3815456876" required>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Vehiculo" class="form-label"></label>
-                        <select id="Vehiculo" asp-for="Vehiculo">
-                            <option value="">Seleccione</option>
-                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta">Bicicleta</option>
-                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto">Auto</option>
-                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto">Moto</option>
-                        </select>
-                    </div>
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                </fieldset>
-            </form>
-        </div>
+@{
+    ViewData["Title"] = "CreateCadete";
+}
+
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="CreateCadete">
+            <fieldset>
+            <legend>Nuevo Cadete</legend>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Nombre" class="control-label"></label>
+                <input asp-for="Nombre" class="form-control" />
+                <span asp-validation-for="Nombre" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Direccion" class="control-label"></label>
+                <input asp-for="Direccion" class="form-control" />
+                <span asp-validation-for="Direccion" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Telefono" class="control-label"></label>
+                <input asp-for="Telefono" class="form-control" />
+                <span asp-validation-for="Telefono" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Vehiculo" class="control-label"></label>
+                <select asp-for="Vehiculo">
+                <option value="">----</option>
+                <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta.ToString()">Bicicleta</option>
+                <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto.ToString()">Auto</option>
+                <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto.ToString()">Moto</option>
+            </select>
+            </div>
+            </fieldset>
+            <div class="form-group">
+                <input type="submit" value="Enviar" class="btn btn-primary" />
+            </div>
+        </form>
     </div>
-
 </div>
 
+<div>
+    <a asp-action="IndexCadete">Lista de Cadetes</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

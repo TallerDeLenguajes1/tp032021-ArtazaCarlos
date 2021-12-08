@@ -1,46 +1,66 @@
-﻿@{
-    ViewData["Title"] = "Cadetes Page";
+﻿@model IEnumerable<tallerIIpractico3.entities.Cadete>
+
+@{
+    ViewData["Title"] = "IndexCadete";
 }
-@model List<tallerIIpractico3.entities.Cadete>
+
+<h4>Cadetes</h4>
 
 
-
-<div class="text-center">
-    <p class="titulo3">Lista de cadetes</p>
-</div>
-
-<a type="button" asp-action="CreateCadete" class="btn btn-primary">Crear Cadete</a>
-
-<div>
-    <table class="table table-striped" style="text-align:center">
+<table class="table" style="text-align:center;">
+    <thead>
         <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Direccion</th>
-            <th>Pedidos Pendientes</th>
+            <th>
+                @Html.DisplayNameFor(model => model.Id)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Nombre)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Direccion)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Telefono)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Vehiculo)
+            </th>
+            <th>
+                Pedidos sin Pagar
+            </th>
             <th></th>
             <th></th>
-
         </tr>
-        @if (Model != null)
-        {
-            foreach (var item in Model)
-            {
-            <tr>
-                <td>@item.Id</td>
-                <td>@item.Nombre</td>
-                <td>@item.Direccion</td>
-                <td></td>
-                <td><a button type="button" class="btn btn-secondary btn-sm" href="Cadete/PagarACadete?id=@item.Id" style="margin:2px">Pagar</a></td>
-                <td>
-                    <a button type="button" class="btn btn-secondary btn-sm" href="Cadete/FormUpdateCadete?id=@item.Id" style="margin:2px">Modificar</a>
-                    <a button type="button" class="btn btn-secondary btn-sm" href="Cadete/ConfirmarEliminarCadete?id=@item.Id" style="margin:2px">Eliminar</a>
-                </td>
-
-            </tr>
-            }
-        }
-
-    </table>
-</div>
-
+    </thead>
+    <tbody>
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Id)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Nombre)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Direccion)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Telefono)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Vehiculo)
+            </td>
+            <td>
+                @item.Pedidos.Count()
+            </td>
+            <td style="border:solid gray 1px">
+                @Html.ActionLink("Pagar", "", new { /* id=item.PrimaryKey */ })
+            </td>
+            <td>
+                @Html.ActionLink("Modificar", "", new { /* id=item.PrimaryKey */ }) |
+                @Html.ActionLink("Eliminar", "", new { /* id=item.PrimaryKey */ })
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

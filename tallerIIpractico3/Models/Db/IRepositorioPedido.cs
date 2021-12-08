@@ -10,5 +10,6 @@ namespace tallerIIpractico3.Models.Db
         List<Pedido> ReadPedidos();
         void SavePedido(Pedido pedido, int cadeteId);
         void UpdatePedido(int pedidoId, string estado);
+        List<Pedido> GetPedidosImpagos(int cadeteId);
     }
 }

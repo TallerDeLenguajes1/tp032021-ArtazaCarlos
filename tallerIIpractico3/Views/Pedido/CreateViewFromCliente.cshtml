@@ -39,7 +39,7 @@
             <div class="mb-3">
                 <label asp-for="CadeteId" class="control-label">Cadete</label>
                 <select asp-for="CadeteId" asp-items="@(new SelectList(Model.Cadetes, "Id", "Nombre"))">
-                    <option value="" selected>>----</</option>
+                    <option value="" selected>----</option>
                 </select>
             </div>
             </fieldset>

@@ -10,5 +10,6 @@ namespace tallerIIpractico3.Models.Db
         List<Cadete> ReadCadetes();
         void SaveCadete(Cadete cadete);
         void UpdateCadete(Cadete cadeteUpdate);
+        
     }
 }

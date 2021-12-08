@@ -19,6 +19,7 @@ namespace tallerIIpractico3.entities
         private string observaciones;
         private Cliente cliente;
         private string estadoPedido;
+        private int pagado; //valor "0" no pagado, 1 pagado, por defecto se inicia en 0
 
 
         public int Id { get => id; set => id = value; }
@@ -26,6 +27,7 @@ namespace tallerIIpractico3.entities
         public string Observaciones { get => observaciones; set => observaciones = value; }
         public Cliente Cliente { get => cliente; set => cliente = value; }
         public string EstadoPedido { get => estadoPedido; set => estadoPedido = value; }
+        public int Pagado { get => pagado; set => pagado = value; }
 
         public Pedido()
         {
@@ -38,6 +40,7 @@ namespace tallerIIpractico3.entities
             Observaciones = observaciones;
             Cliente = cliente;
             EstadoPedido = Estado.En_camino.ToString();
+            Pagado = 0;
         }
 
         public Pedido(string observaciones)
@@ -46,6 +49,7 @@ namespace tallerIIpractico3.entities
             Fecha = DateTime.Now.ToString();
             Observaciones = observaciones;
             EstadoPedido = Estado.En_camino.ToString();
+            Pagado = 0;
         }
     }
 }
