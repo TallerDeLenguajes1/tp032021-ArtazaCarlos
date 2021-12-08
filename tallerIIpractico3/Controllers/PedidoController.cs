@@ -93,6 +93,12 @@ namespace tallerIIpractico3.Controllers
             return RedirectToAction("IndexPedido");
         }
 
+        public IActionResult ConfirmarPago(int cadeteId)
+        {
+            db.PedidoDb.LiquidarPedido(cadeteId);
+            return RedirectToAction("IndexCadete", "Cadete");
+        }
+
 
         //public IActionResult CreatePedido(string obs, string nom, string dir, string tel, int cadeteId)
         //{

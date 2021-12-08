@@ -4,13 +4,15 @@
 
 @model tallerIIpractico3.entities.Cadete
 
-<div>
-    <h3>Liquidación</h3>
-</div>
-<div>
-    <p>Nombre: @Model.Nombre</p>
-    <p>Dirección: @Model.Direccion</p>
-    <p>Teléfono: @Model.Telefono</p>
+<div class="container">
+    <div>
+        <h3>Liquidación</h3>
+    </div>
+    <div class="row">
+        <p class="col-md-4">Nombre: @Model.Nombre</p><p class="col-md-8" style="text-align:right">Fecha/Hora: @DateTime.Now</p>
+        <p class="col-md-10">Dirección: @Model.Direccion</p>
+        <p class="col-md-10">Teléfono: @Model.Telefono</p>
+    </div>
 </div>
 
 <div>
@@ -19,27 +21,36 @@
             <th>Nro de pedido</th>
             <th>Dirección</th>
             <th>Estado</th>
+            <th>Valor</th>
         </tr>
-
+        @{float pago = 0;}
         @foreach (var item in Model.Pedidos)
         {
             <tr>
                 <td>@item.Id</td>
                 <td>@item.Cliente.Direccion</td>
                 <td>@item.EstadoPedido</td>
+                <td>
+                    @if(item.EstadoPedido == tallerIIpractico3.entities.Estado.Entregado.ToString())
+                    {
+                        pago += 100;
+                        <p>$100</p>
+                    }else{
+                        <p>$0</p>
+                    }
+                </td>
             </tr>
-          
         }
 
     </table>
 </div>
 
 <div>
-    <p>Total a pagar: $  </p>
+    <p>Total a pagar: @pago</p>
 </div>
 
 <div>
-    <a button type="button" class="btn btn-secondary btn-sm" href="ConfirmarPago?id=@Model.Id" style="margin:2px">Pagar y Limpiar Lista</a>
+    <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Pedido" asp-action="ConfirmarPago" asp-route-cadeteId="@Model.Id" style="margin:2px">Pagar y Limpiar Lista</a>
     <a button type="button" class="btn btn-secondary btn-sm" href="ImprimirPdf?id=@Model.Id" style="margin:2px">Imprimir</a>
-    <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cadete" asp-action="Index" style="margin:2px">Cancelar</a>
+    <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cadete" asp-action="IndexCadete" style="margin:2px">Cancelar</a>
 </div>

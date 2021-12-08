@@ -189,5 +189,35 @@ namespace tallerIIpractico3.Models.Db
             }
             return ListaDePedidos;
         }
+
+        public void LiquidarPedido(int cadeteId)
+        {
+            string queryString = @"UPDATE Pedidos
+                                                SET
+                                                    pagado = 1
+                                                WHERE 
+                                                    cadeteId = @cadeteId 
+                                                    AND activo = 1 
+                                                    AND estadoPedido != 'En_camino';";
+
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@cadeteId", cadeteId);
+                        conexion.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    conexion.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                throw;
+            }
+        }
     }
 }
