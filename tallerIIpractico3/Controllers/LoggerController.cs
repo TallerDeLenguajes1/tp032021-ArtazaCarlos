@@ -16,5 +16,56 @@ namespace tallerIIpractico3.Controllers
         {
             return View();
         }
+
+
+        //*********************************ERRORES EN CADETES************************************
+        public IActionResult ErrorCreateCadete()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorUpdateCadete()
+        {
+            return View();
+        }
+
+        //*********************************ERRORES EN CLIENTES************************************
+
+        public IActionResult ErrorCreateCliente()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorUpdateCliente()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorDeleteCliente()
+        {
+            return View();
+        }
+
+        //*********************************ERRORES EN PEDIDOS************************************
+
+        public IActionResult ErrorCreatePedido()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorUpdatePedido()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorAlPagarCadete()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorDeleteCadete()
+        {
+            return View();
+        }
     }
 }

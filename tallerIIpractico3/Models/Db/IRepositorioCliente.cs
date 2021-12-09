@@ -6,7 +6,7 @@ namespace tallerIIpractico3.Models.Db
     public interface IRepositorioCliente
     {
         Cliente ClienteById(int id);
-        void DeleteCliente(int id);
+        bool DeleteCliente(int id);
         List<Cliente> ReadCliente();
         void SaveCliente(Cliente cliente);
         void UpdateCliente(Cliente clienteUpdate);

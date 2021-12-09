@@ -9,8 +9,8 @@ namespace tallerIIpractico3.Models.Db
         void DeletePedido(int id);
         List<Pedido> ReadPedidos();
         void SavePedido(Pedido pedido, int cadeteId);
-        void UpdatePedido(int pedidoId, string estado);
-        void LiquidarPedido(int cadeteId);
+        bool UpdatePedido(int pedidoId, string estado);
+        bool LiquidarPedido(int cadeteId);
         List<Pedido> GetPedidosImpagos(int cadeteId);
     }
 }

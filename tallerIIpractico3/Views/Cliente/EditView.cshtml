@@ -1,5 +1,4 @@
-﻿@model tallerIIpractico3.entities.Cliente
-
+﻿@model tallerIIpractico3.ViewModel.ClienteViewModel
 @{
     ViewData["Title"] = "EditView";
 }
@@ -10,7 +9,7 @@
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Cliente" asp-action="UpdateCliente">
+        <form asp-controller="Cliente" asp-action="UpdateCliente" method="post">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
             <div class="form-group">

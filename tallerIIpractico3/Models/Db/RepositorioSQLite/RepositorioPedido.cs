@@ -106,7 +106,7 @@ namespace tallerIIpractico3.Models.Db
             }
         }
 
-        public void UpdatePedido(int pedidoId, string estado)
+        public bool UpdatePedido(int pedidoId, string estado)
         {
             string queryString = @"UPDATE Pedidos
                                                 SET
@@ -126,11 +126,12 @@ namespace tallerIIpractico3.Models.Db
                     }
                     conexion.Close();
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+                return false;
             }
         }
 
@@ -190,7 +191,7 @@ namespace tallerIIpractico3.Models.Db
             return ListaDePedidos;
         }
 
-        public void LiquidarPedido(int cadeteId)
+        public bool LiquidarPedido(int cadeteId)
         {
             string queryString = @"UPDATE Pedidos
                                                 SET
@@ -212,11 +213,12 @@ namespace tallerIIpractico3.Models.Db
                     }
                     conexion.Close();
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+                return false;
             }
         }
     }

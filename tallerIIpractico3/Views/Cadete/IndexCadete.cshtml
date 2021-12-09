@@ -1,9 +1,8 @@
-﻿@model IEnumerable<tallerIIpractico3.entities.Cadete>
+﻿@model IEnumerable<tallerIIpractico3.ViewModel.CadeteViewModel>
 
 @{
     ViewData["Title"] = "IndexCadete";
 }
-
 <h4>Cadetes</h4>
 
 
@@ -57,8 +56,8 @@
                 @Html.ActionLink("Pagar", "PagarACadete", item)
             </td>
             <td>
-                @Html.ActionLink("Modificar", "", new { /* id=item.PrimaryKey */ }) |
-                @Html.ActionLink("Eliminar", "", new { /* id=item.PrimaryKey */ })
+                @Html.ActionLink("Modificar", "FormUpdateCadete", item) |
+                @Html.ActionLink("Eliminar", "DeleteView", item)
             </td>
         </tr>
 }

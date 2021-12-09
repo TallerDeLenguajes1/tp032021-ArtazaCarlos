@@ -15,8 +15,6 @@ namespace tallerIIpractico3.Controllers
     {
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        //private readonly ILogger<HomeController> _logger;
-
         public HomeController()
         {
 

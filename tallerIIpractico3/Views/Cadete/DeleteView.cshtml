@@ -1,0 +1,29 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model tallerIIpractico3.ViewModel.CadeteViewModel
+
+<div class="text-left">
+    <p class="titulo3">¿Confirma eliminar cadete?</p>
+</div>
+
+
+<div>
+    <table class="table table-striped" style="text-align:center">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Direccion</th>
+            <th></th>
+        </tr>
+        <tr>
+            <td>@Model.Id</td>
+            <td>@Model.Nombre</td>
+            <td>@Model.Direccion</td>
+            <td>
+                <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cadete" asp-action="DeleteCadete" asp-route-cadeteId="@Model.Id" style="margin:2px">Eliminar</a>
+                <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cadete" asp-action="IndexCadete" style="margin:2px">Cancelar</a>
+            </td>
+        </tr>
+    </table>
+</div>

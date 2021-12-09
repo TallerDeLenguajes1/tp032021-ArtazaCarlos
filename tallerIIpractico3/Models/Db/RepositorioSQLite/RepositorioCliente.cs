@@ -166,10 +166,33 @@ namespace tallerIIpractico3.Models.Db
 
         }
 
-        public void DeleteCliente(int id)
+        public bool DeleteCliente(int clienteId)
         {
-            throw new NotImplementedException();
+            string queryString = @"UPDATE Clientes
+                                                SET
+                                                    activo = 0
+                                                WHERE clienteId = @clienteId;";
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@clienteId", clienteId);
+                        conexion.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    conexion.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return false;
+            }
         }
+
 
         public List<Cliente> ReadCliente()
         {

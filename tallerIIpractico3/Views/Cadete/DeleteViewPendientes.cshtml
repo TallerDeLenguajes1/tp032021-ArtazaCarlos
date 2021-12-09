@@ -1,10 +1,14 @@
-﻿@model List<tallerIIpractico3.ViewModel.PedidoViewModel>
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+@model tallerIIpractico3.ViewModel.CadeteViewModel
 
-@{
-    ViewData["Title"] = "Index";
-}
+<div class="text-left">
+    <h3>No puede eliminar al cadete. Tiene pedidos en estado pendiente de liquidación</h3>
+</div>
 
-<hr />
+
+
 <table class="table" style="text-align:center">
     <thead>
         <tr>
@@ -27,7 +31,7 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
+@foreach (var item in Model.Pedidos) {
         <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Id)
@@ -45,7 +49,8 @@
                 @Html.DisplayFor(modelItem => item.EstadoPedido)
             </td>
             <td>
-                <form asp-controller="Pedido" asp-action="UpdatePedido" method="post">
+                <form asp-controller="Pedido" asp-action="UpdatePedidoFromDeleteView" method="post">
+                    <input type="number" name="cadeteId" value="@Model.Id" hidden>
                     <input type="number" name="pedidoId" value="@item.Id" hidden>
                     <select id="estado" name="estadoPedido">
                         <option value="" selected>@item.EstadoPedido</option>
@@ -60,10 +65,27 @@
                         <button type="submit" class="btn btn-primary">Cambiar</button>
                     }
                 </form>
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
 
             </td>
         </tr>
 }
     </tbody>
 </table>
+    <div class="container" style="height:40px;"></div>
+
+    <table class="table table-striped" style="text-align:center">
+        <tr>
+            <th>ID</th>
+            <th>Nombre</th>
+            <th>Direccion</th>
+            <th>Acción</th>
+        </tr>
+        <tr>
+            <td>@Model.Id</td>
+            <td>@Model.Nombre</td>
+            <td>@Model.Direccion</td>
+            <td>
+                @Html.ActionLink("Pagar/Liquidar Pedidos", "PagarACadeteFromDelete", Model)
+            </td>
+        </tr>
+    </table>

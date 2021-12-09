@@ -18,11 +18,6 @@ namespace tallerIIpractico3.Controllers
         private readonly IMapper mapper;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        //private static DateTime fechaInicial;
-        //private static DateTime fechaFinal;
-
-        //public static DateTime FechaInicial { get => fechaInicial; set => fechaInicial = value; }
-        //public static DateTime FechaFinal { get => fechaFinal; set => fechaFinal = value; }
 
         public PedidoController(Db Db, IMapper mapper)
         {
@@ -32,7 +27,8 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult IndexPedido()
         {
-            return View(db.PedidoDb.ReadPedidos());
+            var pedidoVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
+            return View(pedidoVM);
         }
 
 
@@ -40,103 +36,120 @@ namespace tallerIIpractico3.Controllers
         public IActionResult CreateView()
         {
             CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
-            List<Cadete> cadetes = db.CadeteDb.ReadCadetes();
-            var cadetesModel = mapper.Map<List<CadeteViewModel>>(cadetes);
-            modelosParaPedido.Cadetes = cadetesModel;
+            List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
+            var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
+            modelosParaPedido.Cadetes = cadetesVM;
 
             return View(modelosParaPedido);
         }
 
-     
+        [HttpPost]
         public IActionResult CreatePedido(CreatePedidoViewModel modelosParaPedido)
         {
-            var clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
-            db.ClienteDb.SaveCliente(clienteDb);
-            Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(clienteDb.Nombre, clienteDb.Telefono);
+            if (ModelState.IsValid)
+            {
+                var clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
+                db.ClienteDb.SaveCliente(clienteDb);
+                Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(clienteDb.Nombre, clienteDb.Telefono);
 
-            Pedido pedido = new(modelosParaPedido.PedidoObs);
-            pedido.Cliente = clienteWithId;
-            db.PedidoDb.SavePedido(pedido, modelosParaPedido.CadeteId);
+                Pedido pedidoDb = new(modelosParaPedido.PedidoObs);
+                pedidoDb.Cliente = clienteWithId;
+                db.PedidoDb.SavePedido(pedidoDb, modelosParaPedido.CadeteId);
 
-            return RedirectToAction("IndexPedido");
+                return RedirectToAction("IndexPedido");
+            }
+            return RedirectToAction("ErrorCreatePedido", "Logger");
         }
 
 //************************CREAR PEDIDO DESDE CLIENTES CARGADOS******************************
-        public IActionResult CreateViewFromCliente(Cliente cliente)
+        [HttpGet]
+        public IActionResult CreateViewFromCliente(ClienteViewModel clienteVM)
         {
             CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
 
-            List<Cadete> cadetes = db.CadeteDb.ReadCadetes();
-            var cadetesModel = mapper.Map<List<CadeteViewModel>>(cadetes);
-            var clienteVM = mapper.Map<ClienteViewModel>(cliente);
+            List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
+            var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
 
-            modelosParaPedido.Cadetes = cadetesModel;
+            modelosParaPedido.Cadetes = cadetesVM;
             modelosParaPedido.Cliente = clienteVM;
 
             return View(modelosParaPedido);
         }
 
+        [HttpPost]
         public IActionResult CreatePedidoFromCliente(CreatePedidoViewModel modelosParaPedido)
         {
-            Pedido pedido = new(modelosParaPedido.PedidoObs);
-            Cliente clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
-            pedido.Cliente = clienteDb;
-            db.PedidoDb.SavePedido(pedido, modelosParaPedido.CadeteId);
-
-            return RedirectToAction("IndexPedido");
+            if (ModelState.IsValid)
+            {
+                Pedido pedidoDb = new(modelosParaPedido.PedidoObs);
+                Cliente clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
+                pedidoDb.Cliente = clienteDb;
+                db.PedidoDb.SavePedido(pedidoDb, modelosParaPedido.CadeteId);
+                return RedirectToAction("IndexPedido");
+            }
+            return RedirectToAction("ErrorCreatePedido", "Logger");
         }
 
+        //************************UPDATE PEDIDO******************************
 
+        [HttpPost]
         public IActionResult UpdatePedido(int pedidoId, entities.Estado estadoPedido)
         {
-            db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString());
-            return RedirectToAction("IndexPedido");
+            if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+            {
+                return RedirectToAction("IndexPedido");
+            }
+            return RedirectToAction("ErrorUpdatePedido", "Logger");
         }
 
+
+        //************************PAGAR PEDIDO********************************************
+
+        [HttpGet]
         public IActionResult ConfirmarPago(int cadeteId)
         {
-            db.PedidoDb.LiquidarPedido(cadeteId);
-            return RedirectToAction("IndexCadete", "Cadete");
+            if (db.PedidoDb.LiquidarPedido(cadeteId))
+            {
+                return RedirectToAction("IndexCadete", "Cadete");
+            }
+            return RedirectToAction("ErrorAlPagarCadete", "Logger");
+
         }
 
 
-        //public IActionResult CreatePedido(string obs, string nom, string dir, string tel, int cadeteId)
-        //{
-        //    Cliente cliente = new(nom, dir, tel);
-        //    db.ClienteDb.SaveCliente(cliente);
-        //    Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(nom, tel);
-        //    Pedido pedido = new(obs, clienteWithId);
-        //    db.PedidoDb.SavePedido(pedido, cadeteId);
 
-        //    return RedirectToAction("IndexPedido");
-        //}
+        //***************************************METODOS FROM DETELE VIEW************************************
+
+        [HttpPost]
+        public IActionResult UpdatePedidoFromDeleteView(int cadeteId, int pedidoId, entities.Estado estadoPedido)
+        {
+            if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+            {
+                CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
+                return RedirectToAction("DeleteViewPendientes", "Cadete", cadeteVM);
+            }
+            return RedirectToAction("ErrorUpdatePedido", "Logger");
+        }
+
+
+        [HttpGet]
+        public IActionResult ConfirmarPagoFromDelete(int cadeteId)
+        {
+            if (db.PedidoDb.LiquidarPedido(cadeteId))
+            {
+                CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
+                return RedirectToAction("DeleteView", "Cadete", cadeteVM);
+            }
+            return RedirectToAction("ErrorAlPagarCadete", "Logger");
+
+        }
 
 
 
-        ////modifica el pedido desde un listado completo de pedidos
-        //public IActionResult ModificarPedidoListaCompleta(int nroPedido, Estado estadoPedido)
-        //{
-        //    if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
-        //    {
-        //        return RedirectToAction("ListaCompleta");
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index", "Logger");
-        //    } 
-        //}
-        ////modifica el pedido desde un listado filtrado de pedidos
-        //public IActionResult ModificarPedidoListaFiltrada(int nroPedido, Estado estadoPedido)
-        //{
-        //    if (_DB.modificarArchivoCadetePedido(nroPedido, estadoPedido))
-        //    {
-        //        return RedirectToAction("ListaFiltrada2");
-        //    }
-        //    else
-        //    {
-        //        return RedirectToAction("Index", "Logger");
-        //    }
-        //}
+
+
+
+
 
         //public IActionResult ListaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
         //{

@@ -1,4 +1,4 @@
-﻿@model IEnumerable<tallerIIpractico3.entities.Cliente>
+﻿@model IEnumerable<tallerIIpractico3.ViewModel.ClienteViewModel>
 
 @{
     ViewData["Title"] = "IndexCliente";
@@ -45,7 +45,7 @@
             </td>
             <td>
                 @Html.ActionLink("Modificar", "EditView", item) |
-                @Html.ActionLink("Eliminar", "Delete", item)
+                @Html.ActionLink("Eliminar", "DeleteView", item)
             </td> 
         </tr>
 }

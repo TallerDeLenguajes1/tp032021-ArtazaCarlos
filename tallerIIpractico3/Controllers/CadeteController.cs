@@ -28,77 +28,108 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult IndexCadete()
         {
-            List<Cadete> cadetes = db.CadeteDb.ReadCadetes();
-            cadetes.ForEach(cadete => cadete.Pedidos = db.PedidoDb.GetPedidosImpagos(cadete.Id));
-            return View(cadetes);
+            List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
+            var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
+            foreach (var item in cadetesVM)
+            {
+                item.Pedidos = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(item.Id));
+            }
+            return View(cadetesVM);
         }
+
+        //**************************************AGREGAR CADETE**************************************
 
         public IActionResult CreateCadete()
         {
             return View(new CadeteViewModel());
         }
 
-        //**************************************AGREGAR CADETE**************************************
-
         [HttpPost]
         public IActionResult SaveCadete(CadeteViewModel cadeteVM)
         {
-            Cadete cadeteDb = mapper.Map<Cadete>(cadeteVM);
-            db.CadeteDb.SaveCadete(cadeteDb);
-            return RedirectToAction("IndexCadete");
+            if (ModelState.IsValid)
+            {
+                Cadete cadeteDb = mapper.Map<Cadete>(cadeteVM);
+                db.CadeteDb.SaveCadete(cadeteDb);
+                return RedirectToAction("IndexCadete");
+            }
+            return RedirectToAction("ErrorCreateCadete", "Logger");
         }
 
         //***************************************MODIFICAR CADETE************************************
 
         [HttpGet]
-        public IActionResult FormUpdateCadete(int id)
+        public IActionResult FormUpdateCadete(CadeteViewModel cadeteVM)
         {
-            return View(db.CadeteDb.CadeteById(id));
+            return View(cadeteVM);
         }
 
-        public IActionResult ModificarCadete(Cadete cadeteUpdate)
+        [HttpPost]
+        public IActionResult ModificarCadete(CadeteViewModel cadeteUpdateVM)
         {
-            db.CadeteDb.UpdateCadete(cadeteUpdate);
-            return RedirectToAction("IndexCadete");
+            if (ModelState.IsValid)
+            {
+                Cadete cadeteDb = mapper.Map<Cadete>(cadeteUpdateVM);
+                db.CadeteDb.UpdateCadete(cadeteDb);
+                return RedirectToAction("IndexCadete");
+            }
+            return RedirectToAction("ErrorUpdateCadete", "Logger");
         }
-
-
-        public IActionResult PagarACadete(Cadete cadete)
-        {
-            cadete.Pedidos = db.PedidoDb.GetPedidosImpagos(cadete.Id);
-            return View(cadete);
-        }
-
-
-
-
-
-        ////***************************************ELIMINAR CADETE************************************
-
-        //[HttpGet]
-        //public IActionResult ConfirmarEliminarCadete(int id)
-        //{
-        //    return View(db.CadeteDb.CadeteById(id));
-        //}
-
-
-        //public IActionResult eliminarCadete(int id)
-        //{
-        //    if (_DB.eliminarCadete(id))
-        //    {
-        //        return RedirectToAction("Index");
-        //    }
-        //    else
-        //    {
-        //        logger.Error("linea 81 Model/DBTemporal no encuentra al cadete en los archivos, datos dañados, renombrados o eliminados");
-        //        return RedirectToAction("Index", "Logger");
-        //    }
-        //}
 
         ////****************************************PAGAR A CADETE*****************************************
 
+        [HttpGet]
+        public IActionResult PagarACadete(CadeteViewModel cadeteVM)
+        {
+            var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
+            cadeteVM.Pedidos = pedidosVM;
+            return View(cadeteVM);
+        }
 
 
+        //***************************************ELIMINAR CADETE************************************
+        [HttpGet]
+        public IActionResult DeleteView(CadeteViewModel cadeteVM)
+        {
+            var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
+            if (pedidosVM.Count() > 0)
+            {
+                return RedirectToAction("DeleteViewPendientes", cadeteVM);
+            }
+            
+            return View(cadeteVM);
+        }
+
+        [HttpGet]
+        public IActionResult DeleteCadete(int cadeteId)
+        {
+            if (db.CadeteDb.DeleteCadete(cadeteId))
+            {
+                return RedirectToAction("IndexCadete");
+            }
+            return RedirectToAction("ErrorDeleteCadete", "Logger");
+        }
+
+
+
+        //***************************************METODOS FROM DETELE VIEW************************************
+
+        [HttpGet]
+        public IActionResult DeleteViewPendientes(CadeteViewModel cadeteVM)
+        {
+            var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
+            cadeteVM.Pedidos = pedidosVM;
+            return View(cadeteVM);
+        }
+
+
+        [HttpGet]
+        public IActionResult PagarACadeteFromDelete(CadeteViewModel cadeteVM)
+        {
+            var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
+            cadeteVM.Pedidos = pedidosVM;
+            return View(cadeteVM);
+        }
 
 
 

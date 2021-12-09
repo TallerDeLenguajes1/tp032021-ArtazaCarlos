@@ -172,12 +172,12 @@ namespace tallerIIpractico3.Models.Db
             }
         }
 
-        public void DeleteCadete(int id)
+        public bool DeleteCadete(int cadeteId)
         {
             string queryString = @"UPDATE Cadetes
                                                 SET
                                                     activo = 0
-                                                WHERE cadeteId = @id;";
+                                                WHERE cadeteId = @cadeteId;";
 
             try
             {
@@ -185,17 +185,18 @@ namespace tallerIIpractico3.Models.Db
                 {
                     using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
                     {
-                        command.Parameters.AddWithValue("@id", id);
+                        command.Parameters.AddWithValue("@cadeteId", cadeteId);
                         conexion.Open();
                         command.ExecuteNonQuery();
                     }
                     conexion.Close();
                 }
+                return true;
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+                return false;
             }
             
         }

@@ -8,47 +8,80 @@ using tallerIIpractico3.entities;
 using tallerIIpractico3.Models.Db;
 using NLog;
 using Microsoft.AspNetCore.Http;
+using tallerIIpractico3.ViewModel;
+using AutoMapper;
 
 namespace tallerIIpractico3.Controllers
 {
     public class ClienteController : Controller
     {
         private readonly Db db;
+        private readonly IMapper mapper;
         private readonly Logger logger = LogManager.GetCurrentClassLogger();
 
-        public ClienteController(Db Db)
+        public ClienteController(Db Db, IMapper mapper)
         {
             db = Db;
-         
+            this.mapper = mapper;
         }
 
 
         public IActionResult IndexCliente()
         {
-            return View(db.ClienteDb.ReadCliente());
+            var clienteVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.ReadCliente());
+            return View(clienteVM);
         }
 
         public IActionResult CreateView()
         {
-            return View(new Cliente());
+            return View(new ClienteViewModel());
         }
 
-        public IActionResult CreateCliente(Cliente cliente)
+        [HttpPost]
+        public IActionResult CreateCliente(ClienteViewModel clienteVM)
         {
-            db.ClienteDb.SaveCliente(cliente);
-            return RedirectToAction("IndexCliente");
+            if (ModelState.IsValid)
+            {
+                Cliente clienteDb = mapper.Map<Cliente>(clienteVM);
+                db.ClienteDb.SaveCliente(clienteDb);
+                return RedirectToAction("IndexCliente");
+            }
+            return RedirectToAction("ErrorCreateCliente", "Logger");
         }
 
-        public IActionResult EditView(Cliente cliente)
+        [HttpGet]
+        public IActionResult EditView(ClienteViewModel clienteVM)
         {
-            return View(cliente);
+            return View(clienteVM);
         }
 
-        public IActionResult UpdateCliente(Cliente cliente)
+        [HttpPost]
+        public IActionResult UpdateCliente(ClienteViewModel clienteVM)
         {
-            db.ClienteDb.UpdateCliente(cliente);
-            return RedirectToAction("IndexCliente");
+            if (ModelState.IsValid)
+            {
+                Cliente clienteDb = mapper.Map<Cliente>(clienteVM);
+                db.ClienteDb.UpdateCliente(clienteDb);
+                return RedirectToAction("IndexCliente");
+            }
+            return RedirectToAction("ErrorUpdateCliente", "Logger");
         }
+
+        public IActionResult DeleteView(ClienteViewModel clienteVM)
+        {
+            return View(clienteVM);
+        }
+
+      
+        public IActionResult DeteleCliente(int clienteId)
+        {
+            if (db.ClienteDb.DeleteCliente(clienteId))
+            {
+                return RedirectToAction("IndexCliente");
+            }
+            return RedirectToAction("ErrorDeleteCliente", "Logger");
+        }
+
 
     }
 }

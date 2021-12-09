@@ -1,10 +1,10 @@
-﻿@model tallerIIpractico3.entities.Cliente
+﻿@model tallerIIpractico3.ViewModel.ClienteViewModel
 
 
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-controller="Cliente" asp-action="CreateCliente">
+        <form asp-controller="Cliente" asp-action="CreateCliente" method="post">
             <fieldset>
             <legend>Nuevo Cliente</legend>
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
