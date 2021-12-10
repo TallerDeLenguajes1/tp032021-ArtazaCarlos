@@ -61,11 +61,11 @@ namespace tallerIIpractico3.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCliente(ClienteViewModel clienteVM)
+        public IActionResult CreateCliente(ClienteABMViewModel clienteCreateVM)
         {
             if (ModelState.IsValid)
             {
-                Cliente clienteDb = mapper.Map<Cliente>(clienteVM);
+                Cliente clienteDb = mapper.Map<Cliente>(clienteCreateVM.Cliente);
                 db.ClienteDb.SaveCliente(clienteDb);
                 return RedirectToAction("IndexCliente");
             }
@@ -94,11 +94,11 @@ namespace tallerIIpractico3.Controllers
         }
 
         [HttpPost]
-        public IActionResult UpdateCliente(ClienteViewModel clienteVM)
+        public IActionResult UpdateCliente(ClienteABMViewModel clienteUpdateVM)
         {
             if (ModelState.IsValid)
             {
-                Cliente clienteDb = mapper.Map<Cliente>(clienteVM);
+                Cliente clienteDb = mapper.Map<Cliente>(clienteUpdateVM.Cliente);
                 db.ClienteDb.UpdateCliente(clienteDb);
                 return RedirectToAction("IndexCliente");
             }
