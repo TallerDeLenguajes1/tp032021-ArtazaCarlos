@@ -40,6 +40,7 @@ namespace tallerIIpractico3.Controllers
             if (usu != null)
             {
                 HttpContext.Session.SetString("user", usu.User);
+                HttpContext.Session.SetString("pass", usu.Pass);
                 HttpContext.Session.SetString("rol", usu.Rol);
                 return RedirectToAction("Index", "Home");
             }    

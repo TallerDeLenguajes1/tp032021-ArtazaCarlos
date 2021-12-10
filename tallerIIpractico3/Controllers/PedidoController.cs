@@ -9,6 +9,8 @@ using tallerIIpractico3.Models.Db;
 using NLog;
 using tallerIIpractico3.ViewModel;
 using AutoMapper;
+using tallerIIpractico3.Models.Entities;
+using Microsoft.AspNetCore.Http;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -123,12 +125,22 @@ namespace tallerIIpractico3.Controllers
         [HttpPost]
         public IActionResult UpdatePedidoFromDeleteView(int cadeteId, int pedidoId, entities.Estado estadoPedido)
         {
-            if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                    HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+            if (userDb != null)
             {
-                CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
-                return RedirectToAction("DeleteViewPendientes", "Cadete", cadeteVM);
+                if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
+                    CadeteABMViewModel cadeteDeleteVM = new CadeteABMViewModel();
+                    cadeteDeleteVM.Cadete = cadeteVM;
+                    cadeteDeleteVM.UserLog = userVM;
+                    return RedirectToAction("DeleteViewPendientes", "Cadete", cadeteDeleteVM);
+                }
+                return RedirectToAction("ErrorUpdatePedido", "Logger");
             }
-            return RedirectToAction("ErrorUpdatePedido", "Logger");
+            return RedirectToAction("IndexUsuario", "Usuario");
         }
 
 

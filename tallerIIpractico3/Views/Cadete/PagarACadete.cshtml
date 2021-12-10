@@ -2,20 +2,30 @@
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
 
-@model tallerIIpractico3.ViewModel.CadeteViewModel
+@model tallerIIpractico3.ViewModel.CadeteABMViewModel
 
-<div class="container">
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.User == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
+    <div class="container">
     <div>
         <h3>Liquidación</h3>
     </div>
     <div class="row">
-        <p class="col-md-4">Nombre: @Model.Nombre</p><p class="col-md-8" style="text-align:right">Fecha/Hora: @DateTime.Now</p>
-        <p class="col-md-10">Dirección: @Model.Direccion</p>
-        <p class="col-md-10">Teléfono: @Model.Telefono</p>
+        <p class="col-md-4">Nombre: @Model.Cadete.Nombre</p><p class="col-md-8" style="text-align:right">Fecha/Hora: @DateTime.Now</p>
+        <p class="col-md-10">Dirección: @Model.Cadete.Direccion</p>
+        <p class="col-md-10">Teléfono: @Model.Cadete.Telefono</p>
     </div>
-</div>
+    </div>
 
-<div>
+    <div>
     <table class="table table-striped" style="text-align:center">
         <tr>
             <th>Nro de pedido</th>
@@ -24,7 +34,7 @@
             <th>Valor</th>
         </tr>
         @{float pago = 0;}
-        @foreach (var item in Model.Pedidos)
+        @foreach (var item in Model.Cadete.Pedidos)
         {
             <tr>
                 <td>@item.Id</td>
@@ -43,14 +53,22 @@
         }
 
     </table>
-</div>
+    </div>
 
-<div>
+    <div>
     <p>Total a pagar: @pago</p>
-</div>
+    </div>
 
-<div>
-    <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Pedido" asp-action="ConfirmarPago" asp-route-cadeteId="@Model.Id" style="margin:2px">Pagar y Limpiar Lista</a>
-    <a button type="button" class="btn btn-secondary btn-sm" href="ImprimirPdf?id=@Model.Id" style="margin:2px">Imprimir</a>
+    <div>
+    <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Pedido" asp-action="ConfirmarPago" asp-route-cadeteId="@Model.Cadete.Id" style="margin:2px">Pagar y Limpiar Lista</a>
+    <a button type="button" class="btn btn-secondary btn-sm" href="ImprimirPdf?id=@Model.Cadete.Id" style="margin:2px">Imprimir</a>
     <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cadete" asp-action="IndexCadete" style="margin:2px">Cancelar</a>
-</div>
+    </div>
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
+}

@@ -1,39 +1,61 @@
 ﻿@{
     ViewData["Title"] = "Modificar Cadetes";
 }
-@model tallerIIpractico3.ViewModel.CadeteViewModel
+@model tallerIIpractico3.ViewModel.CadeteABMViewModel
 
-<div class="container">
-    <div class="row">
-        <div class="col-6">
-            <form asp-controller="Cadete" asp-action="ModificarCadete" method="post">
-                <fieldset>
-                    <legend class="">Registrar un cadete</legend>
-                    <div class="mb-3">
-                        <label asp-for="Nombre" class="form-label"></label>
-                        <input type="text" id="Nombre" class="form-control" asp-for="Nombre" value="@Model.Nombre" required>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Direccion" class="form-label"></label>
-                        <input type="text" id="Direccion" class="form-control" asp-for="Direccion" value="@Model.Direccion" required>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Telefono" class="form-label"></label>
-                        <input type="text" id="Telefono" class="form-control" asp-for="Telefono" value="@Model.Telefono" required>
-                    </div>
-                    <div class="mb-3">
-                        <label asp-for="Vehiculo" class="form-label"></label>
-                        <select id="Vehiculo" asp-for="Vehiculo">
-                            <option value="" selected>Seleccione</option>
-                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta">Bicicleta</option>
-                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto">Auto</option>
-                            <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto">Moto</option>
-                        </select>
-                    </div>
-                    <input type="number" class="form-control" asp-for="Id" value="@Model.Id" hidden>
-                    <button type="submit" class="btn btn-primary">Enviar</button>
-                </fieldset>
-            </form>
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.User == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
+
+    <div class="container">
+        <div class="row">
+            <div class="col-6">
+                <form asp-controller="Cadete" asp-action="ModificarCadete" method="post">
+                    <fieldset>
+                        <legend class="">Registrar un cadete</legend>
+                        <div class="mb-3">
+                            <label asp-for="Cadete.Nombre" class="form-label"></label>
+                            <input type="text" id="Nombre" class="form-control" asp-for="Cadete.Nombre" value="@Model.Cadete.Nombre" required>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Cadete.Direccion" class="form-label"></label>
+                            <input type="text" id="Direccion" class="form-control" asp-for="Cadete.Direccion" value="@Model.Cadete.Direccion" required>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Cadete.Telefono" class="form-label"></label>
+                            <input type="text" id="Telefono" class="form-control" asp-for="Cadete.Telefono" value="@Model.Cadete.Telefono" required>
+                        </div>
+                        <div class="mb-3">
+                            <label asp-for="Cadete.Vehiculo" class="form-label"></label>
+                            <select id="Vehiculo" asp-for="Cadete.Vehiculo">
+                                <option value="" selected>Seleccione</option>
+                                <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta">Bicicleta</option>
+                                <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto">Auto</option>
+                                <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto">Moto</option>
+                            </select>
+                        </div>
+                        <input type="number" class="form-control" asp-for="Cadete.Id" value="@Model.Cadete.Id" hidden>
+                        <button type="submit" class="btn btn-primary">Enviar</button>
+                    </fieldset>
+                </form>
+                <div>
+                    <a asp-action="IndexCadete">Lista de Cadetes</a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
+}

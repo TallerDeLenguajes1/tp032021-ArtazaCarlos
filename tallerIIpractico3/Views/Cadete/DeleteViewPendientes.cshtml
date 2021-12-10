@@ -1,91 +1,110 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model tallerIIpractico3.ViewModel.CadeteViewModel
-
-<div class="text-left">
-    <h3>No puede eliminar al cadete. Tiene pedidos en estado pendiente de liquidación</h3>
-</div>
+@model tallerIIpractico3.ViewModel.CadeteABMViewModel
 
 
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.User == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
+    <div class="text-left">
+        <h3>No puede eliminar al cadete. Tiene pedidos en estado pendiente de liquidación</h3>
+    </div>
 
-<table class="table" style="text-align:center">
-    <thead>
-        <tr>
-            <th>
-                id
-            </th>
-            <th>
-               Fecha - Hora
-            </th>
-            <th>
-                Observaciones
-            </th>
-            <th>
-                Dirección
-            </th>
-            <th>
-                Estado del pedido
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model.Pedidos) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observaciones)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstadoPedido)
-            </td>
-            <td>
-                <form asp-controller="Pedido" asp-action="UpdatePedidoFromDeleteView" method="post">
-                    <input type="number" name="cadeteId" value="@Model.Id" hidden>
-                    <input type="number" name="pedidoId" value="@item.Id" hidden>
-                    <select id="estado" name="estadoPedido">
-                        <option value="" selected>@item.EstadoPedido</option>
+
+
+    <table class="table" style="text-align:center">
+        <thead>
+            <tr>
+                <th>
+                    id
+                </th>
+                <th>
+                   Fecha - Hora
+                </th>
+                <th>
+                    Observaciones
+                </th>
+                <th>
+                    Dirección
+                </th>
+                <th>
+                    Estado del pedido
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Cadete.Pedidos) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observaciones)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstadoPedido)
+                </td>
+                <td>
+                    <form asp-controller="Pedido" asp-action="UpdatePedidoFromDeleteView" method="post">
+                        <input type="number" name="cadeteId" value="@Model.Cadete.Id" hidden>
+                        <input type="number" name="pedidoId" value="@item.Id" hidden>
+                        <select id="estado" name="estadoPedido">
+                            <option value="" selected>@item.EstadoPedido</option>
+                            @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
+                            {
+                                <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
+                                <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
+                            }
+                        </select>
                         @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
                         {
-                            <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
-                            <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
+                            <button type="submit" class="btn btn-primary">Cambiar</button>
                         }
-                    </select>
-                    @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
-                    {
-                        <button type="submit" class="btn btn-primary">Cambiar</button>
-                    }
-                </form>
+                    </form>
 
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
-    <div class="container" style="height:40px;"></div>
-
-    <table class="table table-striped" style="text-align:center">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Direccion</th>
-            <th>Acción</th>
-        </tr>
-        <tr>
-            <td>@Model.Id</td>
-            <td>@Model.Nombre</td>
-            <td>@Model.Direccion</td>
-            <td>
-                @Html.ActionLink("Pagar/Liquidar Pedidos", "PagarACadeteFromDelete", Model)
-            </td>
-        </tr>
+                </td>
+            </tr>
+    }
+        </tbody>
     </table>
+        <div class="container" style="height:40px;"></div>
+
+        <table class="table table-striped" style="text-align:center">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th>Acción</th>
+            </tr>
+            <tr>
+                <td>@Model.Cadete.Id</td>
+                <td>@Model.Cadete.Nombre</td>
+                <td>@Model.Cadete.Direccion</td>
+                <td>
+                    @Html.ActionLink("Pagar/Liquidar Pedidos", "PagarACadeteFromDelete", Model)
+                </td>
+            </tr>
+        </table>
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
+}

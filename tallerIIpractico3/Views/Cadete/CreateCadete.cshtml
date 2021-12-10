@@ -1,54 +1,73 @@
-﻿@model tallerIIpractico3.ViewModel.CadeteViewModel
+﻿@model tallerIIpractico3.ViewModel.CadeteABMViewModel
 
 @{
     ViewData["Title"] = "CreateCadete";
 }
 
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.User == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
 
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="SaveCadete">
-            <fieldset>
-            <legend>Nuevo Cadete</legend>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-action="SaveCadete">
+                <fieldset>
+                <legend>Nuevo Cadete</legend>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
 
-            <div class="form-group">
-                <label asp-for="Nombre" class="control-label"></label>
-                <input asp-for="Nombre" class="form-control" />
-                <span asp-validation-for="Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Direccion" class="control-label"></label>
-                <input asp-for="Direccion" class="form-control" />
-                <span asp-validation-for="Direccion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Telefono" class="control-label"></label>
-                <input asp-for="Telefono" class="form-control" />
-                <span asp-validation-for="Telefono" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Vehiculo" class="control-label"></label>
-                <select asp-for="Vehiculo">
-                <option value="">----</option>
-                <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta.ToString()">Bicicleta</option>
-                <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto.ToString()">Auto</option>
-                <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto.ToString()">Moto</option>
-            </select>
-            </div>
-            </fieldset>
-            <div class="form-group">
-                <input type="submit" value="Enviar" class="btn btn-primary" />
-            </div>
-        </form>
+                <div class="form-group">
+                    <label asp-for="Cadete.Nombre" class="control-label"></label>
+                    <input asp-for="Cadete.Nombre" class="form-control" />
+                    <span asp-validation-for="Cadete.Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cadete.Direccion" class="control-label"></label>
+                    <input asp-for="Cadete.Direccion" class="form-control" />
+                    <span asp-validation-for="Cadete.Direccion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cadete.Telefono" class="control-label"></label>
+                    <input asp-for="Cadete.Telefono" class="form-control" />
+                    <span asp-validation-for="Cadete.Telefono" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cadete.Vehiculo" class="control-label"></label>
+                    <select asp-for="Cadete.Vehiculo">
+                    <option value="">----</option>
+                    <option value="@tallerIIpractico3.entities.TipoVehiculo.Bicicleta.ToString()">Bicicleta</option>
+                    <option value="@tallerIIpractico3.entities.TipoVehiculo.Auto.ToString()">Auto</option>
+                    <option value="@tallerIIpractico3.entities.TipoVehiculo.Moto.ToString()">Moto</option>
+                </select>
+                </div>
+                </fieldset>
+                <div class="form-group">
+                    <input type="submit" value="Enviar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="IndexCadete">Lista de Cadetes</a>
-</div>
+    <div>
+        <a asp-action="IndexCadete">Lista de Cadetes</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
 }

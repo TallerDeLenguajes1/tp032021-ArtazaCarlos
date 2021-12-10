@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace tallerIIpractico3.ViewModel
 {
-    public enum TipoVehiculo { Bicicleta, Auto, Moto } 
+    public enum TipoVehiculo { Bicicleta, Auto, Moto }
 
     public class CadeteViewModel
     {
@@ -13,7 +13,7 @@ namespace tallerIIpractico3.ViewModel
         private string telefono;
         private string vehiculo;
 
-   
+
         private List<PedidoViewModel> pedidos;
 
 
@@ -29,10 +29,37 @@ namespace tallerIIpractico3.ViewModel
 
 
         public List<PedidoViewModel> Pedidos { get => pedidos; set => pedidos = value; }
-  
+
 
         public CadeteViewModel()
         {
         }
     }
+
+    public class CadeteIndexViewModel
+    {
+        private List<CadeteViewModel> cadetes;
+        private UsuarioViewModel userLog;
+
+        public List<CadeteViewModel> Cadetes { get => cadetes; set => cadetes = value; }
+        public UsuarioViewModel UserLog { get => userLog; set => userLog = value; }
+
+        public CadeteIndexViewModel()
+        {
+        }
+    }
+
+    public class CadeteABMViewModel
+    {
+        private CadeteViewModel cadete;
+        private UsuarioViewModel userLog;
+
+        public CadeteViewModel Cadete { get => cadete; set => cadete = value; }
+        public UsuarioViewModel UserLog { get => userLog; set => userLog = value; }
+
+        public CadeteABMViewModel()
+        {
+        }
+    }
+
 }

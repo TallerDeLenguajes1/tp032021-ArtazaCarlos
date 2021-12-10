@@ -1,13 +1,20 @@
-﻿@model Tuple<tallerIIpractico3.ViewModel.UsuarioViewModel, List<tallerIIpractico3.ViewModel.CadeteViewModel>>
+﻿@model tallerIIpractico3.ViewModel.CadeteIndexViewModel
 
 @{
     ViewData["Title"] = "IndexCadete";
 }
 
 
-@if (Model.Item1.Rol == "admin")
+@if (Model.UserLog != null)
 {
-    await Html.PartialAsync("MenuAdmin", Model.Item1);
+    if(Model.UserLog.Rol == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
 
     <h4>Cadetes</h4>
     <table class="table" style="text-align:center;">
@@ -36,9 +43,9 @@
         </tr>
     </thead>
     <tbody>
-        @if(Model.Item2.Count() > 0)
+        @if(Model.Cadetes.Count() > 0)
         {
-             @foreach (var item in Model.Item2) {
+             @foreach (var item in Model.Cadetes) {
                 <tr>
                     <td>
                         @Html.DisplayFor(modelItem => item.Id)
