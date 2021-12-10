@@ -39,6 +39,7 @@ namespace tallerIIpractico3.Controllers
                 PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
                 pedidosIndexVM.Pedidos = pedidosVM;
                 pedidosIndexVM.UserLog = userVM;
+
                 return View(pedidosIndexVM);
             }
             return RedirectToAction("IndexUsuario", "Usuario");
@@ -53,13 +54,7 @@ namespace tallerIIpractico3.Controllers
 
             if (userDb != null)
             {
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
-                List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
-                var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
-                modelosParaPedido.Cadetes = cadetesVM;
-                modelosParaPedido.UserLog = userVM;
-
+                CreatePedidoViewModel modelosParaPedido = cargarModelosPedido(userDb);
                 return View(modelosParaPedido);
             }
             return RedirectToAction("IndexUsuario", "Usuario");
@@ -93,12 +88,8 @@ namespace tallerIIpractico3.Controllers
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
                 if (userDb != null)
                 {
-                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                    CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
-                    var cadetesVM = mapper.Map<List<CadeteViewModel>>(db.CadeteDb.ReadCadetes());
-                    modelosParaPedido.Cadetes = cadetesVM;
+                    CreatePedidoViewModel modelosParaPedido = cargarModelosPedido(userDb);
                     modelosParaPedido.Cliente = clienteVM;
-                    modelosParaPedido.UserLog = userVM;
                     return View(modelosParaPedido);
                 }
                 return RedirectToAction("IndexUsuario", "Usuario");
@@ -176,7 +167,18 @@ namespace tallerIIpractico3.Controllers
 
         }
 
+        //***************************************METODOS ADICIONALES************************************
 
+        private CreatePedidoViewModel cargarModelosPedido(Usuario userDb)
+        {
+            UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+            CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
+            var cadetesVM = mapper.Map<List<CadeteViewModel>>(db.CadeteDb.ReadCadetes());
+            modelosParaPedido.Cadetes = cadetesVM;
+            modelosParaPedido.Cliente = new ClienteViewModel();
+            modelosParaPedido.UserLog = userVM;
+            return modelosParaPedido;
+        }
 
 
 

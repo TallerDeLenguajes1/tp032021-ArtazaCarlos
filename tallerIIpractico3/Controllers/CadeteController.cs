@@ -59,10 +59,7 @@ namespace tallerIIpractico3.Controllers
 
             if (userDb != null)
             {
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                CadeteABMViewModel cadeteCreateVM = new CadeteABMViewModel();
-                cadeteCreateVM.UserLog = userVM;
-                cadeteCreateVM.Cadete = new CadeteViewModel();
+                CadeteABMViewModel cadeteCreateVM = carcarModelosCadete(userDb, new CadeteViewModel());
                 return View(cadeteCreateVM);
             }
             return RedirectToAction("IndexUsuario", "Usuario");
@@ -92,10 +89,7 @@ namespace tallerIIpractico3.Controllers
 
                 if (userDb != null)
                 {
-                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                    CadeteABMViewModel cadeteUpdateVM = new CadeteABMViewModel();
-                    cadeteUpdateVM.UserLog = userVM;
-                    cadeteUpdateVM.Cadete = cadeteVM;
+                    CadeteABMViewModel cadeteUpdateVM = carcarModelosCadete(userDb, cadeteVM);
                     return View(cadeteUpdateVM);
                 }
                 return RedirectToAction("IndexUsuario", "Usuario");
@@ -130,11 +124,8 @@ namespace tallerIIpractico3.Controllers
                     var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
                     if (pedidosVM.Count() > 0)
                     {
-                        cadeteVM.Pedidos = pedidosVM;
-                        UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                        CadeteABMViewModel cadetePagoVM = new CadeteABMViewModel();
-                        cadetePagoVM.UserLog = userVM;
-                        cadetePagoVM.Cadete = cadeteVM;
+                        CadeteABMViewModel cadetePagoVM = carcarModelosCadete(userDb, cadeteVM);
+                        cadetePagoVM.Cadete.Pedidos = pedidosVM;
                         return View(cadetePagoVM);
                     }
                     return RedirectToAction("IndexCadete", "Cadete");
@@ -162,11 +153,7 @@ namespace tallerIIpractico3.Controllers
                     {
                         return RedirectToAction("DeleteViewPendientes", cadeteVM);
                     }
-
-                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                    CadeteABMViewModel cadeteDeleteVM = new CadeteABMViewModel();
-                    cadeteDeleteVM.UserLog = userVM;
-                    cadeteDeleteVM.Cadete = cadeteVM;
+                    CadeteABMViewModel cadeteDeleteVM = carcarModelosCadete(userDb, cadeteVM);
                     return View(cadeteDeleteVM);
                 }
                 return RedirectToAction("IndexUsuario", "Usuario");
@@ -198,10 +185,7 @@ namespace tallerIIpractico3.Controllers
             if (userDb != null)
             {
                 var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                CadeteABMViewModel cadeteDeleteVM = new CadeteABMViewModel();
-                cadeteDeleteVM.UserLog = userVM;
-                cadeteDeleteVM.Cadete = cadeteVM;
+                CadeteABMViewModel cadeteDeleteVM = carcarModelosCadete(userDb, cadeteVM);
                 cadeteDeleteVM.Cadete.Pedidos = pedidosVM;
                 return View(cadeteDeleteVM);
             }
@@ -220,17 +204,31 @@ namespace tallerIIpractico3.Controllers
                 if (userDb != null)
                 {
                     var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
-                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                    cadeteVM.Pedidos = pedidosVM;
-                    CadeteABMViewModel cadetePagoVM = new CadeteABMViewModel();
-                    cadetePagoVM.UserLog = userVM;
-                    cadetePagoVM.Cadete = cadeteVM;
+                    CadeteABMViewModel cadetePagoVM = carcarModelosCadete(userDb, cadeteVM);
+                    cadetePagoVM.Cadete.Pedidos = pedidosVM;
                     return View(cadetePagoVM);
                 }
+
                 return RedirectToAction("IndexUsuario", "Usuario");
             }
             return RedirectToAction("ErrorAlPagarCadete", "Logger");
         }
 
+
+        //***************************************METODOS ADICIONALES************************************
+
+        private CadeteABMViewModel carcarModelosCadete(Usuario userDb, CadeteViewModel cadeteVM)
+        {
+            UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+            CadeteABMViewModel modeloCargadoVM = new CadeteABMViewModel();
+            modeloCargadoVM.UserLog = userVM;
+            modeloCargadoVM.Cadete = cadeteVM;
+            return modeloCargadoVM;
+        }
+
+
     }
+
+
 }
+
