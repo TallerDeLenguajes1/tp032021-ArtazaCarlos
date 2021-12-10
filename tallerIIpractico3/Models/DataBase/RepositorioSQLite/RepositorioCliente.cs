@@ -77,19 +77,21 @@ namespace tallerIIpractico3.Models.Db
                             clienteId.Nombre = dataReader["nombre"].ToString();
                             clienteId.Direccion = dataReader["direccion"].ToString();
                             clienteId.Telefono = dataReader["telefono"].ToString();
-
+                            dataReader.Close();
+                            conexion.Close();
+                            return clienteId;
                         }
 
                     }
-                    conexion.Close();
+                    
                 }
-                return clienteId;
+                
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
             }
+            return clienteId;
         }
 
         public Cliente ClienteByNomTel(string nom, string tel)
@@ -115,19 +117,22 @@ namespace tallerIIpractico3.Models.Db
                             cliente.Nombre = dataReader["nombre"].ToString();
                             cliente.Direccion = dataReader["direccion"].ToString();
                             cliente.Telefono = dataReader["telefono"].ToString();
-
+                            dataReader.Close();
+                            conexion.Close();
+                            return cliente;
                         }
 
                     }
-                    conexion.Close();
+                    
                 }
-                return cliente;
+                
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+             
             }
+            return cliente;
         }
 
         //quizas no hace falta
@@ -150,19 +155,22 @@ namespace tallerIIpractico3.Models.Db
                         while (dataReader.Read())
                         {
                             clienteId = Convert.ToInt32(dataReader["clienteId"]);
-
+                            dataReader.Close();
+                            conexion.Close();
+                            return clienteId;
                         }
 
                     }
-                    conexion.Close();
+                    
                 }
-                return clienteId;
+                
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+                
             }
+            return clienteId;
 
         }
 

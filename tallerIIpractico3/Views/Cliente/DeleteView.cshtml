@@ -1,29 +1,48 @@
 ﻿@*
     For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
 *@
-@model tallerIIpractico3.ViewModel.ClienteViewModel
-
-<div class="text-left">
-    <p class="titulo3">¿Confirma eliminar el Cliente?</p>
-</div>
+@model tallerIIpractico3.ViewModel.ClienteABMViewModel
 
 
-<div>
-    <table class="table table-striped" style="text-align:center">
-        <tr>
-            <th>ID</th>
-            <th>Nombre</th>
-            <th>Direccion</th>
-            <th></th>
-        </tr>
-        <tr>
-            <td>@Model.Id</td>
-            <td>@Model.Nombre</td>
-            <td>@Model.Direccion</td>
-            <td>
-                <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cliente" asp-action="DeteleCliente" asp-route-clienteId="@Model.Id" style="margin:2px">Eliminar</a>
-                <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cliente" asp-action="IndexCliente" style="margin:2px">Cancelar</a>
-            </td>
-        </tr>
-    </table>
-</div>
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.Rol == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
+    <div class="text-left">
+        <p class="titulo3">¿Confirma eliminar el Cliente?</p>
+    </div>
+
+
+    <div>
+        <table class="table table-striped" style="text-align:center">
+            <tr>
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Direccion</th>
+                <th></th>
+            </tr>
+            <tr>
+                <td>@Model.Cliente.Id</td>
+                <td>@Model.Cliente.Nombre</td>
+                <td>@Model.Cliente.Direccion</td>
+                <td>
+                    <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cliente" asp-action="DeteleCliente" asp-route-clienteId="@Model.Cliente.Id" style="margin:2px">Eliminar</a>
+                    <a button type="button" class="btn btn-secondary btn-sm" asp-controller="Cliente" asp-action="IndexCliente" style="margin:2px">Cancelar</a>
+                </td>
+            </tr>
+        </table>
+    </div>
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
+}

@@ -5,12 +5,12 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using tallerIIpractico3.entities;
-using tallerIIpractico3.Models.Db;
 using NLog;
 using Microsoft.AspNetCore.Http;
 using tallerIIpractico3.ViewModel;
 using AutoMapper;
 using tallerIIpractico3.Models.Entities;
+using tallerIIpractico3.Models.Db;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -69,11 +69,11 @@ namespace tallerIIpractico3.Controllers
         }
 
         [HttpPost]
-        public IActionResult SaveCadete(CadeteABMViewModel cadeteCreateVM)
+        public IActionResult SaveCadete(CadeteABMViewModel cadeteVM)
         {
             if (ModelState.IsValid)
             {
-                Cadete cadeteDb = mapper.Map<Cadete>(cadeteCreateVM.Cadete);
+                Cadete cadeteDb = mapper.Map<Cadete>(cadeteVM.Cadete);
                 db.CadeteDb.SaveCadete(cadeteDb);
                 return RedirectToAction("IndexCadete");
             }
@@ -160,7 +160,6 @@ namespace tallerIIpractico3.Controllers
                     var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
                     if (pedidosVM.Count() > 0)
                     {
-                        cadeteVM.Pedidos = pedidosVM;
                         return RedirectToAction("DeleteViewPendientes", cadeteVM);
                     }
 
@@ -198,11 +197,12 @@ namespace tallerIIpractico3.Controllers
 
             if (userDb != null)
             {
-                //var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
+                var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
                 UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
                 CadeteABMViewModel cadeteDeleteVM = new CadeteABMViewModel();
                 cadeteDeleteVM.UserLog = userVM;
                 cadeteDeleteVM.Cadete = cadeteVM;
+                cadeteDeleteVM.Cadete.Pedidos = pedidosVM;
                 return View(cadeteDeleteVM);
             }
             return RedirectToAction("IndexUsuario", "Usuario");
@@ -212,20 +212,20 @@ namespace tallerIIpractico3.Controllers
         [HttpGet]
         public IActionResult PagarACadeteFromDelete(CadeteViewModel cadeteVM)
         {
+
             if (ModelState.IsValid)
             {
                 Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                     HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-
                 if (userDb != null)
                 {
                     var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
-                    cadeteVM.Pedidos = pedidosVM;
                     UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    cadeteVM.Pedidos = pedidosVM;
                     CadeteABMViewModel cadetePagoVM = new CadeteABMViewModel();
                     cadetePagoVM.UserLog = userVM;
                     cadetePagoVM.Cadete = cadeteVM;
-                    return View(cadetePagoVM);  
+                    return View(cadetePagoVM);
                 }
                 return RedirectToAction("IndexUsuario", "Usuario");
             }

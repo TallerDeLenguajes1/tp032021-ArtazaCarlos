@@ -90,7 +90,7 @@ namespace tallerIIpractico3.Models.Db
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+   
             }
         }
 
@@ -109,29 +109,31 @@ namespace tallerIIpractico3.Models.Db
                         conexion.Open();
 
                         SQLiteDataReader dataReader = command.ExecuteReader();
+                        Usuario usuario = new Usuario();
                         while (dataReader.Read())
                         {
-                            Usuario usuario = new Usuario();
+                            
                             usuario.Id = Convert.ToInt32(dataReader["usuarioId"]);
                             usuario.Nombre = dataReader["nombre"].ToString();
                             usuario.User = dataReader["user"].ToString();
                             usuario.Pass = dataReader["pass"].ToString();
                             usuario.Rol = dataReader["rol"].ToString();
-
+                            dataReader.Close();
+                            conexion.Close();
                             return usuario;
+
                         }
-                        dataReader.Close();
-                        conexion.Close();
+                        
                     }
 
                 }
-                return usuarioNull;
+                
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                return usuarioNull;
             }
+            return usuarioNull;
         }
 
         public Usuario UsuarioByUserPass(string user, string pass)
@@ -148,31 +150,28 @@ namespace tallerIIpractico3.Models.Db
                         command.Parameters.AddWithValue("@user", user);
                         command.Parameters.AddWithValue("@pass", pass);
                         conexion.Open();
-               
                         SQLiteDataReader dataReader = command.ExecuteReader();
+                        Usuario usuario = new Usuario();
                         while (dataReader.Read())
                         {
-                            Usuario usuario = new Usuario();
                             usuario.Id = Convert.ToInt32(dataReader["usuarioId"]);
                             usuario.Nombre = dataReader["nombre"].ToString();
                             usuario.User = dataReader["user"].ToString();
                             usuario.Pass = dataReader["pass"].ToString();
                             usuario.Rol = dataReader["rol"].ToString();
-
+                            dataReader.Close();
+                            conexion.Close();
                             return usuario;
                         }
-                        dataReader.Close();
-                        conexion.Close();
-                    }
-                      
-                }
-                return usuarioNull;
+                        
+                    }         
+                }    
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                return usuarioNull;
             }
+            return usuarioNull;
         }
     }
 }

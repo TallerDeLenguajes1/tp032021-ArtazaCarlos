@@ -10,6 +10,7 @@ using NLog;
 using Microsoft.AspNetCore.Http;
 using tallerIIpractico3.ViewModel;
 using AutoMapper;
+using tallerIIpractico3.Models.Entities;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -28,13 +29,35 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult IndexCliente()
         {
-            var clienteVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.ReadCliente());
-            return View(clienteVM);
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+            if (userDb != null)
+            {
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                var clientesVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.ReadCliente());
+                ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
+                clienteIndexVM.Clientes = clientesVM;
+                clienteIndexVM.UserLog = userVM;
+
+                return View(clienteIndexVM);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
         }
 
         public IActionResult CreateView()
         {
-            return View(new ClienteViewModel());
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+            if (userDb != null)
+            {
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                ClienteABMViewModel clienteCreateVM = new ClienteABMViewModel();
+                clienteCreateVM.UserLog = userVM;
+                clienteCreateVM.Cliente = new ClienteViewModel();
+                return View(clienteCreateVM);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
         }
 
         [HttpPost]
@@ -52,7 +75,22 @@ namespace tallerIIpractico3.Controllers
         [HttpGet]
         public IActionResult EditView(ClienteViewModel clienteVM)
         {
-            return View(clienteVM);
+            if (ModelState.IsValid)
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    ClienteABMViewModel clienteUpdateVM = new ClienteABMViewModel();
+                    clienteUpdateVM.UserLog = userVM;
+                    clienteUpdateVM.Cliente = clienteVM;
+                    return View(clienteUpdateVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            return RedirectToAction("ErrorUpdateCliente", "Logger");
         }
 
         [HttpPost]
@@ -69,7 +107,22 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult DeleteView(ClienteViewModel clienteVM)
         {
-            return View(clienteVM);
+            if (ModelState.IsValid)
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    ClienteABMViewModel clienteDeleteVM = new ClienteABMViewModel();
+                    clienteDeleteVM.UserLog = userVM;
+                    clienteDeleteVM.Cliente = clienteVM;
+                    return View(clienteDeleteVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            return RedirectToAction("ErrorDeleteCliente", "Logger");
         }
 
       
@@ -81,7 +134,5 @@ namespace tallerIIpractico3.Controllers
             }
             return RedirectToAction("ErrorDeleteCliente", "Logger");
         }
-
-
     }
 }

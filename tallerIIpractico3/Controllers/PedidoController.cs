@@ -34,10 +34,10 @@ namespace tallerIIpractico3.Controllers
 
             if (userDb != null)
             {
-                var pedidoVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
+                var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
                 UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
                 PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
-                pedidosIndexVM.Pedidos = pedidoVM;
+                pedidosIndexVM.Pedidos = pedidosVM;
                 pedidosIndexVM.UserLog = userVM;
                 return View(pedidosIndexVM);
             }
@@ -152,22 +152,15 @@ namespace tallerIIpractico3.Controllers
         [HttpPost]
         public IActionResult UpdatePedidoFromDeleteView(int cadeteId, int pedidoId, entities.Estado estadoPedido)
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
-                    HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-            if (userDb != null)
+            if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
             {
-                if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
-                {
-                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                    CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
-                    CadeteABMViewModel cadeteDeleteVM = new CadeteABMViewModel();
-                    cadeteDeleteVM.Cadete = cadeteVM;
-                    cadeteDeleteVM.UserLog = userVM;
-                    return RedirectToAction("DeleteViewPendientes", "Cadete", cadeteDeleteVM);
-                }
-                return RedirectToAction("ErrorUpdatePedido", "Logger");
+                CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
+                var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
+                cadeteVM.Pedidos = pedidosVM;
+
+                return RedirectToAction("DeleteViewPendientes", "Cadete", cadeteVM);
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            return RedirectToAction("ErrorUpdatePedido", "Logger");
         }
 
 

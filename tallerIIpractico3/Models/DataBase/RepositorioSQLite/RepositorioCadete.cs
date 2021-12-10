@@ -49,6 +49,8 @@ namespace tallerIIpractico3.Models.Db
                         }
                         CadeteFilas.Close();
                         conexion.Close();
+                        return ListaDeCadetes;
+
                     }
                 }
             }
@@ -95,7 +97,7 @@ namespace tallerIIpractico3.Models.Db
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+ 
             }
         }
 
@@ -157,19 +159,21 @@ namespace tallerIIpractico3.Models.Db
                             cadeteId.Direccion = dataReader["direccion"].ToString();
                             cadeteId.Telefono = dataReader["telefono"].ToString();
                             cadeteId.Vehiculo = dataReader["vehiculo"].ToString();
+                            dataReader.Close();
+                            conexion.Close();
+                            return cadeteId;
 
                         }
-
-                    }
-                    conexion.Close();
+                        
+                    } 
                 }
-                return cadeteId;
             }
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+                
             }
+            return cadeteId;
         }
 
         public bool DeleteCadete(int cadeteId)

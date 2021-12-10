@@ -1,53 +1,71 @@
-﻿@model IEnumerable<tallerIIpractico3.ViewModel.ClienteViewModel>
+﻿@model tallerIIpractico3.ViewModel.ClienteIndexViewModel
 
 @{
     ViewData["Title"] = "IndexCliente";
 }
 
-<hr />
 
-<table class="table" style="text-align:center;">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Id)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Direccion)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Telefono)
-            </th>
-            <th></th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Telefono)
-            </td>
-            <td style="border:solid gray 1px">
-                @Html.ActionLink("Tomar Pedido", "CreateViewFromCliente", "Pedido", item)
-            </td>
-            <td>
-                @Html.ActionLink("Modificar", "EditView", item) |
-                @Html.ActionLink("Eliminar", "DeleteView", item)
-            </td> 
-        </tr>
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.Rol == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
+    <hr />
+    <table class="table" style="text-align:center;">
+        <thead>
+            <tr>
+                <th>
+                    Id
+                </th>
+                <th>
+                    Nombre
+                </th>
+                <th>
+                    Dirección
+                </th>
+                <th>
+                    Teléfono
+                </th>
+                <th></th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Clientes) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td style="border:solid gray 1px">
+                    @Html.ActionLink("Tomar Pedido", "CreateViewFromCliente", "Pedido", item)
+                </td>
+                <td>
+                    @Html.ActionLink("Modificar", "EditView", item) |
+                    @Html.ActionLink("Eliminar", "DeleteView", item)
+                </td> 
+            </tr>
+    }
+        </tbody>
+    </table>
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
 }
-    </tbody>
-</table>

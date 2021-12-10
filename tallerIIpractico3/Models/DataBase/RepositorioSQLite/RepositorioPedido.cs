@@ -123,10 +123,12 @@ namespace tallerIIpractico3.Models.Db
                         command.Parameters.AddWithValue("@Id", pedidoId);
                         conexion.Open();
                         command.ExecuteNonQuery();
+                        conexion.Close();
+                        return true;
                     }
-                    conexion.Close();
+                    
                 }
-                return true;
+                
             }
             catch (Exception ex)
             {
@@ -210,8 +212,9 @@ namespace tallerIIpractico3.Models.Db
                         command.Parameters.AddWithValue("@cadeteId", cadeteId);
                         conexion.Open();
                         command.ExecuteNonQuery();
+                        conexion.Close();
                     }
-                    conexion.Close();
+                    
                 }
                 return true;
             }

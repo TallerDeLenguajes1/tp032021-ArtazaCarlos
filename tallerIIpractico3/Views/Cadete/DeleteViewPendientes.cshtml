@@ -96,7 +96,8 @@
                 <td>@Model.Cadete.Nombre</td>
                 <td>@Model.Cadete.Direccion</td>
                 <td>
-                    @Html.ActionLink("Pagar/Liquidar Pedidos", "PagarACadeteFromDelete", Model)
+     
+                    @Html.ActionLink("Pagar/Liquidar Pedidos", "PagarACadeteFromDelete", Model.Cadete);
                 </td>
             </tr>
         </table>

@@ -33,7 +33,8 @@ namespace tallerIIpractico3.Controllers
         {
             try
             {
-                Usuario userDb = db.UsuarioDb.UsuarioByUser(HttpContext.Session.GetString("user"));
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
                 if (userDb != null)
                 {

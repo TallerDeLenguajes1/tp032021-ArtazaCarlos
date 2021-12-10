@@ -43,7 +43,7 @@ namespace tallerIIpractico3
 
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(60);
+                options.IdleTimeout = TimeSpan.FromSeconds(1800);
                 options.Cookie.HttpOnly = true;
             });
         }
