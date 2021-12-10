@@ -8,5 +8,6 @@ namespace tallerIIpractico3.Models.Db
         List<Usuario> ReadUsuarios();
         void SaveUsuario(Usuario cadete);
         Usuario UsuarioByUserPass(string user, string pass);
+        Usuario UsuarioByUser(string user);
     }
 }

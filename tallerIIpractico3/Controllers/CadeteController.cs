@@ -10,6 +10,7 @@ using NLog;
 using Microsoft.AspNetCore.Http;
 using tallerIIpractico3.ViewModel;
 using AutoMapper;
+using tallerIIpractico3.Models.Entities;
 
 namespace tallerIIpractico3.Controllers
 {
@@ -28,13 +29,19 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult IndexCadete()
         {
-            List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
-            var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
-            foreach (var item in cadetesVM)
+            Usuario userDb = db.UsuarioDb.UsuarioByUser(HttpContext.Session.GetString("user"));
+            if (userDb != null)
             {
-                item.Pedidos = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(item.Id));
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
+                var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
+                foreach (var item in cadetesVM)
+                {
+                    item.Pedidos = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(item.Id));
+                }
+                return View(new Tuple<UsuarioViewModel, List<CadeteViewModel>>(userVM, cadetesVM));
             }
-            return View(cadetesVM);
+            return RedirectToAction("IndexUsuario", "Usuario");
         }
 
         //**************************************AGREGAR CADETE**************************************

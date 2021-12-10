@@ -40,13 +40,12 @@ namespace tallerIIpractico3
             services.AddSingleton(Db);
 
             services.AddControllersWithViews().AddRazorRuntimeCompilation();
+
             services.AddSession(options =>
             {
-                options.IdleTimeout = TimeSpan.FromSeconds(10);
+                options.IdleTimeout = TimeSpan.FromSeconds(60);
                 options.Cookie.HttpOnly = true;
             });
-
-
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

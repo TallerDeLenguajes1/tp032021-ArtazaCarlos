@@ -36,9 +36,11 @@ namespace tallerIIpractico3.Controllers
         public IActionResult Login(string user, string pass)
         {
             Usuario usu = db.UsuarioDb.UsuarioByUserPass(user, pass);
-            HttpContext.Session.SetString("rol", usu.Rol);
+
             if (usu != null)
             {
+                HttpContext.Session.SetString("user", usu.User);
+                HttpContext.Session.SetString("rol", usu.Rol);
                 return RedirectToAction("Index", "Home");
             }    
             return View("IndexUsuario");

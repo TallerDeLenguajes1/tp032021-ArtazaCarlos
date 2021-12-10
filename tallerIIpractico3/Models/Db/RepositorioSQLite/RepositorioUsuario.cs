@@ -39,7 +39,7 @@ namespace tallerIIpractico3.Models.Db
                             usuarioTemp.Id = Convert.ToInt32(UsuarioFilas["usuarioId"]);
                             usuarioTemp.Nombre = UsuarioFilas["nombre"].ToString();
                             usuarioTemp.User = UsuarioFilas["user"].ToString();
-                            usuarioTemp.Password = UsuarioFilas["password"].ToString();
+                            usuarioTemp.Pass = UsuarioFilas["pass"].ToString();
                             usuarioTemp.Rol = UsuarioFilas["rol"].ToString();
 
                             ListaDeUsuario.Add(usuarioTemp);
@@ -62,13 +62,13 @@ namespace tallerIIpractico3.Models.Db
             string queryString = @"INSERT INTO Usuarios (
                                                             nombre,
                                                             user,
-                                                            password
+                                                            pass
                                                   
                                                         )
                                                         VALUES(
                                                             @nombre,
                                                             @user,
-                                                            @password
+                                                            @pass
                                                
                                                         )";
             try
@@ -79,7 +79,7 @@ namespace tallerIIpractico3.Models.Db
                     {
                         command.Parameters.AddWithValue("@nombre", usuario.Nombre);
                         command.Parameters.AddWithValue("@user", usuario.User);
-                        command.Parameters.AddWithValue("@password", usuario.Password);
+                        command.Parameters.AddWithValue("@pass", usuario.Pass);
                
                         conexion.Open();
                         command.ExecuteNonQuery();
@@ -94,10 +94,50 @@ namespace tallerIIpractico3.Models.Db
             }
         }
 
+        public Usuario UsuarioByUser(string user)
+        {
+            Usuario usuarioNull = null;
+            string queryString = @"SELECT * FROM Usuarios WHERE user = @user;";
+
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@user", user);
+                        conexion.Open();
+
+                        SQLiteDataReader dataReader = command.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            Usuario usuario = new Usuario();
+                            usuario.Id = Convert.ToInt32(dataReader["usuarioId"]);
+                            usuario.Nombre = dataReader["nombre"].ToString();
+                            usuario.User = dataReader["user"].ToString();
+                            usuario.Pass = dataReader["pass"].ToString();
+                            usuario.Rol = dataReader["rol"].ToString();
+
+                            return usuario;
+                        }
+                        dataReader.Close();
+                        conexion.Close();
+                    }
+
+                }
+                return usuarioNull;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return usuarioNull;
+            }
+        }
+
         public Usuario UsuarioByUserPass(string user, string pass)
         {
             Usuario usuarioNull = null;
-            string queryString = @"SELECT * FROM Usuarios WHERE user = @user AND password = @pass;";
+            string queryString = @"SELECT * FROM Usuarios WHERE user = @user AND pass = @pass;";
 
             try
             {
@@ -116,7 +156,7 @@ namespace tallerIIpractico3.Models.Db
                             usuario.Id = Convert.ToInt32(dataReader["usuarioId"]);
                             usuario.Nombre = dataReader["nombre"].ToString();
                             usuario.User = dataReader["user"].ToString();
-                            usuario.Password = dataReader["password"].ToString();
+                            usuario.Pass = dataReader["pass"].ToString();
                             usuario.Rol = dataReader["rol"].ToString();
 
                             return usuario;
@@ -131,7 +171,7 @@ namespace tallerIIpractico3.Models.Db
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+                return usuarioNull;
             }
         }
     }

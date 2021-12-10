@@ -4,11 +4,14 @@ namespace tallerIIpractico3.ViewModel
 {
     public class UsuarioViewModel
     {
+        private int id;
         private string nombre;
         private string user;
-        private string password;
+        private string pass;
+        private string rol;
 
 
+        public int Id { get => id; set => id = value; }
         [Required]
         public string Nombre { get => nombre; set => nombre = value; }
         [Required]
@@ -17,8 +20,9 @@ namespace tallerIIpractico3.ViewModel
         [MinLength(6)]
         [MaxLength(20)]
         [Display(Name = "Contraseña")]
-        public string Password { get => password; set => password = value; }
- 
+        public string Pass { get => pass; set => pass = value; }
+        public string Rol { get => rol; set => rol = value; }
+
 
         public UsuarioViewModel()
         {

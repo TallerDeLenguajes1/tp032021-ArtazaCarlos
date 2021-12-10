@@ -1,4 +1,13 @@
-﻿@{
+﻿@model tallerIIpractico3.ViewModel.UsuarioViewModel
+@{
     ViewData["Title"] = "Home Page";
+}
+
+@if (Model.Rol == "admin")
+{
+    @await Html.PartialAsync("MenuAdmin", Model);
+}else if (Model.Rol == "user")
+{
+    @await Html.PartialAsync("MenuUser", Model);
 }
 
