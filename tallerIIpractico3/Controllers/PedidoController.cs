@@ -29,20 +29,40 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult IndexPedido()
         {
-            var pedidoVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
-            return View(pedidoVM);
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+            if (userDb != null)
+            {
+                var pedidoVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                pedidosIndexVM.Pedidos = pedidoVM;
+                pedidosIndexVM.UserLog = userVM;
+                return View(pedidosIndexVM);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
         }
 
 
 //************************CREAR PEDIDO DESDE MENU******************************
         public IActionResult CreateView()
         {
-            CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
-            List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
-            var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
-            modelosParaPedido.Cadetes = cadetesVM;
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
-            return View(modelosParaPedido);
+            if (userDb != null)
+            {
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
+                List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
+                var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
+                modelosParaPedido.Cadetes = cadetesVM;
+                modelosParaPedido.UserLog = userVM;
+
+                return View(modelosParaPedido);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
         }
 
         [HttpPost]
@@ -67,15 +87,23 @@ namespace tallerIIpractico3.Controllers
         [HttpGet]
         public IActionResult CreateViewFromCliente(ClienteViewModel clienteVM)
         {
-            CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
-
-            List<Cadete> cadetesDb = db.CadeteDb.ReadCadetes();
-            var cadetesVM = mapper.Map<List<CadeteViewModel>>(cadetesDb);
-
-            modelosParaPedido.Cadetes = cadetesVM;
-            modelosParaPedido.Cliente = clienteVM;
-
-            return View(modelosParaPedido);
+            if (ModelState.IsValid)
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
+                    var cadetesVM = mapper.Map<List<CadeteViewModel>>(db.CadeteDb.ReadCadetes());
+                    modelosParaPedido.Cadetes = cadetesVM;
+                    modelosParaPedido.Cliente = clienteVM;
+                    modelosParaPedido.UserLog = userVM;
+                    return View(modelosParaPedido);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            return RedirectToAction("ErrorCreatePedido", "Logger");
         }
 
         [HttpPost]
@@ -117,7 +145,6 @@ namespace tallerIIpractico3.Controllers
             return RedirectToAction("ErrorAlPagarCadete", "Logger");
 
         }
-
 
 
         //***************************************METODOS FROM DETELE VIEW************************************

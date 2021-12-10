@@ -4,55 +4,72 @@
     ViewData["Title"] = "CreateView";
 }
 
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.Rol == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
 
-
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-controller="Pedido" asp-action="CreatePedido" method="post">
-            <fieldset>
-            <legend>Pedido - Nuevo Cliente</legend>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <hr />
+    <div class="row">
+        <div class="col-md-4">
+            <form asp-controller="Pedido" asp-action="CreatePedido" method="post">
+                <fieldset>
+                <legend>Pedido - Nuevo Cliente</legend>
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             
-            <div class="form-group">
-                <label asp-for="PedidoObs" class="control-label">Observaciones</label>
-                <input asp-for="PedidoObs" class="form-control" />
-                <span asp-validation-for="PedidoObs" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.Nombre" class="control-label">Nombre</label>
-                <input asp-for="Cliente.Nombre" class="form-control" />
-                <span asp-validation-for="Cliente.Nombre" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.Direccion" class="control-label">Direccion</label>
-                <input asp-for="Cliente.Direccion" class="form-control"/>
-                <span asp-validation-for="Cliente.Direccion" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Cliente.Telefono" class="control-label">Telefono</label>
-                <input asp-for="Cliente.Telefono" class="form-control" />
-                <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
-            </div>
-            <div class="mb-3">
-                <label asp-for="CadeteId" class="control-label">Cadete</label>
-                <select asp-for="CadeteId" asp-items="@(new SelectList(Model.Cadetes, "Id", "Nombre"))">
-                    <option value="" selected>----</option>
-                </select>
-            </div>
-            </fieldset>
-            <div class="form-group">
-                <input type="submit" value="Enviar" class="btn btn-primary" />
-            </div>
-        </form>
-    </div>
+                <div class="form-group">
+                    <label asp-for="PedidoObs" class="control-label">Observaciones</label>
+                    <input asp-for="PedidoObs" class="form-control" />
+                    <span asp-validation-for="PedidoObs" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cliente.Nombre" class="control-label">Nombre</label>
+                    <input asp-for="Cliente.Nombre" class="form-control" />
+                    <span asp-validation-for="Cliente.Nombre" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cliente.Direccion" class="control-label">Direccion</label>
+                    <input asp-for="Cliente.Direccion" class="form-control"/>
+                    <span asp-validation-for="Cliente.Direccion" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Cliente.Telefono" class="control-label">Telefono</label>
+                    <input asp-for="Cliente.Telefono" class="form-control" />
+                    <span asp-validation-for="Cliente.Telefono" class="text-danger"></span>
+                </div>
+                <div class="mb-3">
+                    <label asp-for="CadeteId" class="control-label">Cadete</label>
+                    <select asp-for="CadeteId" asp-items="@(new SelectList(Model.Cadetes, "Id", "Nombre"))">
+                        <option value="" selected>----</option>
+                    </select>
+                </div>
+                </fieldset>
+                <div class="form-group">
+                    <input type="submit" value="Enviar" class="btn btn-primary" />
+                </div>
+            </form>
+        </div>
   
-</div>
+    </div>
 
-<div>
-    <a asp-action="IndexPedido">Lista de Pedidos</a>
-</div>
+    <div>
+        <a asp-action="IndexPedido">Lista de Pedidos</a>
+    </div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    @section Scripts {
+        @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    }
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
 }

@@ -1,69 +1,87 @@
-﻿@model List<tallerIIpractico3.ViewModel.PedidoViewModel>
+﻿@model tallerIIpractico3.ViewModel.PedidoIndexViewModel
 
 @{
     ViewData["Title"] = "Index";
 }
 
-<hr />
-<table class="table" style="text-align:center">
-    <thead>
-        <tr>
-            <th>
-                id
-            </th>
-            <th>
-               Fecha - Hora
-            </th>
-            <th>
-                Observaciones
-            </th>
-            <th>
-                Dirección
-            </th>
-            <th>
-                Estado del pedido
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.Id)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Fecha)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Observaciones)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cliente.Direccion)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.EstadoPedido)
-            </td>
-            <td>
-                <form asp-controller="Pedido" asp-action="UpdatePedido" method="post">
-                    <input type="number" name="pedidoId" value="@item.Id" hidden>
-                    <select id="estado" name="estadoPedido">
-                        <option value="" selected>@item.EstadoPedido</option>
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.Rol == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
+
+    <hr />
+    <table class="table" style="text-align:center">
+        <thead>
+            <tr>
+                <th>
+                    id
+                </th>
+                <th>
+                   Fecha - Hora
+                </th>
+                <th>
+                    Observaciones
+                </th>
+                <th>
+                    Dirección
+                </th>
+                <th>
+                    Estado del pedido
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+    @foreach (var item in Model.Pedidos) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observaciones)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstadoPedido)
+                </td>
+                <td>
+                    <form asp-controller="Pedido" asp-action="UpdatePedido" method="post">
+                        <input type="number" name="pedidoId" value="@item.Id" hidden>
+                        <select id="estado" name="estadoPedido">
+                            <option value="" selected>@item.EstadoPedido</option>
+                            @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
+                            {
+                                <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
+                                <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
+                            }
+                        </select>
                         @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
                         {
-                            <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
-                            <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
+                            <button type="submit" class="btn btn-primary">Cambiar</button>
                         }
-                    </select>
-                    @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
-                    {
-                        <button type="submit" class="btn btn-primary">Cambiar</button>
-                    }
-                </form>
-                @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ })
+                    </form>
 
-            </td>
-        </tr>
+                </td>
+            </tr>
+    }
+        </tbody>
+    </table>
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
 }
-    </tbody>
-</table>

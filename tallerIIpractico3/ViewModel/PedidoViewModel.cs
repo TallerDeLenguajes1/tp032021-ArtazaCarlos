@@ -29,29 +29,40 @@ namespace tallerIIpractico3.ViewModel
         }
     }
 
+    public class PedidoIndexViewModel
+    {
+        private List<PedidoViewModel> pedidos;
+        private UsuarioViewModel userLog;
+
+        public List<PedidoViewModel> Pedidos { get => pedidos; set => pedidos = value; }
+        public UsuarioViewModel UserLog { get => userLog; set => userLog = value; }
+
+        public PedidoIndexViewModel()
+        {
+        }
+    }
+
+
     public class CreatePedidoViewModel
     {
         private List<CadeteViewModel> cadetes;
         private ClienteViewModel cliente;
         private string pedidoObs;
         private int cadeteId;
-
-
+        private UsuarioViewModel userLog;
 
         public List<CadeteViewModel> Cadetes { get => cadetes; set => cadetes = value; }
+        [Required]
         public ClienteViewModel Cliente { get => cliente; set => cliente = value; }
         [Required]
         public string PedidoObs { get => pedidoObs; set => pedidoObs = value; }
         [Required]
         public int CadeteId { get => cadeteId; set => cadeteId = value; }
-
+        public UsuarioViewModel UserLog { get => userLog; set => userLog = value; }
 
         public CreatePedidoViewModel()
         {
-
         }
-
-
     }
 
 
