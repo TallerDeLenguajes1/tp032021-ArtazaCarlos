@@ -17,7 +17,7 @@ namespace tallerIIpractico3.ViewModel
 
         public int Id { get => id; set => id = value; }
         public DateTime Fecha { get => fecha; set => fecha = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         public string Observaciones { get => observaciones; set => observaciones = value; }
         public ClienteViewModel Cliente { get => cliente; set => cliente = value; }
         public string EstadoPedido { get => estadoPedido; set => estadoPedido = value; }

@@ -131,7 +131,7 @@ namespace tallerIIpractico3.Models.Db
             catch (Exception ex)
             {
                 logger.Error(ex.ToString());
-                throw;
+               
             }
             
         }

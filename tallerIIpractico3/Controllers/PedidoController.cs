@@ -32,57 +32,84 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult IndexPedido()
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+            try
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
-            if (userDb != null)
-            {
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
-                pedidosIndexVM.UserLog = userVM;
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                    pedidosIndexVM.UserLog = userVM;
 
-                return View(pedidosIndexVM);
+                    return View(pedidosIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
 
 
         public IActionResult IndexTodosLosPedidos()
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+            try
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
-            if (userDb != null)
-            {
-                var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
-                pedidosIndexVM.Pedidos = pedidosVM;
-                pedidosIndexVM.UserLog = userVM;
+                if (userDb != null)
+                {
+                    var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                    pedidosIndexVM.Pedidos = pedidosVM;
+                    pedidosIndexVM.UserLog = userVM;
 
-                return View(pedidosIndexVM);
+                    return View(pedidosIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
 
         public IActionResult IndexBusquedaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+            try
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
-            if (userDb != null)
-            {
-                var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.BusquedaFiltradaPorFecha(fechaInicial, fechaFinal));
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
-                pedidosIndexVM.Pedidos = pedidosVM;
-                pedidosIndexVM.UserLog = userVM;
+                if (userDb != null)
+                {
+                    var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.BusquedaFiltradaPorFecha(fechaInicial, fechaFinal));
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                    pedidosIndexVM.Pedidos = pedidosVM;
+                    pedidosIndexVM.UserLog = userVM;
 
-                return View(pedidosIndexVM);
+                    return View(pedidosIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
 
@@ -90,66 +117,102 @@ namespace tallerIIpractico3.Controllers
         //************************CREAR PEDIDO DESDE MENU******************************
         public IActionResult CreateView()
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+            try
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
-            if (userDb != null)
-            {
-                CreatePedidoViewModel modelosParaPedido = cargarModelosPedido(userDb);
-                return View(modelosParaPedido);
+                if (userDb != null)
+                {
+                    CreatePedidoViewModel modelosParaPedido = cargarModelosPedido(userDb);
+                    return View(modelosParaPedido);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
         [HttpPost]
         public IActionResult SavePedido(CreatePedidoViewModel modelosParaPedido)
         {
-            if (ModelState.IsValid)
+            try
             {
-                var clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
-                db.ClienteDb.SaveCliente(clienteDb);
-                Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(clienteDb.Nombre, clienteDb.Telefono);
+                if (ModelState.IsValid)
+                {
+                    var clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
+                    db.ClienteDb.SaveCliente(clienteDb);
+                    Cliente clienteWithId = db.ClienteDb.ClienteByNomTel(clienteDb.Nombre, clienteDb.Telefono);
 
-                Pedido pedidoDb = new(modelosParaPedido.PedidoObs);
-                pedidoDb.Cliente = clienteWithId;
-                db.PedidoDb.SavePedido(pedidoDb, modelosParaPedido.CadeteId);
+                    Pedido pedidoDb = new(modelosParaPedido.PedidoObs);
+                    pedidoDb.Cliente = clienteWithId;
+                    db.PedidoDb.SavePedido(pedidoDb, modelosParaPedido.CadeteId);
 
-                return RedirectToAction("IndexPedido");
+                    return RedirectToAction("IndexPedido");
+                }
+                return RedirectToAction("ErrorCreatePedido", "Logger");
             }
-            return RedirectToAction("ErrorCreatePedido", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorCreatePedido", "Logger");
+            }
+            
         }
 
 //************************CREAR PEDIDO DESDE CLIENTES CARGADOS******************************
         [HttpGet]
         public IActionResult CreateViewFromCliente(ClienteViewModel clienteVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
-                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-                if (userDb != null)
+                if (ModelState.IsValid)
                 {
-                    CreatePedidoViewModel modelosParaPedido = cargarModelosPedido(userDb);
-                    modelosParaPedido.Cliente = clienteVM;
-                    return View(modelosParaPedido);
+                    Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                    HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+                    if (userDb != null)
+                    {
+                        CreatePedidoViewModel modelosParaPedido = cargarModelosPedido(userDb);
+                        modelosParaPedido.Cliente = clienteVM;
+                        return View(modelosParaPedido);
+                    }
+                    return RedirectToAction("IndexUsuario", "Usuario");
                 }
-                return RedirectToAction("IndexUsuario", "Usuario");
+                return RedirectToAction("ErrorCreatePedido", "Logger");
             }
-            return RedirectToAction("ErrorCreatePedido", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorCreatePedido", "Logger");
+            }
+            
         }
 
         [HttpPost]
         public IActionResult SavePedidoFromCliente(CreatePedidoViewModel modelosParaPedido)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Pedido pedidoDb = new(modelosParaPedido.PedidoObs);
-                Cliente clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
-                pedidoDb.Cliente = clienteDb;
-                db.PedidoDb.SavePedido(pedidoDb, modelosParaPedido.CadeteId);
-                return RedirectToAction("IndexPedido");
+                if (ModelState.IsValid)
+                {
+                    Pedido pedidoDb = new(modelosParaPedido.PedidoObs);
+                    Cliente clienteDb = mapper.Map<Cliente>(modelosParaPedido.Cliente);
+                    pedidoDb.Cliente = clienteDb;
+                    db.PedidoDb.SavePedido(pedidoDb, modelosParaPedido.CadeteId);
+                    return RedirectToAction("IndexPedido");
+                }
+                return RedirectToAction("ErrorCreatePedido", "Logger");
             }
-            return RedirectToAction("ErrorCreatePedido", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorCreatePedido", "Logger");
+            }
+            
         }
 
         //************************UPDATE PEDIDO***************************************
@@ -157,11 +220,20 @@ namespace tallerIIpractico3.Controllers
         [HttpPost]
         public IActionResult UpdatePedido(int pedidoId, entities.Estado estadoPedido)
         {
-            if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+            try
             {
-                return RedirectToAction("IndexPedido");
+                if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+                {
+                    return RedirectToAction("IndexPedido");
+                }
+                return RedirectToAction("ErrorUpdatePedido", "Logger");
             }
-            return RedirectToAction("ErrorUpdatePedido", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorUpdatePedido", "Logger");
+            }
+            
         }
 
 
@@ -170,11 +242,20 @@ namespace tallerIIpractico3.Controllers
         [HttpGet]
         public IActionResult ConfirmarPago(int cadeteId)
         {
-            if (db.PedidoDb.LiquidarPedido(cadeteId))
+            try
             {
-                return RedirectToAction("IndexCadete", "Cadete");
+                if (db.PedidoDb.LiquidarPedido(cadeteId))
+                {
+                    return RedirectToAction("IndexCadete", "Cadete");
+                }
+                return RedirectToAction("ErrorAlPagarCadete", "Logger");
             }
-            return RedirectToAction("ErrorAlPagarCadete", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorAlPagarCadete", "Logger");
+            }
+            
 
         }
 
@@ -184,27 +265,45 @@ namespace tallerIIpractico3.Controllers
         [HttpPost]
         public IActionResult UpdatePedidoFromDeleteView(int cadeteId, int pedidoId, entities.Estado estadoPedido)
         {
-            if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+            try
             {
-                CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
-                var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
-                cadeteVM.Pedidos = pedidosVM;
+                if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+                {
+                    CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
+                    var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.GetPedidosImpagos(cadeteVM.Id));
+                    cadeteVM.Pedidos = pedidosVM;
 
-                return RedirectToAction("DeleteViewPendientes", "Cadete", cadeteVM);
+                    return RedirectToAction("DeleteViewPendientes", "Cadete", cadeteVM);
+                }
+                return RedirectToAction("ErrorUpdatePedido", "Logger");
             }
-            return RedirectToAction("ErrorUpdatePedido", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorUpdatePedido", "Logger");
+            }
+            
         }
 
 
         [HttpGet]
         public IActionResult ConfirmarPagoFromDelete(int cadeteId)
         {
-            if (db.PedidoDb.LiquidarPedido(cadeteId))
+            try
             {
-                CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
-                return RedirectToAction("DeleteView", "Cadete", cadeteVM);
+                if (db.PedidoDb.LiquidarPedido(cadeteId))
+                {
+                    CadeteViewModel cadeteVM = mapper.Map<CadeteViewModel>(db.CadeteDb.CadeteById(cadeteId));
+                    return RedirectToAction("DeleteView", "Cadete", cadeteVM);
+                }
+                return RedirectToAction("ErrorAlPagarCadete", "Logger");
             }
-            return RedirectToAction("ErrorAlPagarCadete", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorAlPagarCadete", "Logger");
+            }
+            
 
         }
 
@@ -212,13 +311,22 @@ namespace tallerIIpractico3.Controllers
 
         private CreatePedidoViewModel cargarModelosPedido(Usuario userDb)
         {
-            UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-            CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
-            var cadetesVM = mapper.Map<List<CadeteViewModel>>(db.CadeteDb.ReadCadetes());
-            modelosParaPedido.Cadetes = cadetesVM;
-            modelosParaPedido.Cliente = new ClienteViewModel();
-            modelosParaPedido.UserLog = userVM;
-            return modelosParaPedido;
+            try
+            {
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                CreatePedidoViewModel modelosParaPedido = new CreatePedidoViewModel();
+                var cadetesVM = mapper.Map<List<CadeteViewModel>>(db.CadeteDb.ReadCadetes());
+                modelosParaPedido.Cadetes = cadetesVM;
+                modelosParaPedido.Cliente = new ClienteViewModel();
+                modelosParaPedido.UserLog = userVM;
+                return modelosParaPedido;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return new CreatePedidoViewModel();
+            }
+            
         }
 
         //original index

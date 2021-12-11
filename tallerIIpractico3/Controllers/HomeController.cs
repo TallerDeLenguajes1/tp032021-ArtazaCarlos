@@ -51,11 +51,7 @@ namespace tallerIIpractico3.Controllers
             }  
         }
 
-        
-        public ActionResult RenderMenu()
-        {
-            return PartialView("_MenuBar");
-        }
+
 
 
 

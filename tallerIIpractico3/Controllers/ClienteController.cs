@@ -29,151 +29,232 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult IndexCliente()
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
-                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-            if (userDb != null)
+            try
             {
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
-                clienteIndexVM.UserLog = userVM;
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
+                    clienteIndexVM.UserLog = userVM;
 
-                return View(clienteIndexVM);
+                    return View(clienteIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());   
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
         public IActionResult IndexTodosLosClientes()
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
-                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-            if (userDb != null)
+            try
             {
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                var clientesVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.ReadCliente());
-                ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
-                clienteIndexVM.Clientes = clientesVM;
-                clienteIndexVM.UserLog = userVM;
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    var clientesVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.ReadCliente());
+                    ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
+                    clienteIndexVM.Clientes = clientesVM;
+                    clienteIndexVM.UserLog = userVM;
 
-                return View(clienteIndexVM);
+                    return View(clienteIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
 
         public IActionResult IndexBusquedaFiltrada(string busqueda)
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
-                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-            if (userDb != null)
+            try
             {
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                var clientesVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.BusquedaFiltrada(busqueda));
-                ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
-                clienteIndexVM.Clientes = clientesVM;
-                clienteIndexVM.UserLog = userVM;
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    var clientesVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.BusquedaFiltrada(busqueda));
+                    ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
+                    clienteIndexVM.Clientes = clientesVM;
+                    clienteIndexVM.UserLog = userVM;
 
-                return View(clienteIndexVM);
+                    return View(clienteIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
 
 
         public IActionResult CreateView()
         {
-            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+            try
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
-            if (userDb != null)
-            {
-                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                ClienteABMViewModel clienteCreateVM = new ClienteABMViewModel();
-                clienteCreateVM.UserLog = userVM;
-                clienteCreateVM.Cliente = new ClienteViewModel();
-                return View(clienteCreateVM);
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    ClienteABMViewModel clienteCreateVM = new ClienteABMViewModel();
+                    clienteCreateVM.UserLog = userVM;
+                    clienteCreateVM.Cliente = new ClienteViewModel();
+                    return View(clienteCreateVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
             }
-            return RedirectToAction("IndexUsuario", "Usuario");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            
         }
 
         [HttpPost]
         public IActionResult SaveCliente(ClienteABMViewModel clienteCreateVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Cliente buscado = db.ClienteDb.ClienteByNom(clienteCreateVM.Cliente.Nombre);
-                if (buscado.Id == 0)
+                if (ModelState.IsValid)
                 {
-                    Cliente clienteDb = mapper.Map<Cliente>(clienteCreateVM.Cliente);
-                    db.ClienteDb.SaveCliente(clienteDb);
-                    return RedirectToAction("IndexCliente");
-                }
-                return RedirectToAction("ErrorCreateDuplicado", "Logger");
+                    Cliente buscado = db.ClienteDb.ClienteByNom(clienteCreateVM.Cliente.Nombre);
+                    if (buscado.Id == 0)
+                    {
+                        Cliente clienteDb = mapper.Map<Cliente>(clienteCreateVM.Cliente);
+                        db.ClienteDb.SaveCliente(clienteDb);
+                        return RedirectToAction("IndexCliente");
+                    }
+                    return RedirectToAction("ErrorCreateDuplicado", "Logger");
 
+                }
+                return RedirectToAction("ErrorCreateCliente", "Logger");
             }
-            return RedirectToAction("ErrorCreateCliente", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorCreateCliente", "Logger");
+            }
+            
         }
 
         [HttpGet]
         public IActionResult EditView(ClienteViewModel clienteVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
-                                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-
-                if (userDb != null)
+                if (ModelState.IsValid)
                 {
-                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                    ClienteABMViewModel clienteUpdateVM = new ClienteABMViewModel();
-                    clienteUpdateVM.UserLog = userVM;
-                    clienteUpdateVM.Cliente = clienteVM;
-                    return View(clienteUpdateVM);
+                    Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                                    HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+                    if (userDb != null)
+                    {
+                        UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                        ClienteABMViewModel clienteUpdateVM = new ClienteABMViewModel();
+                        clienteUpdateVM.UserLog = userVM;
+                        clienteUpdateVM.Cliente = clienteVM;
+                        return View(clienteUpdateVM);
+                    }
+                    return RedirectToAction("IndexUsuario", "Usuario");
                 }
-                return RedirectToAction("IndexUsuario", "Usuario");
+                return RedirectToAction("ErrorUpdateCliente", "Logger");
             }
-            return RedirectToAction("ErrorUpdateCliente", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorUpdateCliente", "Logger");
+            }
+            
         }
 
         [HttpPost]
         public IActionResult UpdateCliente(ClienteABMViewModel clienteUpdateVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Cliente clienteDb = mapper.Map<Cliente>(clienteUpdateVM.Cliente);
-                db.ClienteDb.UpdateCliente(clienteDb);
-                return RedirectToAction("IndexCliente");
+                if (ModelState.IsValid)
+                {
+                    Cliente clienteDb = mapper.Map<Cliente>(clienteUpdateVM.Cliente);
+                    db.ClienteDb.UpdateCliente(clienteDb);
+                    return RedirectToAction("IndexCliente");
+                }
+                return RedirectToAction("ErrorUpdateCliente", "Logger");
             }
-            return RedirectToAction("ErrorUpdateCliente", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorUpdateCliente", "Logger");
+            }
+            
         }
 
         public IActionResult DeleteView(ClienteViewModel clienteVM)
         {
-            if (ModelState.IsValid)
+            try
             {
-                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
-                                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
-
-                if (userDb != null)
+                if (ModelState.IsValid)
                 {
-                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
-                    ClienteABMViewModel clienteDeleteVM = new ClienteABMViewModel();
-                    clienteDeleteVM.UserLog = userVM;
-                    clienteDeleteVM.Cliente = clienteVM;
-                    return View(clienteDeleteVM);
+                    Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                                    HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+                    if (userDb != null)
+                    {
+                        UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                        ClienteABMViewModel clienteDeleteVM = new ClienteABMViewModel();
+                        clienteDeleteVM.UserLog = userVM;
+                        clienteDeleteVM.Cliente = clienteVM;
+                        return View(clienteDeleteVM);
+                    }
+                    return RedirectToAction("IndexUsuario", "Usuario");
                 }
-                return RedirectToAction("IndexUsuario", "Usuario");
+                return RedirectToAction("ErrorDeleteCliente", "Logger");
             }
-            return RedirectToAction("ErrorDeleteCliente", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorDeleteCliente", "Logger");
+            }
+            
         }
 
       
         public IActionResult DeteleCliente(int clienteId)
         {
-            if (db.ClienteDb.DeleteCliente(clienteId))
+            try
             {
-                return RedirectToAction("IndexCliente");
+                if (db.ClienteDb.DeleteCliente(clienteId))
+                {
+                    return RedirectToAction("IndexCliente");
+                }
+                return RedirectToAction("ErrorDeleteCliente", "Logger");
             }
-            return RedirectToAction("ErrorDeleteCliente", "Logger");
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorDeleteCliente", "Logger");
+            }
+            
         }
     }
 }

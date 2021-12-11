@@ -13,11 +13,11 @@ namespace tallerIIpractico3.ViewModel
 
 
         public int Id { get => id; set => id = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         public string Nombre { get => nombre; set => nombre = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         public string User { get => user; set => user = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         [MinLength(6)]
         [MaxLength(20)]
         [Display(Name = "Contraseña")]

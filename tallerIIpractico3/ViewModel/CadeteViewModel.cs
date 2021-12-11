@@ -18,13 +18,13 @@ namespace tallerIIpractico3.ViewModel
 
 
         public int Id { get => id; set => id = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         public string Nombre { get => nombre; set => nombre = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         public string Direccion { get => direccion; set => direccion = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         public string Telefono { get => telefono; set => telefono = value; }
-        [Required]
+        [Required(ErrorMessage = "Este Campo es requerido")]
         public string Vehiculo { get => vehiculo; set => vehiculo = value; }
 
 
