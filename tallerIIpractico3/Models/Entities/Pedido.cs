@@ -15,7 +15,7 @@ namespace tallerIIpractico3.entities
     public class Pedido
     {
         private int id;
-        private string fecha;
+        private DateTime fecha;
         private string observaciones;
         private Cliente cliente;
         private string estadoPedido;
@@ -23,7 +23,7 @@ namespace tallerIIpractico3.entities
 
 
         public int Id { get => id; set => id = value; }
-        public string Fecha { get => fecha; set => fecha = value; }
+        public DateTime Fecha { get => fecha; set => fecha = value; }
         public string Observaciones { get => observaciones; set => observaciones = value; }
         public Cliente Cliente { get => cliente; set => cliente = value; }
         public string EstadoPedido { get => estadoPedido; set => estadoPedido = value; }
@@ -36,7 +36,7 @@ namespace tallerIIpractico3.entities
         public Pedido(string observaciones, Cliente cliente)
         {
             Id = 9999;
-            Fecha = DateTime.Now.ToString();
+            Fecha = DateTime.Now;
             Observaciones = observaciones;
             Cliente = cliente;
             EstadoPedido = Estado.En_camino.ToString();
@@ -46,7 +46,7 @@ namespace tallerIIpractico3.entities
         public Pedido(string observaciones)
         {
             Id = 9999;
-            Fecha = DateTime.Now.ToString();
+            Fecha = DateTime.Now;
             Observaciones = observaciones;
             EstadoPedido = Estado.En_camino.ToString();
             Pagado = 0;

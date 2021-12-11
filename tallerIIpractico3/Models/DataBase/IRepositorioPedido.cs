@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using tallerIIpractico3.entities;
 
 namespace tallerIIpractico3.Models.Db
@@ -12,5 +13,6 @@ namespace tallerIIpractico3.Models.Db
         bool UpdatePedido(int pedidoId, string estado);
         bool LiquidarPedido(int cadeteId);
         List<Pedido> GetPedidosImpagos(int cadeteId);
+        List<Pedido> BusquedaFiltradaPorFecha(DateTime fechaInicial, DateTime fechaFinal);
     }
 }

@@ -8,7 +8,7 @@ namespace tallerIIpractico3.ViewModel
     public class PedidoViewModel
     {
         private int id;
-        private string fecha;
+        private DateTime fecha;
         private string observaciones;
         private ClienteViewModel cliente;
         private string estadoPedido;
@@ -16,7 +16,7 @@ namespace tallerIIpractico3.ViewModel
   
 
         public int Id { get => id; set => id = value; }
-        public string Fecha { get => fecha; set => fecha = value; }
+        public DateTime Fecha { get => fecha; set => fecha = value; }
         [Required]
         public string Observaciones { get => observaciones; set => observaciones = value; }
         public ClienteViewModel Cliente { get => cliente; set => cliente = value; }

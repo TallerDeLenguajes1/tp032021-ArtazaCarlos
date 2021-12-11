@@ -27,7 +27,28 @@ namespace tallerIIpractico3.Controllers
             this.mapper = mapper;
         }
 
+
+    //***********************************************METODOS DE BUSQUEDA DE PEDIDOS***********************************
+
         public IActionResult IndexPedido()
+        {
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+            if (userDb != null)
+            {
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                pedidosIndexVM.UserLog = userVM;
+
+                return View(pedidosIndexVM);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
+        }
+
+
+
+        public IActionResult IndexTodosLosPedidos()
         {
             Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
@@ -46,7 +67,27 @@ namespace tallerIIpractico3.Controllers
         }
 
 
-//************************CREAR PEDIDO DESDE MENU******************************
+        public IActionResult IndexBusquedaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
+        {
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+            if (userDb != null)
+            {
+                var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.BusquedaFiltradaPorFecha(fechaInicial, fechaFinal));
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                pedidosIndexVM.Pedidos = pedidosVM;
+                pedidosIndexVM.UserLog = userVM;
+
+                return View(pedidosIndexVM);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
+        }
+
+
+
+        //************************CREAR PEDIDO DESDE MENU******************************
         public IActionResult CreateView()
         {
             Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
@@ -111,7 +152,7 @@ namespace tallerIIpractico3.Controllers
             return RedirectToAction("ErrorCreatePedido", "Logger");
         }
 
-        //************************UPDATE PEDIDO******************************
+        //************************UPDATE PEDIDO***************************************
 
         [HttpPost]
         public IActionResult UpdatePedido(int pedidoId, entities.Estado estadoPedido)
@@ -180,8 +221,24 @@ namespace tallerIIpractico3.Controllers
             return modelosParaPedido;
         }
 
+        //original index
+        //public IActionResult IndexPedido()
+        //{
+        //    Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+        //        HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
 
+        //    if (userDb != null)
+        //    {
+        //        var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.ReadPedidos());
+        //        UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+        //        PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+        //        pedidosIndexVM.Pedidos = pedidosVM;
+        //        pedidosIndexVM.UserLog = userVM;
 
+        //        return View(pedidosIndexVM);
+        //    }
+        //    return RedirectToAction("IndexUsuario", "Usuario");
+        //}
 
 
 

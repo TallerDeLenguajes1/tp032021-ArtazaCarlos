@@ -20,6 +20,7 @@
             <div class="btn-group, col-md-2" role="group" aria-label="Basic outlined example">
                 <a button type="button" class="btn btn-outline-primary" asp-action="IndexTodosLosPedidos">Todos los Pedidos</a>
             </div>
+
             <div class="btn-group, col-md-8" role="group" aria-label="Basic outlined example">
 
                 <form asp-controller="Pedido" asp-action="IndexBusquedaFiltrada" method="post">
@@ -33,7 +34,6 @@
                 </form>
 
             </div>
-
             <div class="btn-group, col-md-2" role="group" aria-label="Basic outlined example">
                   <a button type="button" class="btn btn-outline-primary" asp-action="IndexPedido">Limpiar</a>  
             </div>
@@ -63,6 +63,48 @@
                 <th></th>
             </tr>
         </thead>
+        <tbody>
+            @{
+                Model.Pedidos.Reverse();
+            }
+    @foreach (var item in Model.Pedidos) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Fecha)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Observaciones)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Cliente.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.EstadoPedido)
+                </td>
+                <td>
+                    <form asp-controller="Pedido" asp-action="UpdatePedido" method="post">
+                        <input type="number" name="pedidoId" value="@item.Id" hidden>
+                        <select id="estado" name="estadoPedido">
+                            <option value="" selected>@item.EstadoPedido</option>
+                            @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
+                            {
+                                <option value="@tallerIIpractico3.entities.Estado.Entregado">Entregado</option>
+                                <option value="@tallerIIpractico3.entities.Estado.No_entregado">No Entregado</option>
+                            }
+                        </select>
+                        @if (item.EstadoPedido == tallerIIpractico3.entities.Estado.En_camino.ToString())
+                        {
+                            <button type="submit" class="btn btn-primary">Cambiar</button>
+                        }
+                    </form>
+
+                </td>
+            </tr>
+    }
+        </tbody>
     </table>
 }else
 {
