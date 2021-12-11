@@ -17,7 +17,7 @@
                                 Cadete
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a class="dropdown-item" asp-controller="Cadete" asp-action="CreateCadete">Agregar Nuevo</a>
+                                <a class="dropdown-item" asp-controller="Cadete" asp-action="CreateView">Agregar Nuevo</a>
                                 <a class="dropdown-item" asp-controller="Cadete" asp-action="IndexCadete">Lista</a>
                             </div>
                         </li>
@@ -37,6 +37,23 @@
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                                 <a class="dropdown-item" asp-controller="Cliente" asp-action="CreateView">Agregar Nuevo</a>
                                 <a class="dropdown-item" asp-controller="Cliente" asp-action="IndexCliente">Lista</a>
+                            </div>
+                        </li>
+                         <li class="dropdown">
+                            <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                Usuario
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-controller="Usuario" asp-action="CreateView">Agregar Nuevo</a>
+                                <a class="dropdown-item" asp-controller="Usuario" asp-action="ListaDeUsuarios">Lista</a>
+                            </div>
+                        </li>
+                        <li class="dropdown">
+                            <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                @Model.User
+                            </button>
+                            <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                                <a class="dropdown-item" asp-controller="Usuario" asp-action="Logout">Logout</a>
                             </div>
                         </li>
 

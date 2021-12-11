@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace tallerIIpractico3.ViewModel
 {
@@ -25,6 +26,33 @@ namespace tallerIIpractico3.ViewModel
 
 
         public UsuarioViewModel()
+        {
+        }
+    }
+
+    public class UsuarioListaiewModel
+    {
+        private List<UsuarioViewModel> usuarios;
+        private UsuarioViewModel userLog;
+
+        public List<UsuarioViewModel> Usuarios { get => usuarios; set => usuarios = value; }
+        public UsuarioViewModel UserLog { get => userLog; set => userLog = value; }
+
+        public UsuarioListaiewModel()
+        {
+        }
+    }
+
+
+    public class UsuarioABMViewModel
+    {
+        private UsuarioViewModel usuario;
+        private UsuarioViewModel userLog;
+
+        public UsuarioViewModel Usuario { get => usuario; set => usuario = value; }
+        public UsuarioViewModel UserLog { get => userLog; set => userLog = value; }
+
+        public UsuarioABMViewModel()
         {
         }
     }

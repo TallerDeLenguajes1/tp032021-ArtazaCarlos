@@ -52,7 +52,7 @@ namespace tallerIIpractico3.Controllers
 
         //**************************************AGREGAR CADETE**************************************
 
-        public IActionResult CreateCadete()
+        public IActionResult CreateView()
         {
             Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
                 HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
@@ -80,7 +80,7 @@ namespace tallerIIpractico3.Controllers
         //***************************************MODIFICAR CADETE************************************
 
         [HttpGet]
-        public IActionResult FormUpdateCadete(CadeteViewModel cadeteVM)
+        public IActionResult EditView(CadeteViewModel cadeteVM)
         {
             if (ModelState.IsValid)
             {
@@ -98,7 +98,7 @@ namespace tallerIIpractico3.Controllers
         }
 
         [HttpPost]
-        public IActionResult ModificarCadete(CadeteABMViewModel cadeteUpdateVM)
+        public IActionResult UpdateCadete(CadeteABMViewModel cadeteUpdateVM)
         {
             if (ModelState.IsValid)
             {

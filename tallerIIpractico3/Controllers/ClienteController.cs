@@ -79,10 +79,6 @@ namespace tallerIIpractico3.Controllers
 
 
 
-
-
-
-
         public IActionResult CreateView()
         {
             Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
@@ -100,11 +96,12 @@ namespace tallerIIpractico3.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreateCliente(ClienteABMViewModel clienteCreateVM)
+        public IActionResult SaveCliente(ClienteABMViewModel clienteCreateVM)
         {
             if (ModelState.IsValid)
             {
-                if (db.ClienteDb.ClienteByNom(clienteCreateVM.Cliente.Nombre) == null)
+                Cliente buscado = db.ClienteDb.ClienteByNom(clienteCreateVM.Cliente.Nombre);
+                if (buscado.Id == 0)
                 {
                     Cliente clienteDb = mapper.Map<Cliente>(clienteCreateVM.Cliente);
                     db.ClienteDb.SaveCliente(clienteDb);

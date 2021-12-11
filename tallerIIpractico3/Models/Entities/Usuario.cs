@@ -4,7 +4,7 @@ namespace tallerIIpractico3.Models.Entities
     public enum RolUsuario
     {
         admin,
-        usuario
+        user
     }
 
     public class Usuario

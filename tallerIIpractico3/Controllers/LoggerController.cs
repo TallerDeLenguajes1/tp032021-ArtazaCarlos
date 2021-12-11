@@ -73,5 +73,22 @@ namespace tallerIIpractico3.Controllers
         {
             return View();
         }
+
+        //*********************************ERRORES EN USUARIOS************************************
+
+        public IActionResult ErrorCreateUsuario()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorDeleteUsuario()
+        {
+            return View();
+        }
+
+        public IActionResult ErrorUpdateUsuario()
+        {
+            return View();
+        }
     }
 }

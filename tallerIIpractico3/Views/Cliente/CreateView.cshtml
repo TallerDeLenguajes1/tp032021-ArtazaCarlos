@@ -10,10 +10,10 @@
     {
         @await Html.PartialAsync("MenuUser", Model.UserLog);
     }
-    <hr />
+    <hr/>
     <div class="row">
         <div class="col-md-4">
-            <form asp-controller="Cliente" asp-action="CreateCliente" method="post">
+            <form asp-controller="Cliente" asp-action="SaveCliente" method="post">
                 <fieldset>
                 <legend>Nuevo Cliente</legend>
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>

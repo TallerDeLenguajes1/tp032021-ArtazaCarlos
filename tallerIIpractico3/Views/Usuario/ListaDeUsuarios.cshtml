@@ -1,0 +1,71 @@
+﻿@model tallerIIpractico3.ViewModel.UsuarioListaiewModel
+
+@{
+    ViewData["Title"] = "ListaDeUsuario";
+}
+
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.User == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+
+        <hr />
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>
+                        Id
+                    </th>
+                    <th>
+                        Nombre
+                    </th>
+                    <th>
+                        User
+                    </th>
+                    <th>
+                        Pass
+                    </th>
+                    <th>
+                        Rol
+                    </th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+        @foreach (var item in Model.Usuarios) {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Id)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.User)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Pass)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Rol)
+                    </td>
+                    <td>
+                        @Html.ActionLink("Edit", "EditView", item) |
+                        @Html.ActionLink("Delete", "DeleteView", item)
+                    </td>
+                </tr>
+        }
+            </tbody>
+        </table>
+    }
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
+}
+
+    

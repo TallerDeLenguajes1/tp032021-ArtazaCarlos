@@ -102,7 +102,7 @@ namespace tallerIIpractico3.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePedido(CreatePedidoViewModel modelosParaPedido)
+        public IActionResult SavePedido(CreatePedidoViewModel modelosParaPedido)
         {
             if (ModelState.IsValid)
             {
@@ -139,7 +139,7 @@ namespace tallerIIpractico3.Controllers
         }
 
         [HttpPost]
-        public IActionResult CreatePedidoFromCliente(CreatePedidoViewModel modelosParaPedido)
+        public IActionResult SavePedidoFromCliente(CreatePedidoViewModel modelosParaPedido)
         {
             if (ModelState.IsValid)
             {

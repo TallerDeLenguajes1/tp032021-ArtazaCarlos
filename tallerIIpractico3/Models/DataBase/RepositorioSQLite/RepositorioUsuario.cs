@@ -94,47 +94,47 @@ namespace tallerIIpractico3.Models.Db
             }
         }
 
-        public Usuario UsuarioByUser(string user)
-        {
-            Usuario usuarioNull = null;
-            string queryString = @"SELECT * FROM Usuarios WHERE user = @user;";
+        //public Usuario UsuarioByUser(string user)
+        //{
+        //    Usuario usuarioNull = null;
+        //    string queryString = @"SELECT * FROM Usuarios WHERE user = @user;";
 
-            try
-            {
-                using (var conexion = new SQLiteConnection(connectionString))
-                {
-                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
-                    {
-                        command.Parameters.AddWithValue("@user", user);
-                        conexion.Open();
+        //    try
+        //    {
+        //        using (var conexion = new SQLiteConnection(connectionString))
+        //        {
+        //            using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+        //            {
+        //                command.Parameters.AddWithValue("@user", user);
+        //                conexion.Open();
 
-                        SQLiteDataReader dataReader = command.ExecuteReader();
-                        Usuario usuario = new Usuario();
-                        while (dataReader.Read())
-                        {
+        //                SQLiteDataReader dataReader = command.ExecuteReader();
+        //                Usuario usuario = new Usuario();
+        //                while (dataReader.Read())
+        //                {
                             
-                            usuario.Id = Convert.ToInt32(dataReader["usuarioId"]);
-                            usuario.Nombre = dataReader["nombre"].ToString();
-                            usuario.User = dataReader["user"].ToString();
-                            usuario.Pass = dataReader["pass"].ToString();
-                            usuario.Rol = dataReader["rol"].ToString();
-                            dataReader.Close();
-                            conexion.Close();
-                            return usuario;
+        //                    usuario.Id = Convert.ToInt32(dataReader["usuarioId"]);
+        //                    usuario.Nombre = dataReader["nombre"].ToString();
+        //                    usuario.User = dataReader["user"].ToString();
+        //                    usuario.Pass = dataReader["pass"].ToString();
+        //                    usuario.Rol = dataReader["rol"].ToString();
+        //                    dataReader.Close();
+        //                    conexion.Close();
+        //                    return usuario;
 
-                        }
+        //                }
                         
-                    }
+        //            }
 
-                }
+        //        }
                 
-            }
-            catch (Exception ex)
-            {
-                logger.Error(ex.ToString());
-            }
-            return usuarioNull;
-        }
+        //    }
+        //    catch (Exception ex)
+        //    {
+        //        logger.Error(ex.ToString());
+        //    }
+        //    return usuarioNull;
+        //}
 
         public Usuario UsuarioByUserPass(string user, string pass)
         {
@@ -172,6 +172,66 @@ namespace tallerIIpractico3.Models.Db
                 logger.Error(ex.ToString());
             }
             return usuarioNull;
+        }
+
+        public bool DeleteUsuario(int usuarioId)
+        {
+            string queryString = @"UPDATE Usuarios
+                                                SET
+                                                    activo = 0
+                                                WHERE usuarioId = @usuarioId;";
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@usuarioId", usuarioId);
+                        conexion.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    conexion.Close();
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return false;
+            }
+        }
+
+        public void UpdateUsuario(Usuario usuarioUpdate)
+        {
+            string queryString = @"UPDATE Usuarios
+                                                SET
+                                                    nombre = @nombre,
+                                                    user = @user,
+                                                    pass = @pass
+                                                WHERE usuarioId = @usuarioId;";
+
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@nombre", usuarioUpdate.Nombre);
+                        command.Parameters.AddWithValue("@user", usuarioUpdate.User);
+                        command.Parameters.AddWithValue("@pass", usuarioUpdate.Pass);
+
+                        command.Parameters.AddWithValue("@usuarioId", usuarioUpdate.Id);
+                        conexion.Open();
+                        command.ExecuteNonQuery();
+                    }
+                    conexion.Close();
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+        
+            }
         }
     }
 }
