@@ -12,6 +12,8 @@ namespace tallerIIpractico3.Models.Db
         void UpdateCliente(Cliente clienteUpdate);
         int GetClienteId(string nom, string dir);
         Cliente ClienteByNomTel(string nom, string tel);
+        List<Cliente> BusquedaFiltrada(string busqueda);
+        Cliente ClienteByNom(string nom);
 
     }
 }

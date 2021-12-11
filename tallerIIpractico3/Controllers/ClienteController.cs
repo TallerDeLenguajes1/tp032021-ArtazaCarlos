@@ -34,6 +34,21 @@ namespace tallerIIpractico3.Controllers
             if (userDb != null)
             {
                 UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
+                clienteIndexVM.UserLog = userVM;
+
+                return View(clienteIndexVM);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
+        }
+
+        public IActionResult IndexTodosLosClientes()
+        {
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+            if (userDb != null)
+            {
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
                 var clientesVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.ReadCliente());
                 ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
                 clienteIndexVM.Clientes = clientesVM;
@@ -43,6 +58,30 @@ namespace tallerIIpractico3.Controllers
             }
             return RedirectToAction("IndexUsuario", "Usuario");
         }
+
+
+        public IActionResult IndexBusquedaFiltrada(string busqueda)
+        {
+            Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+            if (userDb != null)
+            {
+                UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                var clientesVM = mapper.Map<List<ClienteViewModel>>(db.ClienteDb.BusquedaFiltrada(busqueda));
+                ClienteIndexViewModel clienteIndexVM = new ClienteIndexViewModel();
+                clienteIndexVM.Clientes = clientesVM;
+                clienteIndexVM.UserLog = userVM;
+
+                return View(clienteIndexVM);
+            }
+            return RedirectToAction("IndexUsuario", "Usuario");
+        }
+
+
+
+
+
+
 
         public IActionResult CreateView()
         {
@@ -65,9 +104,14 @@ namespace tallerIIpractico3.Controllers
         {
             if (ModelState.IsValid)
             {
-                Cliente clienteDb = mapper.Map<Cliente>(clienteCreateVM.Cliente);
-                db.ClienteDb.SaveCliente(clienteDb);
-                return RedirectToAction("IndexCliente");
+                if (db.ClienteDb.ClienteByNom(clienteCreateVM.Cliente.Nombre) == null)
+                {
+                    Cliente clienteDb = mapper.Map<Cliente>(clienteCreateVM.Cliente);
+                    db.ClienteDb.SaveCliente(clienteDb);
+                    return RedirectToAction("IndexCliente");
+                }
+                return RedirectToAction("ErrorCreateDuplicado", "Logger");
+
             }
             return RedirectToAction("ErrorCreateCliente", "Logger");
         }

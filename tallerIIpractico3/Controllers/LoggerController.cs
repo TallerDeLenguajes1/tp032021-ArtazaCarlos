@@ -36,6 +36,12 @@ namespace tallerIIpractico3.Controllers
             return View();
         }
 
+        public IActionResult ErrorCreateDuplicado()
+        {
+            return View();
+
+        }
+
         public IActionResult ErrorUpdateCliente()
         {
             return View();

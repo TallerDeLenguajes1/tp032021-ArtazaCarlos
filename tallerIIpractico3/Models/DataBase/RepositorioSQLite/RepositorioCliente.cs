@@ -135,6 +135,48 @@ namespace tallerIIpractico3.Models.Db
             return cliente;
         }
 
+
+        public Cliente ClienteByNom(string nom)
+        {
+            Cliente cliente = new Cliente();
+            string queryString = @"SELECT * FROM Clientes WHERE nombre = @nombre;";
+
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@nombre", nom);
+                        conexion.Open();
+                        //int i = command.ExecuteNonQuery();
+                        //Cadete cadeteTemp = new Cadete();
+                        SQLiteDataReader dataReader = command.ExecuteReader();
+                        while (dataReader.Read())
+                        {
+                            cliente.Id = Convert.ToInt32(dataReader["clienteId"]);
+                            cliente.Nombre = dataReader["nombre"].ToString();
+                            cliente.Direccion = dataReader["direccion"].ToString();
+                            cliente.Telefono = dataReader["telefono"].ToString();
+                            dataReader.Close();
+                            conexion.Close();
+                            return cliente;
+                        }
+
+                    }
+
+                }
+
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+
+            }
+            return cliente;
+        }
+
+
         //quizas no hace falta
         public int GetClienteId(string nom, string tel)
         {
@@ -274,6 +316,48 @@ namespace tallerIIpractico3.Models.Db
                 logger.Error(ex.ToString());
                 throw;
             }
+        }
+
+        public List<Cliente> BusquedaFiltrada(string busqueda)
+        {
+            List<Cliente> ListaDeClientes = new List<Cliente>();
+            string queryString = @"SELECT
+                                        clienteId,
+                                        nombre,
+                                        direccion,
+                                        telefono
+                                  
+                                FROM Clientes WHERE activo = 1 AND nombre LIKE @busqueda;";
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        command.Parameters.AddWithValue("@busqueda", "%" + busqueda + "%");
+                        conexion.Open();
+                        SQLiteDataReader clienteFilas = command.ExecuteReader();
+                        while (clienteFilas.Read())
+                        {
+                            Cliente clienteTemp = new Cliente();
+                            clienteTemp.Id = Convert.ToInt32(clienteFilas["clienteId"]);
+                            clienteTemp.Nombre = clienteFilas["nombre"].ToString();
+                            clienteTemp.Direccion = clienteFilas["direccion"].ToString();
+                            clienteTemp.Telefono = clienteFilas["telefono"].ToString();
+
+                            ListaDeClientes.Add(clienteTemp);
+                        }
+                        clienteFilas.Close();
+                        conexion.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+
+            }
+            return ListaDeClientes;
         }
     }
 }

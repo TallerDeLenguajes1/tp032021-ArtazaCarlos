@@ -55,6 +55,31 @@
                 <th></th>
             </tr>
         </thead>
+        <tbody>
+    @foreach (var item in Model.Clientes) {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Id)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Nombre)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Direccion)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Telefono)
+                </td>
+                <td style="border:solid gray 1px">
+                    @Html.ActionLink("Tomar Pedido", "CreateViewFromCliente", "Pedido", item)
+                </td>
+                <td>
+                    @Html.ActionLink("Modificar", "EditView", item) |
+                    @Html.ActionLink("Eliminar", "DeleteView", item)
+                </td> 
+            </tr>
+    }
+        </tbody>
     </table>
 }else
 {
