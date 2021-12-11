@@ -158,7 +158,7 @@ namespace tallerIIpractico3.Controllers
 
         public IActionResult Logout()
         {
-            if (HttpContext.Session.GetString("username") != null)
+            if (HttpContext.Session.GetString("user") != null)
             {
                 HttpContext.Session.Clear();
                 return RedirectToAction("IndexUsuario", "Usuario");
