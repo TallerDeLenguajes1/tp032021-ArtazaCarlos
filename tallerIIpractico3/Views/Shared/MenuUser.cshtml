@@ -3,16 +3,16 @@
 
 <header>
         
-        <div class="container">
-            <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
-                <a asp-area="" asp-controller="Home" asp-action="Index" style="margin-right: 5px; text-decoration:none">Cadeteria</a>
+   <nav class="navbar navbar-expand-lg navbar-light" style="background-color: #e3f2fd;">
+                <a asp-controller="Home" asp-action="Index" style="margin-right: 5px; text-decoration:none; font-size:2em">Cadeteria</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavDropdown" aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavDropdown">
                     <ul class="navbar-nav">
-                        <li class="dropdown">
-                            <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+
+                        <li class="dropdown" style="margin-right:4px">
+                            <button class="btn btn-outline-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Cadete
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -20,9 +20,8 @@
                                 <a class="dropdown-item" asp-controller="Cadete" asp-action="IndexCadete">Lista</a>
                             </div>
                         </li>
-                
-                        <li class="dropdown">
-                            <button class="btn btn-default" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <li class="dropdown" style="margin-right:4px">
+                            <button class="btn btn-outline-primary" dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Pedido
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -30,8 +29,8 @@
                                 <a class="dropdown-item" asp-controller="Pedido" asp-action="IndexPedido">Lista</a>
                             </div>
                         </li>
-                        <li class="dropdown">
-                            <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <li class="dropdown" style="margin-right:4px">
+                            <button class="btn btn-outline-primary" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 Cliente
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -39,9 +38,10 @@
                                 <a class="dropdown-item" asp-controller="Cliente" asp-action="IndexCliente">Lista</a>
                             </div>
                         </li>
-
-                        <li class="dropdown">
-                            <button class="btn btn-default" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                         
+                        
+                        <li class="dropdown" style="margin-right:4px">
+                            <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                                 @Model.User
                             </button>
                             <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -50,7 +50,7 @@
                         </li>
 
                     </ul>
+                    
                 </div>
             </nav>
-        </div>
     </header>
