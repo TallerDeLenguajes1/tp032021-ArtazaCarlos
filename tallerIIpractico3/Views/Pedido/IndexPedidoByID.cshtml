@@ -1,0 +1,66 @@
+﻿@model tallerIIpractico3.ViewModel.PedidoIndexViewModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@if (Model.UserLog != null)
+{
+    if(Model.UserLog.Rol == "admin")
+    {
+        @await Html.PartialAsync("MenuAdmin", Model.UserLog);
+    }
+    else
+    {
+        @await Html.PartialAsync("MenuUser", Model.UserLog);
+    }
+
+    <hr/>
+    <h4>Pedidos</h4>
+    <div class="row">
+            <div class="btn-group, col-md-8" role="group" aria-label="Basic outlined example">
+
+                <form asp-controller="Pedido" asp-action="IndexBusquedaporIdCadete" method="post">
+                    <label for="cadeteId">ID de Cadete</label>
+                    <input type="number" name="cadeteId" id="cadeteId">
+
+                    <button type="submit" class="btn btn-primary">Enviar</button>
+                </form>
+
+            </div>
+
+            <div class="btn-group, col-md-2" role="group" aria-label="Basic outlined example">
+                  <a button type="button" class="btn btn-primary" asp-action="IndexPedidoByID">Limpiar</a>  
+            </div>
+
+    </div>
+    <table class="table" style="text-align:center">
+        <thead>
+            <tr>
+                <th>
+                    id
+                </th>
+                <th>
+                   Fecha - Hora
+                </th>
+                <th>
+                    Observaciones
+                </th>
+                <th>
+                    Dirección
+                </th>
+                <th>
+                    Estado del pedido
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+    </table>
+}else
+{
+    <script type="text/JavaScript">
+      setTimeout("location.href = 'https://localhost:44374/';",2000);
+    </script>
+
+    <p>No tiene permiso para estar en esta pagina</p>
+}

@@ -84,7 +84,7 @@ namespace tallerIIpractico3.Controllers
             
         }
 
-
+        [HttpPost]
         public IActionResult IndexBusquedaFiltrada(DateTime fechaInicial, DateTime fechaFinal)
         {
             try
@@ -111,6 +111,60 @@ namespace tallerIIpractico3.Controllers
             }
             
         }
+
+        public IActionResult IndexPedidoByID()
+        {
+            try
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+                if (userDb != null)
+                {
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                    pedidosIndexVM.UserLog = userVM;
+
+                    return View(pedidosIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+
+        }
+
+        [HttpPost]
+        public IActionResult IndexBusquedaporIdCadete(int cadeteId)
+        {
+            try
+            {
+                Usuario userDb = db.UsuarioDb.UsuarioByUserPass(
+                HttpContext.Session.GetString("user"), HttpContext.Session.GetString("pass"));
+
+                if (userDb != null)
+                {
+                    var pedidosVM = mapper.Map<List<PedidoViewModel>>(db.PedidoDb.BusquedaporIdCadete(cadeteId));
+                    UsuarioViewModel userVM = mapper.Map<UsuarioViewModel>(userDb);
+                    PedidoIndexViewModel pedidosIndexVM = new PedidoIndexViewModel();
+                    pedidosIndexVM.Pedidos = pedidosVM;
+                    pedidosIndexVM.UserLog = userVM;
+
+                    return View(pedidosIndexVM);
+                }
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("IndexUsuario", "Usuario");
+            }
+
+        }
+
 
 
 
@@ -234,6 +288,25 @@ namespace tallerIIpractico3.Controllers
                 return RedirectToAction("ErrorUpdatePedido", "Logger");
             }
             
+        }
+
+        [HttpPost]
+        public IActionResult UpdatePedidoByIdCadete(int pedidoId, entities.Estado estadoPedido)
+        {
+            try
+            {
+                if (db.PedidoDb.UpdatePedido(pedidoId, estadoPedido.ToString()))
+                {
+                    return RedirectToAction("IndexPedidoByID");
+                }
+                return RedirectToAction("ErrorUpdatePedido", "Logger");
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+                return RedirectToAction("ErrorUpdatePedido", "Logger");
+            }
+
         }
 
 

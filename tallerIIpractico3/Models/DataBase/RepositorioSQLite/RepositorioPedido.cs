@@ -272,5 +272,51 @@ namespace tallerIIpractico3.Models.Db
             }
             return ListaDePedidos;
         }
+
+        public List<Pedido> BusquedaporIdCadete(int cadeteId)
+        {
+            List<Pedido> ListaDePedidos = new List<Pedido>();
+            string queryString = @"SELECT * FROM Pedidos INNER JOIN Clientes 
+                                    USING(clienteId) 
+                                    WHERE Pedidos.cadeteId = @cadeteId";
+            try
+            {
+                using (var conexion = new SQLiteConnection(connectionString))
+                {
+                    using (SQLiteCommand command = new SQLiteCommand(queryString, conexion))
+                    {
+                        conexion.Open();
+                        command.Parameters.AddWithValue("@cadeteId", cadeteId);
+                        SQLiteDataReader PedidoFilas = command.ExecuteReader();
+                        while (PedidoFilas.Read())
+                        {
+                            Pedido PedidoTemp = new Pedido();
+                            Cliente ClienteTemp = new Cliente();
+
+                            PedidoTemp.Id = Convert.ToInt32(PedidoFilas["pedidoId"]);
+                            PedidoTemp.Fecha = Convert.ToDateTime(PedidoFilas["fecha"]);
+                            PedidoTemp.Observaciones = Convert.ToString(PedidoFilas["observaciones"]);
+                            PedidoTemp.EstadoPedido = Convert.ToString(PedidoFilas["estadoPedido"]);
+
+                            ClienteTemp.Id = Convert.ToInt32(PedidoFilas["clienteId"]);
+                            ClienteTemp.Nombre = Convert.ToString(PedidoFilas["nombre"]);
+                            ClienteTemp.Direccion = Convert.ToString(PedidoFilas["direccion"]);
+                            ClienteTemp.Telefono = Convert.ToString(PedidoFilas["telefono"]);
+
+                            PedidoTemp.Cliente = ClienteTemp;
+                            ListaDePedidos.Add(PedidoTemp);
+                        }
+                        PedidoFilas.Close();
+                        conexion.Close();
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                logger.Error(ex.ToString());
+
+            }
+            return ListaDePedidos;
+        }
     }
 }

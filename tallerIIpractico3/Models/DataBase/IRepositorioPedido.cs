@@ -14,5 +14,6 @@ namespace tallerIIpractico3.Models.Db
         bool LiquidarPedido(int cadeteId);
         List<Pedido> GetPedidosImpagos(int cadeteId);
         List<Pedido> BusquedaFiltradaPorFecha(DateTime fechaInicial, DateTime fechaFinal);
+        List<Pedido> BusquedaporIdCadete(int cadeteId);
     }
 }
